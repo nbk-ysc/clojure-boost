@@ -115,25 +115,41 @@
 
 (defn total-gastos
   "Listar os valores"
-  [compras]
-  (->> compras
+  [lista-compras]
+  (->> lista-compras
        (map :valor)
        (reduce +)
        ))
 
 (defn total-gastos-por-cartao
   "Listar os valores"
-  [numero-cartao compras]
-  (->> (selecionar-cartao numero-cartao compras)
+  [numero-cartao lista-compras]
+  (->> (selecionar-cartao numero-cartao lista-compras)
        (reduce +)
        ))
 
 (defn selecionar-cartao
   "filtrar por um unico cartao"
-  [numero-cartao cartoes]
-  (->> cartoes
+  [numero-cartao lista-compras]
+  (->> lista-compras
        (filter #(= (get % :cartao) numero-cartao))
        (map :valor)))
+
+;-----------------------------------------------------------
+;Buscar compras por mês
+
+(defn obter-compras-por-mes
+  "funcao para obter todas as compras baseado em um mes (inteiro)"
+  [lista-compras mes]
+  (->> lista-compras
+       (filter #(= mes (splitar (:data %))))))
+
+(defn splitar
+  "funcao que transforma a data em um mes (inteiro)"
+  [lista-compras]
+  (-> (clojure.string/split lista-compras #"-")
+      (get 1)
+      (Integer/parseInt)))
 
 ;-----------------------------------------------------------
 
@@ -149,11 +165,11 @@
 ;Retornar a soma de todas as compras para um cartao especifico:
 (total-gastos-por-cartao 3939393939393939 lista-compras)
 
+;retornar um vetor com todas as compras para um mes especifico
+(obter-compras-por-mes lista-compras 4)
+
 ;Manipulação da coleção de lista de compras:
 (count lista-compras)
 (pprint lista-compras)
 (class lista-compras)
-
 ;-----------------------------------------------------------
-
-
