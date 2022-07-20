@@ -203,9 +203,9 @@
        (group-by :categoria)
        vec))
 
-(defn lista-valores [[chave valor]]
+(defn lista-valores [[categoria valor]]
   {
-   :categoria chave
+   :categoria categoria
    :valor (reduce + (map :valor valor))
    }
   )
