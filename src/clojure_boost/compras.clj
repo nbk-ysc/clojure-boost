@@ -1,5 +1,5 @@
-(ns clojure-boost.compras)
-(require '[clojure.string :as str])
+(ns clojure-boost.compras
+  (:use clojure.pprint))
 
 (defn nova-compra
   "Retorna uma nova compra"
@@ -177,7 +177,8 @@
   (-> data
       (str/split #"-")
       (second)
-      (Integer/parseInt)))
+      (Integer/parseInt)
+      ))
 
 (defn lista-compras-mes
   "Retorna a lista de compras a partir de um mês"
@@ -187,8 +188,6 @@
 
 (println "Lista de compras por mês" (lista-compras-mes (lista-compras) 01))
 
-
-
 (defn total-gasto-no-mes
   [lista-compras mes]
   (->> lista-compras
@@ -196,11 +195,24 @@
        (map :valor)
        (reduce +)))
 
-(println "Total gasto no mês" (total-gasto-no-mes (lista-compras) 04))
+(println "Total gasto no mês" (total-gasto-no-mes (lista-compras) 01))
 
+(defn agrupar-categoria
+  [lista-compras]
+  (->> lista-compras
+       (group-by :categoria)
+       vec))
 
+(defn lista-valores [[chave valor]]
+  {
+   :categoria chave
+   :valor (reduce + (map :valor valor))
+   }
+  )
 
+(defn lista-todas-categorias
+  [lista-compras]
+  (map lista-valores (agrupar-categoria lista-compras)))
 
-
-
-
+(println "Valor somado de todas as categorias")
+(pprint (lista-todas-categorias (lista-compras)))

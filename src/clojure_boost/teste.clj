@@ -97,7 +97,46 @@
 (println (nomes nomesel))
 
 
+(def pedido1 {
+              :usuario 10
+              :itens {:mochila {:id :mochila :quantidade 2 :preco-unitario 10}
+                      :camiseta {:id :camiseta :quantidade 3 :preco-unitario 40}
+                      :tenis {:quantidade 1}}
+              })
 
+(def pedido2 {
+              :usuario 20
+              :itens {:mochila {:id :mochila :quantidade 2 :preco-unitario 10}
+                      :camiseta {:id :camiseta :quantidade 3 :preco-unitario 40}
+                      :tenis {:quantidade 1}}
+              })
+(def pedido3 {
+              :usuario 40
+              :itens {:mochila {:id :mochila :quantidade 2 :preco-unitario 10}
+                      :camiseta {:id :camiseta :quantidade 3 :preco-unitario 40}
+                      :tenis {:quantidade 1}}
+              })
+(def pedido4 {
+              :usuario 30
+              :itens {:mochila {:id :mochila :quantidade 2 :preco-unitario 10}
+                      :camiseta {:id :camiseta :quantidade 3 :preco-unitario 40}
+                      :tenis {:quantidade 1}}
+              })
+(def pedido5 {
+              :usuario 2
+              :itens {:mochila {:id :mochila :quantidade 2 :preco-unitario 10}
+                      :camiseta {:id :camiseta :quantidade 3 :preco-unitario 40}
+                      :tenis {:quantidade 1}}
+              })
+
+(defn lista-pedidos []
+  [pedido1 pedido2 pedido3 pedido4 pedido5])
+
+
+(defn agrupar [elemento]
+  (println "elemento" elemento)
+  (:usuario elemento))
+(println (group-by agrupar (lista-pedidos)))
 
 
 
