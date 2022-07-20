@@ -1,5 +1,5 @@
 (ns clojure-boost.compras)
-
+(require '[clojure.string :as str])
 
 (defn nova-compra
   "Retorna uma nova compra"
@@ -11,9 +11,6 @@
                 :categoria categoria
                 :cartao cartao
                 }])
-
-
-;(println (nova-compra "2022-07-19" 100.0 "Batata company" "Alimentação" 45282180898765432))
 
 (defn lista-compras []
   "Retorna todas as compras realizadas"
@@ -144,13 +141,19 @@
       :cartao 3939393939393939
       }
      {
-      :data "2022-04-10"
+      :data "2022-04-01"
       :valor 85.0
       :estabelecimento "Alura"
       :categoria "Educação"
       :cartao 3939393939393939
       }
      ])
+(defn filtra-cartao
+  "Filtra cartão e gera os valores para outra função"
+  [cartao lista-compras]
+  (->> lista-compras
+       (filter #(= (get % :cartao) cartao))
+       (map :valor)))
 
 (defn total-gasto [lista-compras]
   "Retorna o valor total gasto nas compras"
@@ -158,19 +161,42 @@
        (map :valor)
        (reduce +)))
 
-(println "Valor gasto foi" (total-gasto (lista-compras)))
+(println "Valor total gasto foi" (total-gasto (lista-compras)))
+
+(defn total-gasto-por-cartao [lista-compras cartao]
+  "Retorna o valor total gasto nas compras por cartão"
+  (let [valor-cartao (filtra-cartao cartao lista-compras)]
+  (->> valor-cartao
+       (reduce +))))
+
+(println "Valor gasto do cartao" (total-gasto-por-cartao (lista-compras) 3939393939393939))
+
+(defn filtra-mes
+  "Filtra as datas"
+  [data]
+  (-> data
+      (str/split #"-")
+      (second)
+      (Integer/parseInt)))
 
 (defn lista-compras-mes
-  [compras mes]
-  (filter (fn [compras] (= (get compras :data) mes)) compras))
+  "Retorna a lista de compras a partir de um mês"
+  [lista-compras mes]
+  (->> lista-compras
+       (filter #(= mes (filtra-mes (:data %))))))
 
-(println (lista-compras-mes (lista-compras) "2022-04-01"))
-
-
-
-
+(println "Lista de compras por mês" (lista-compras-mes (lista-compras) 01))
 
 
+
+(defn total-gasto-no-mes
+  [lista-compras mes]
+  (->> lista-compras
+       (filter #(= mes (filtra-mes (:data %))))
+       (map :valor)
+       (reduce +)))
+
+(println "Total gasto no mês" (total-gasto-no-mes (lista-compras) 04))
 
 
 
