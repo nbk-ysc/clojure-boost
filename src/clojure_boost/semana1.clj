@@ -114,7 +114,7 @@
 ;Calcular o total gasto em compras de um cartão
 
 (defn total-gastos
-  "Listar os valores"
+  "Retorna o total gasto em todos os cartoes"
   [lista-compras]
   (->> lista-compras
        (map :valor)
@@ -122,14 +122,14 @@
        ))
 
 (defn total-gastos-por-cartao
-  "Listar os valores"
+  "Retorna o total gasto em um cartao especifico"
   [numero-cartao lista-compras]
   (->> (selecionar-cartao numero-cartao lista-compras)
        (reduce +)
        ))
 
 (defn selecionar-cartao
-  "filtrar por um unico cartao"
+  "Retorna uma lista de gastos para um cartao especifico"
   [numero-cartao lista-compras]
   (->> lista-compras
        (filter #(= (get % :cartao) numero-cartao))
@@ -142,14 +142,24 @@
   "funcao para obter todas as compras baseado em um mes (inteiro)"
   [lista-compras mes]
   (->> lista-compras
-       (filter #(= mes (splitar (:data %))))))
+       (filter #(= mes (splitar-mes (:data %))))))
 
-(defn splitar
+(defn splitar-mes
   "funcao que transforma a data em um mes (inteiro)"
   [lista-compras]
   (-> (clojure.string/split lista-compras #"-")
       (get 1)
       (Integer/parseInt)))
+
+;-----------------------------------------------------------
+;Calcular o total da fatura de um mês
+
+(defn total-gasto-no-mes
+  "funcao para calcular o total de gastos em um mes para um cartao especifico"
+  [lista-compras mes cartao]
+  (->> (selecionar-cartao cartao (obter-compras-por-mes lista-compras mes))
+       (reduce +))
+  )
 
 ;-----------------------------------------------------------
 
@@ -168,8 +178,12 @@
 ;retornar um vetor com todas as compras para um mes especifico
 (obter-compras-por-mes lista-compras 4)
 
+;retorna o total da fatura de um cartao para um mes especifico
+(total-gasto-no-mes lista-compras 4 3939393939393939)
+
 ;Manipulação da coleção de lista de compras:
 (count lista-compras)
 (pprint lista-compras)
 (class lista-compras)
+
 ;-----------------------------------------------------------
