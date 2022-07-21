@@ -84,3 +84,36 @@
 (pprint (lista-todas-categorias (lista-compras)))
 
 
+(defn filtra-compras-valor [valor-maximo valor-minimo]
+  (->> (lista-compras)
+       (filter #(and (<= (:valor %) valor-maximo) (>= (:valor %) valor-minimo)))))
+(println "Filtro por valor máximo e mínimo" (filtra-compras-valor 100.0 50.0))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
