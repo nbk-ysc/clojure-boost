@@ -2,7 +2,8 @@
   (:use clojure.pprint)
   (:require [clojure.java.io :as io]
             [clojure.string :as str]
-            [ultra-csv.core :as csv]))
+            [ultra-csv.core :as csv]
+            [java-time :as jt]))
 
 (defn nova-compra
   "Retorna uma nova compra"
@@ -24,8 +25,7 @@
   "Filtra cartão e gera os valores para outra função"
   [cartao lista-compras]
   (->> lista-compras
-       (filter #(= (get % :cartao) cartao))
-       (map :valor)))
+       (filter #(= (get % :cartao) cartao))))
 
 (defn total-gasto [lista-compras]
   "Retorna o valor total gasto nas compras"
@@ -39,6 +39,7 @@
   "Retorna o valor total gasto nas compras por cartão"
   (let [valor-cartao (filtra-cartao cartao lista-compras)]
   (->> valor-cartao
+       (map :valor)
        (reduce +))))
 
 (println "Valor gasto do cartao" (total-gasto-por-cartao (lista-compras) 3939393939393939))
@@ -61,8 +62,7 @@
 
 (defn total-gasto-no-mes
   [lista-compras mes]
-  (->> lista-compras
-       (filter #(= mes (filtra-mes (:data %))))
+  (->> (lista-compras-mes lista-compras mes)
        (map :valor)
        (reduce +)))
 
@@ -88,6 +88,10 @@
   (->> (lista-compras)
        (filter #(and (<= (:valor %) valor-maximo) (>= (:valor %) valor-minimo)))))
 (println "Filtro por valor máximo e mínimo" (filtra-compras-valor 100.0 50.0))
+
+
+
+
 
 
 

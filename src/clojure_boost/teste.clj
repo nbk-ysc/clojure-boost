@@ -44,7 +44,7 @@
        (reduce +)))
 (println (outro-total-pedido pedido))
 
-;outra opcao
+,outra opcao
 (defn total-do-pedido [pedido]
   (* (:quantidade pedido) (:preco pedido)))
 
@@ -62,11 +62,11 @@
 (println (filter gratutito? pedido))
 (println "outra forma lamba")
 
-;(defn outro-forma-lamba [pedido]
-;  (->> pedido
-;       vals
-;       (<= (get pedido :preco 0) 0)))
-;(println (filter (outro-forma-lamba pedido)))
+,(defn outro-forma-lamba [pedido]
+,  (->> pedido
+,       vals
+,       (<= (get pedido :preco 0) 0)))
+,(println (filter (outro-forma-lamba pedido)))
 
 (def clientes [
                { :nome "Guilherme"

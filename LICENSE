@@ -13,7 +13,7 @@ Eclipse Public License - v 2.0
 
   b) in the case of each subsequent Contributor:
      i) changes to the Program, and
-     ii) additions to the Program;
+     ii) additions to the Program,
   where such changes and/or additions to the Program originate from
   and are Distributed by that particular Contributor. A Contribution
   "originates" from a Contributor if it was added to the Program by
@@ -112,7 +112,7 @@ Contributor.
   the Program with a statement that the Source Code for the Program
   is available under this Agreement, and informs Recipients how to
   obtain it in a reasonable manner on or through a medium customarily
-  used for software exchange; and
+  used for software exchange, and
 
   b) the Contributor may Distribute the Program under a license
   different than this Agreement, provided that such license:
@@ -120,14 +120,14 @@ Contributor.
      warranties and conditions, express and implied, including
      warranties or conditions of title and non-infringement, and
      implied warranties or conditions of merchantability and fitness
-     for a particular purpose;
+     for a particular purpose,
 
      ii) effectively excludes on behalf of all other Contributors all
      liability for damages, including direct, indirect, special,
-     incidental and consequential damages, such as lost profits;
+     incidental and consequential damages, such as lost profits,
 
      iii) does not attempt to limit or alter the recipients' rights
-     in the Source Code under section 3.2; and
+     in the Source Code under section 3.2, and
 
      iv) requires any subsequent distribution of the Program by any
      party to be under a license that satisfies the requirements
