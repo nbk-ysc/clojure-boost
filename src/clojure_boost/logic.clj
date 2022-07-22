@@ -16,7 +16,7 @@
 
 (defn lista-compras []
   "Retorna lista de compras a partir do csv"
-  (let [arquivo "compras.csv"
+  (let [arquivo "arquivos/compras.csv"
         campos [:data, :valor, :estabelecimento, :categoria, :cartao]]
     (utils/ler-csv arquivo campos)))
 
@@ -27,7 +27,7 @@
   "Retorna lista de compras formatada com a data padrão dd/MM/yyyy e campo valor como bigDecimal"
   [lista-compras-original]
   (->> lista-compras-original
-       (map #(utils/atualiza-formato-data % :data "yyyy-MM-dd" "dd/MM/yyyy"))
+       (map #(utils/atualiza-formato-data % :data "yyyy-MM-dd"))
        (map #(update % :valor bigdec))))
 
 ;(pprint (lista-compras-formatada (lista-compras)))
@@ -55,7 +55,7 @@
 
 (defn compras-por-mes
   "Retorna lista de compras a partir de um mês.
-  Formato da data espero na lista de compras é yyyy-MM-dd "
+  Formato da data espero na lista de compras é yyyy-MM-dd"
   [mes compras]
   (let [formato-atual-da-data "yyyy-MM-dd"
         formato-mes-da-data "MM"]
@@ -88,6 +88,8 @@
   [categoria
    (total-gasto compras)])
 
+;(pprint (map mapeia-compras-por-categoria (agrupa-categoria (lista-compras))))
+
 (defn total-compras-por-categoria
   "Retorna uma coleção com o nome da categoria e o valor total da categoria"
   [compras]
@@ -111,7 +113,7 @@
 
 (defn lista-cartoes []
   "Retorna lista de cartões a partir do csv"
-  (let [arquivo "cartao.csv"
+  (let [arquivo "arquivos/cartao.csv"
         campos [:numero, :cvv, :validade, :limite, :cliente]]
     (utils/ler-csv arquivo campos)))
 
@@ -119,7 +121,7 @@
   "Retorna lista de cartões formatada com a validade padrão dd/MM/yyyy e campo limite como bigDecimal"
   [lista-cartao-original]
   (->> lista-cartao-original
-       (map #(utils/atualiza-formato-data % :validade "yyyy-MM" "MM/yyyy"))
+       (map #(utils/atualiza-formato-data % :validade "yyyy-MM"))
        (map #(update % :limite bigdec))))
 
 ;(pprint (lista-cartao-formatada (lista-cartoes)))
