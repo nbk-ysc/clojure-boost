@@ -52,6 +52,7 @@
       (second)
       (Integer/parseInt)))
 
+
 (defn lista-compras-mes
   "Retorna a lista de compras a partir de um mês"
   [lista-compras mes]
@@ -89,20 +90,73 @@
        (filter #(and (<= (:valor %) valor-maximo) (>= (:valor %) valor-minimo)))))
 (println "Filtro por valor máximo e mínimo" (filtra-compras-valor 100.0 50.0))
 
+(println "------------------Lista de compras formatadas--------------")
+
+(defn lista-cartoes []
+  "retorna lista de cartoes via csv"
+  (csv/read-csv "cartoes.csv"
+                {:field-names [:numero :cvv :validade :limite :cliente]}))
+
+(defn formata-data [data]
+  (->> data
+       (jt/local-date "yyyy-MM-dd")
+       (jt/format "dd/MM/yyyy")))
 
 
+(defn formata-data-cartao [data]
+  (->> data
+        (jt/local-date "yyyy-MM-dd")
+       (jt/format "MM/yyyy")))
+
+(defn formata-data-cartao-mes [data]
+  (->> data
+       (jt/local-date "yyyy-MM-dd")
+       (jt/format "MM")
+       (Integer/parseInt)))
+
+(defn lista-compras-formatada []
+  "Lista de compras com data formatada"
+  (->> (lista-compras)
+       (map #(update % :data formata-data))))
 
 
+(defn lista-cartoes-formatado []
+  (->> (lista-cartoes)
+       (map #(update % :validade formata-data-cartao))))
+
+(defn validade-formatada [data]
+  (-> data
+       (str "-10")))
+
+(defn campo-mascarado []
+  (->> (lista-cartoes)
+       (map #(update % :validade validade-formatada))))
+
+(defn lista-cartoes-formatado []
+  (->> (campo-mascarado)
+       (map #(update % :validade formata-data-cartao))))
 
 
+(pprint (lista-cartoes-formatado))
+
+(println "-----------LISTA DE COMPRAS COM DATA JAVA TIME-----------------")
 
 
+(defn lista-compras-mes
+  "Retorna a lista de compras a partir de um mês"
+  [lista-compras mes]
+  (->> lista-compras
+       (filter #(= mes (formata-data-cartao-mes (:data %))))))
 
+(println "Lista de compras por mês" (lista-compras-mes (lista-compras) 04))
 
+(defn total-gasto-no-mes
+  [lista-compras mes]
+  (->> (lista-compras-mes lista-compras mes)
+       (map :valor)
+       (reduce +)))
 
-
-
-
+(println "Total gasto no mês" (total-gasto-no-mes (lista-compras) 01))
 
 
 
