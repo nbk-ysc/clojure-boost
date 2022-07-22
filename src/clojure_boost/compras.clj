@@ -72,6 +72,7 @@
 (println "Total gasto no mês" (total-gasto-no-mes (lista-compras) 01))
 
 (defn agrupar-categoria
+  "Função responsável por agrupar por categoria"
   [lista-compras]
   (->> lista-compras
        (group-by :categoria)))
@@ -119,6 +120,7 @@
 (println "Lista de compras por mês" (lista-compras-mes (lista-compras) 04))
 
 (defn total-gasto-no-mes
+  "Função que retorna total gasto no mês"
   [lista-compras mes]
   (->> (lista-compras-mes lista-compras mes)
        (map :valor)
