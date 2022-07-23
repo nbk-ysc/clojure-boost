@@ -1,10 +1,7 @@
 (ns clojure-boost.compras
   (:use clojure.pprint)
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [ultra-csv.core :as csv]
-            [java-time :as jt]
-            [clojure-boost.utils :as utils]))
+  (:require
+    [clojure-boost.utils :as utils]))
 
 (println "Nova compra" (utils/nova-compra "2022-10-03" 40.10 "Fake SA" "Alimentação" 10101010110101010))
 

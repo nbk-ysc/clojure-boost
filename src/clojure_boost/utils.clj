@@ -68,12 +68,10 @@
   Se for ano, mês e dia, usar a outra função"
   [data formato-data-atual formato-data-nova]
   (if (< (count (str/split data #"-")) 3) (formata-data-cartao data formato-data-atual formato-data-nova)
-                                          (formata-data data formato-data-atual formato-data-nova))
-  )
+                                          (formata-data data formato-data-atual formato-data-nova)))
 
 (defn retorna-data-atualizada
   "Função responsável por retornar a data formatada para os vetores"
   [lista chave formato-data-atual formato-data-nova]
   (->> lista
-       (map #(update % chave (fn [x] (valida-formatador x formato-data-atual formato-data-nova))))
-       ))
+       (map #(update % chave (fn [x] (valida-formatador x formato-data-atual formato-data-nova))))))
