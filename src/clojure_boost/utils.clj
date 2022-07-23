@@ -1,7 +1,20 @@
 (ns clojure-boost.utils
   (:require
     [java-time :as jt]
-    [clojure.string :as str]))
+    [clojure.string :as str]
+    [ultra-csv.core :as csv]))
+
+
+(defn nova-compra
+  "Retorna uma nova compra"
+  [data valor estabelecimento categoria cartao]
+  [{
+    :data data
+    :valor valor
+    :estabelecimento estabelecimento
+    :categoria categoria
+    :cartao cartao
+    }])
 
 (defn formata-data-cartao
   "Função responsável por tratar data ano mês e dia"
@@ -9,6 +22,24 @@
   (->> data
        (jt/year-month formato-data-atual)
        (jt/format formato-data-nova)))
+
+(defn filtra-mes
+  "Filtra as datas"
+  [data]
+  (-> data
+      (str/split #"-")
+      (second)
+      (Integer/parseInt)))
+
+(defn lista-compras []
+  "retorna lista via csv"
+  (csv/read-csv "compras.csv"
+                {:field-names [:data :valor :estabelecimento :categoria :cartao]}))
+
+(defn lista-cartoes []
+  "retorna lista de cartoes via csv"
+  (csv/read-csv "cartoes.csv"
+                {:field-names [:numero :cvv :validade :limite :cliente]}))
 
 (defn formata-data
   "Função responsável por tratar data ano mês"
