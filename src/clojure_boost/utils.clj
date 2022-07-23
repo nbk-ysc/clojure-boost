@@ -31,6 +31,12 @@
       (second)
       (Integer/parseInt)))
 
+(defn agrupar-categoria
+  "Função responsável por agrupar por categoria"
+  [lista-compras]
+  (->> lista-compras
+       (group-by :categoria)))
+
 (defn lista-compras []
   "retorna lista via csv"
   (csv/read-csv "compras.csv"

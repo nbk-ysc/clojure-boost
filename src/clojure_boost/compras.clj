@@ -49,12 +49,6 @@
 
 (println "Total gasto no mês" (total-gasto-no-mes (utils/lista-compras) 01))
 
-(defn agrupar-categoria
-  "Função responsável por agrupar por categoria"
-  [lista-compras]
-  (->> lista-compras
-       (group-by :categoria)))
-
 (defn lista-valores [[categoria valor]]
   "Função que gera os vetores com categoria e valores somados"
   [categoria (reduce + (map :valor valor))])
@@ -62,7 +56,7 @@
 (defn lista-todas-categorias
   "Função que gera o mapa com categorias e valores já somados"
   [lista-compras]
-  (into {} (map lista-valores (agrupar-categoria lista-compras))))
+  (into {} (map lista-valores (utils/agrupar-categoria lista-compras))))
 
 (println "Valor somado de todas as categorias")
 (pprint (lista-todas-categorias (utils/lista-compras)))
@@ -85,20 +79,13 @@
 
 (println "---------------LISTA DE COMPRAS COM DATA JAVA TIME-----------------")
 
-(defn lista-compras-mes
+(defn lista-compras-mes-cartao
   "Retorna a lista de compras a partir de um mês"
   [lista-compras mes]
   (->> lista-compras
        (filter #(= mes (utils/formata-data-cartao-mes (:data %))))))
 
-(println "Lista de compras por mês" (lista-compras-mes (utils/lista-compras) 04))
-
-(defn total-gasto-no-mes
-  "Função que retorna total gasto no mês"
-  [lista-compras mes]
-  (->> (lista-compras-mes lista-compras mes)
-       (map :valor)
-       (reduce +)))
+(println "Lista de compras por mês" (lista-compras-mes-cartao (utils/lista-compras) 04))
 
 (println "Total gasto no mês" (total-gasto-no-mes (utils/lista-compras) 01))
 
