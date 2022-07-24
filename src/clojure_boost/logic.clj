@@ -69,7 +69,6 @@
     (reduce +)))
 
 ;-----------------------------------------------------------
-;Agrupar gastos por categoria
 
 (defn obtem-categorias
   "funcao para obter as categorias e os valores individuais"
@@ -85,3 +84,11 @@
                           (obtem-categorias lista-compras))))
 
 ;-----------------------------------------------------------
+
+(defn filtra-intervalo-valor
+  "funcao para filtrar um intervalo de valores"
+  [lista-compras valor-minimo valor-maximo]
+  (->> lista-compras
+       (map :valor)
+       (filter #(and (>= % valor-minimo) (<= % valor-maximo)))
+       ))

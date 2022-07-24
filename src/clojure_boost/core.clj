@@ -28,6 +28,9 @@
 ;retorna o valor total por categoria
 (l/agrupar-por-categoria csv/lista-compras)
 
+;filtrar um intervalo de valores
+(l/filtra-intervalo-valor csv/lista-compras 100 300)
+
 ;Manipulação da coleção de lista de compras:
 (count csv/lista-compras)
 (class csv/lista-compras)
