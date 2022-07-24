@@ -1,6 +1,6 @@
-(ns clojure-boost.semana1
+(ns clojure-boost.logic
   (:use [clojure.pprint])
-  (:require [ultra-csv.core :as csv]))
+  (:require [clojure-boost.utils :as csv]))
 
 ;Compras realizdas
 (defn nova-compra
@@ -111,10 +111,6 @@
     :categoria       "Educação",
     :cartao          3939393939393939}])
 
-;Listar Compras - read csv
-(def lista-compras-csv
-  (csv/read-csv "compras.csv"))
-
 ;-----------------------------------------------------------
 ;Calcular o total gasto em compras de um cartão
 
@@ -186,36 +182,5 @@
   (into (sorted-map) (map (fn [[categoria compras]]
                             [categoria (total-gastos compras)])
                           (obtem-categorias lista-compras))))
-
-;-----------------------------------------------------------
-
-;Inserir uma nova compra:
-(nova-compra "2022-04-10", 85.0, "Alura", "Educação", 3939393939393939)
-
-;Retornar a soma de todas as compras:
-(total-gastos lista-compras)
-
-;Retornar o valor das compras para um cartao especifico
-(selecionar-cartao 3939393939393939 lista-compras)
-
-;Retornar a soma de todas as compras para um cartao especifico:
-(total-gastos-por-cartao 3939393939393939 lista-compras)
-
-;retornar um vetor com todas as compras para um mes especifico
-(obter-compras-por-mes lista-compras 4)
-
-;retorna o total da fatura de um cartao para um mes especifico
-(total-gasto-no-mes lista-compras 4 3939393939393939)
-
-;retorna as compras agrupadas por categoria
-(obtem-categorias lista-compras)
-
-;retorna o valor total por categoria
-(agrupar-por-categoria lista-compras)
-
-;Manipulação da coleção de lista de compras:
-(count lista-compras)
-(pprint lista-compras)
-(class lista-compras)
 
 ;-----------------------------------------------------------
