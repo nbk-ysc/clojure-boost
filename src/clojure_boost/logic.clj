@@ -1,6 +1,7 @@
 (ns clojure-boost.logic
   (:use clojure.pprint)
-  (:require [clojure-boost.utils :as utils]))
+  (:require [clojure-boost.utils :as utils]
+            [java-time :as jt]))
 
 (defn nova-compra
   "Retorna estrutura de dados de uma compra realizada"
@@ -27,7 +28,7 @@
   "Retorna lista de compras formatada com a data padrão dd/MM/yyyy e campo valor como bigDecimal"
   [lista-compras-original]
   (->> lista-compras-original
-       (map #(utils/atualiza-formato-data % :data "yyyy-MM-dd"))
+       (map #(update % :data jt/local-date))
        (map #(update % :valor bigdec))))
 
 ;(pprint (lista-compras-formatada (lista-compras)))
@@ -60,7 +61,7 @@
   (let [formato-atual-da-data "yyyy-MM-dd"
         formato-mes-da-data "MM"]
     (->> compras
-         (filter #(= (Integer/parseInt (utils/formata-data (:data %) formato-atual-da-data formato-mes-da-data)) mes)))))
+         (filter #(= (jt/as (jt/local-date (:data %)) :month-of-year) mes)))))
 
 ;(pprint (compras-por-mes 3 (lista-compras)))
 ;(pprint (total-gasto (compras-por-cartao (compras-por-mes 03 (lista-compras)) 3939393939393939)))
@@ -69,9 +70,8 @@
 (defn total-gasto-no-mes
   "Retorna o valor total de gasto em bigDecimal das compras de um determinado mês"
   [mes compras]
-  (let [compras-do-mes (compras-por-mes mes compras)
-        valores-da-compra (map :valor compras-do-mes)]
-    (bigdec (reduce + valores-da-compra))))
+  (let [compras-do-mes (compras-por-mes mes compras)]
+    (total-gasto compras-do-mes)))
 
 ;(pprint (total-gasto-no-mes 1 (lista-compras)))
 
@@ -105,10 +105,10 @@
   "Retorna compras a partir de um valor máximo e valor minimo"
   [valor-maximo valor-minimo]
   (->> (lista-compras)
-       (filter #(>= (:valor %) valor-minimo))
-       (filter #(<= (:valor %) valor-maximo))))
+       (and (filter #(>= (:valor %) valor-minimo))
+            (filter #(<= (:valor %) valor-maximo)))))
 
-;(pprint (filtra-compras-por-valor 200000 0))
+;(pprint (filtra-compras-por-valor 100 0))
 
 
 (defn lista-cartoes []
@@ -121,7 +121,7 @@
   "Retorna lista de cartões formatada com a validade padrão dd/MM/yyyy e campo limite como bigDecimal"
   [lista-cartao-original]
   (->> lista-cartao-original
-       (map #(utils/atualiza-formato-data % :validade "yyyy-MM"))
+       (map #(update % :validade jt/year-month))
        (map #(update % :limite bigdec))))
 
 ;(pprint (lista-cartao-formatada (lista-cartoes)))
