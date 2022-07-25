@@ -16,7 +16,7 @@
 ;Retornar a soma de todas as compras para um cartao especifico:
 (l/total-gastos-por-cartao 3939393939393939 csv/lista-compras)
 
-;retornar um vetor com todas as compras para um mes especifico
+;retornar uma lista com todas as compras para um mes especifico
 (l/obter-compras-por-mes csv/lista-compras 4)
 
 ;retorna o total da fatura de um cartao para um mes especifico
@@ -29,11 +29,10 @@
 (l/agrupar-por-categoria csv/lista-compras)
 
 ;filtrar um intervalo de valores
-(l/filtra-intervalo-valor csv/lista-compras 100 300)
+(l/filtra-intervalo-valor csv/lista-compras 140 230)
 
-;Manipulação da coleção de lista de compras:
-(count csv/lista-compras)
-(class csv/lista-compras)
-(pprint csv/lista-compras-csv)
+;Converter datas de validade do cartao e compra
+(l/convert-datas-cartao csv/cartoes)
+(l/convert-datas-compras csv/lista-compras)
 
 ;-----------------------------------------------------------

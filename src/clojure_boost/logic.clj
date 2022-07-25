@@ -1,6 +1,5 @@
 (ns clojure-boost.logic
-  (:use [clojure.pprint])
-  (:require [clojure-boost.utils :as csv]))
+  (:require [java-time :as jt]))
 
 ;Compras realizdas
 (defn nova-compra
@@ -92,3 +91,18 @@
        (map :valor)
        (filter #(and (>= % valor-minimo) (<= % valor-maximo)))
        ))
+
+;-----------------------------------------------------------
+
+(defn convert-datas-cartao
+  "Funcao para converter em datas os dados de validade do cartao de credito"
+  [cartoes]
+  (->> cartoes
+       (map #(update % :validade jt/year-month))))
+
+(defn convert-datas-compras
+  "Funcao para converter em datas os dados de validade do cartao de credito"
+  [lista-compras]
+  (->> lista-compras
+       (map #(update % :data jt/local-date))))
+
