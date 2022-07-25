@@ -10,6 +10,6 @@
   (->> compras
        (filter (fn [compra]
                  (and (>= (:valor compra) minimo)
-                      (<= (:valor compra) maximo))))))a
+                      (<= (:valor compra) maximo))))))
 
 (println (compras-filtro 100 1000 lista/lista-compras))

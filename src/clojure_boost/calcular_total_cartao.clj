@@ -2,8 +2,8 @@
   (:require [clojure-boost.lista-compras :as calculo]))
 
 (defn total-de-gastos
-  [cartoes compras]
-  (let [cartao-filtrado (calculo/filtrando-cartao cartoes compras)]
+  [cartao compras]
+  (let [cartao-filtrado (calculo/filtrando-cartao cartao compras)]
     (->> cartao-filtrado
          (reduce +))))
 

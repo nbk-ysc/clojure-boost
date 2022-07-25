@@ -1,7 +1,7 @@
 (ns clojure-boost.agrupados-by-categoria
   (:require [clojure-boost.lista-compras :as lista]))
 
-(defn filtrando-valor
+(defn calcula-total
   [lista-compras]
   (->> lista-compras
        (map :valor)
@@ -9,7 +9,7 @@
 
 (defn total-categoria
   [[categoria valor]]
-  [categoria (filtrando-valor valor)])
+  [categoria (calcula-total valor)])
 
 (->> lista/lista-compras
      (group-by :categoria)
