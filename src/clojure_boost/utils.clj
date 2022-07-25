@@ -73,5 +73,4 @@
 (defn retorna-data-atualizada
   "Função responsável por retornar a data formatada para os vetores"
   [lista chave formato-data-atual formato-data-nova]
-  (->> lista
-       (map #(update % chave (fn [x] (valida-formatador x formato-data-atual formato-data-nova))))))
+       (update lista chave valida-formatador formato-data-atual formato-data-nova))
