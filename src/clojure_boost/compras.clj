@@ -64,14 +64,16 @@
        (filter #(and (<= (:valor %) valor-maximo) (>= (:valor %) valor-minimo)))))
 (println "Filtro por valor máximo e mínimo" (filtra-compras-valor 100.0 50.0))
 
+
 (println "------------------LISTA DE COMPRAS FORMATADA--------------")
 
 (pprint (->> (utils/lista-compras)
-            (map #(utils/retorna-data-atualizada % :data "yyyy-MM-dd" "yyyy/MM/dd"))))
+             (map #(update % :data utils/formata-data-compras "yyyy-MM-dd" "yyyy/MM/dd"))))
+
 
 (println "-----------LISTA DE CARTOES FORMATADO-----------")
 (pprint (->> (utils/lista-cartoes)
-            (map #(utils/retorna-data-atualizada % :validade "yyyy-MM" "yyyy/MM"))))
+             (map #(update % :validade utils/formata-data-cartao "yyyy-MM" "yyyy/MM"))))
 
 
 (println "---------------LISTA DE COMPRAS COM DATA JAVA TIME-----------------")

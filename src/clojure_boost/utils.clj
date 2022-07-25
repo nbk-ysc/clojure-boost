@@ -47,7 +47,7 @@
   (csv/read-csv "cartoes.csv"
                 {:field-names [:numero :cvv :validade :limite :cliente]}))
 
-(defn formata-data
+(defn formata-data-compras
   "Função responsável por tratar data ano mês"
   [data formato-data-atual formato-data-nova]
   (->> data
@@ -62,15 +62,3 @@
        (jt/local-date "yyyy-MM-dd")
        (jt/format "MM")
        (Integer/parseInt)))
-
-(defn valida-formatador
-  "Faz a validação se for apenas ano e mês usar a função que trata isso.
-  Se for ano, mês e dia, usar a outra função"
-  [data formato-data-atual formato-data-nova]
-  (if (< (count (str/split data #"-")) 3) (formata-data-cartao data formato-data-atual formato-data-nova)
-                                          (formata-data data formato-data-atual formato-data-nova)))
-
-(defn retorna-data-atualizada
-  "Função responsável por retornar a data formatada para os vetores"
-  [lista chave formato-data-atual formato-data-nova]
-       (update lista chave valida-formatador formato-data-atual formato-data-nova))
