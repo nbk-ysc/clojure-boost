@@ -6,13 +6,13 @@
 (defn nova-compra
   "Retorna estrutura de dados de uma compra realizada"
   [data, valor, estabelecimento, categoria, cartao]
-  {:data            data
-   :valor           valor
+  {:data            (jt/local-date data)
+   :valor           (bigdec valor)
    :estabelecimento estabelecimento
    :categoria       categoria
    :cartao          cartao})
 
-;(println (nova-compra "2022-01-01", 129.90, "Outback", "Alimentação", 1234123412341234))
+(pprint (nova-compra "2022-01-01", 129.90, "Outback", "Alimentação", 1234123412341234))
 
 
 (defn lista-compras []
@@ -58,10 +58,8 @@
   "Retorna lista de compras a partir de um mês.
   Formato da data espero na lista de compras é yyyy-MM-dd"
   [mes compras]
-  (let [formato-atual-da-data "yyyy-MM-dd"
-        formato-mes-da-data "MM"]
-    (->> compras
-         (filter #(= (jt/as (jt/local-date (:data %)) :month-of-year) mes)))))
+  (->> compras
+       (filter #(= (jt/as (jt/local-date (:data %)) :month-of-year) mes))))
 
 ;(pprint (compras-por-mes 3 (lista-compras)))
 ;(pprint (total-gasto (compras-por-cartao (compras-por-mes 03 (lista-compras)) 3939393939393939)))
@@ -105,8 +103,8 @@
   "Retorna compras a partir de um valor máximo e valor minimo"
   [valor-maximo valor-minimo]
   (->> (lista-compras)
-       (and (filter #(>= (:valor %) valor-minimo))
-            (filter #(<= (:valor %) valor-maximo)))))
+       (filter #(>= (:valor %) valor-minimo))
+       (filter #(<= (:valor %) valor-maximo))))
 
 ;(pprint (filtra-compras-por-valor 100 0))
 
