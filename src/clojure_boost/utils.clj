@@ -9,3 +9,7 @@
 (def cartoes
   (csv/read-csv "cartoes.csv"
                 {:field-names [:numero,:cvv,:validade,:limite,:cliente]}))
+
+(def repositorio-de-compras
+  (atom [])
+  )
