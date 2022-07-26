@@ -26,10 +26,10 @@
 (l/obtem-categorias csv/lista-compras)
 
 ;retorna o valor total por categoria
-(l/agrupar-por-categoria csv/lista-compras)
+(pprint (l/agrupar-por-categoria csv/lista-compras))
 
 ;filtrar um intervalo de valores
-(l/filtra-intervalo-valor csv/lista-compras 140 230)
+(l/filtra-intervalo-valor csv/lista-compras 100 230)
 
 ;Converter datas de validade do cartao e compra
 (l/convert-datas-cartao csv/cartoes)

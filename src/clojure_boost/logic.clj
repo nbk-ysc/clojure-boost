@@ -1,14 +1,16 @@
 (ns clojure-boost.logic
-  (:require [java-time :as jt]))
+  (:require [java-time :as jt])
+  (:require [clojure-boost.utils :as csv])
+  (:use [clojure.pprint]))
 
 (defn nova-compra
   "Funcao para inserir uma nova compra"
   [data, valor, estabelecimento, categoria, cartao]
-  {:data            data
-   :valor           valor
-   :estabelecimento estabelecimento
-   :categoria       categoria
-   :cartao          cartao})
+  {:data            (str data)
+   :valor           (bigdec valor)
+   :estabelecimento (str estabelecimento)
+   :categoria       (str categoria)
+   :cartao          (long cartao)})
 
 ;-----------------------------------------------------------
 (defn total-gastos
