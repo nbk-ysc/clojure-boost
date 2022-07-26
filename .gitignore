@@ -13,3 +13,5 @@ pom.xml.asc
 .idea
 *.iml
 */alura_draft/*
+/alura_draft
+*alura_draft*
