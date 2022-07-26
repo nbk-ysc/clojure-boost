@@ -1,15 +1,5 @@
 (ns clojure-boost.db)
 
-(def purchases-card-1 [{:date          "2022-01-01" :value 129.90,
-                 :establishment "Outback" :category "Alimentação",
-                 :card          1234123412341234}
-                {:date          "2022-01-02" :value 260.00,
-                 :establishment "Dentista" :category "Saúde",
-                 :card          1234123412341234}
-                {:date          "2022-02-01" :value 20.00,
-                 :establishment "Cinema" :category "Lazer",
-                 :card          1234123412341234}])
-
 (def purchases [{:date"2022-01-01"                             :value 129.90,
                     :establishment "Outback"                   :category "Alimentação",
                     :card 1234123412341234}
@@ -69,12 +59,13 @@
                       :card 3939393939393939}])
 
 
-(defn all-purchases []
-  [purchases]
-  )
+(def purchase-map {:date           "2022-01-01"                 :value 129.90,
+                   :establishment  "Outback"                    :category "Alimentação",
+                   :card           1234123412341234})
 
+;-------------------------------------------------------------------------------------------------------------------
+;----------------------------------------------------Tests local database-------------------------------------------
 
-;tests local database
 
                       ;(def purchases2 {:id1 {:date "2022-01-01"                      :value 129.90,
                        ;                       :establishment "Outback"                :category "Alimentação",
@@ -148,4 +139,13 @@
                        ;                      :card 1234123412341234}
                        ;                :id3 {:date"2022-02-01"                        :value 20.00,
                        ;                      :establishment "Cinema"                  :category "Lazer",
-                       ;                      :card 1234123412341234}})
+;                       ;                      :card 1234123412341234}})
+;(def purchases-1 [{:date          "2022-01-01" :value 129.90,
+;                        :establishment "Outback" :category "Alimentação",
+;                        :card          1234123412341234}
+;                       {:date          "2022-01-02" :value 260.00,
+;                        :establishment "Dentista" :category "Saúde",
+;                        :card          1234123412341234}
+;                       {:date          "2022-02-01" :value 20.00,
+;                        :establishment "Cinema" :category "Lazer",
+;                        :card          1234123412341234}])
