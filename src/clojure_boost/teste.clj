@@ -150,18 +150,53 @@
 
 
 
+(defrecord PacienteParticular [id, nome, nascimento, situacao])
+(defrecord PacientePlanoDeSaude [id, nome, nascimento, situacao, plano])
+
+;sem multimethod
+(defn normalize-book [book]
+  (if (vector? book)
+    {:title (first book) :author (second book)}
+  (if (contains? book :title)
+    book
+    {:title (:book book) :author (:by book)})))
+
+(pprint (normalize-book {:book "Teste" :by "Blabla"}))
+(pprint (normalize-book ["1985" "george orwell"]))
+
+
+;com multimethod
+(defn dispatch-book-format [book]
+  (cond
+    (vector? book) :vector-book
+    (contains? book :title) :standart-map
+    (contains? book :book) :valida-valor))
 
 
 
+(defn valida-data [compra-record]
+  (cond
+    (compra-record :data= (jt/local-date)) :valida-data))
 
+(defmulti validador-compra valida-data)
 
+(defmethod validador-compra :valida-data [compra-record])
+(defmetthod validador-compra :valida-estabelecimento [compra-record])
+(defmethod validador-compra :valida-valor [compra-record])
 
+(defmulti normalize-book dispatch-book-format)
 
+(defmethod normalize-book :vector-book [book]
+  {:title (first book) :author (second book)})
 
+(defmethod normalize-book :standart-map [book]
+  map [book] book)
 
+(defmethod normalize-book :alternative-map [book]
+  map [book] book)
 
-
-
+(pprint (normalize-book {:book "Teste" :by "Blabla"}))
+(pprint (normalize-book ["no silencio da noite" "filipe monteiro"]))
 
 
 
