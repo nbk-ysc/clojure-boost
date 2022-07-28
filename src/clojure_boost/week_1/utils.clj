@@ -1,4 +1,4 @@
-(ns clojure-boost.utils
+(ns clojure-boost.week_1.utils
   (:require [ultra-csv.core :as csv])
   (:use [clojure.pprint]))
 
@@ -9,7 +9,3 @@
 (def cartoes
   (csv/read-csv "cartoes.csv"
                 {:field-names [:numero,:cvv,:validade,:limite,:cliente]}))
-
-(def repositorio-de-compras
-  (atom [])
-  )

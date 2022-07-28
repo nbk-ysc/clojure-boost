@@ -1,8 +1,8 @@
-(ns clojure-boost.logic
-  (:require [java-time :as jt])
-  (:require [clojure-boost.utils :as csv])
-  (:use [clojure.pprint]))
+(ns clojure-boost.week_1.logic
+  (:use [clojure.pprint])
+  (:require [java-time :as jt]))
 
+;-----------------------------------------------------------
 (defn nova-compra
   "Funcao para inserir uma nova compra"
   [data, valor, estabelecimento, categoria, cartao]
@@ -39,8 +39,6 @@
     ))
 
 ;-----------------------------------------------------------
-;Buscar compras por mês
-
 (defn splitar-mes
   "Funcao que transforma a data em um mes (inteiro)"
   [lista-compras]
@@ -65,7 +63,6 @@
     (reduce +)))
 
 ;-----------------------------------------------------------
-
 (defn obtem-categorias
   "Funcao para obter as categorias e os valores individuais"
   [lista-compras]
@@ -80,7 +77,6 @@
                           (obtem-categorias lista-compras))))
 
 ;-----------------------------------------------------------
-
 (defn filtra-intervalo-valor
   "Funcao para filtrar um intervalo de valores"
   [lista-compras valor-minimo valor-maximo]
@@ -90,7 +86,6 @@
        ))
 
 ;-----------------------------------------------------------
-
 (defn convert-datas-cartao
   "Funcao para converter em datas as strings de validades dos cartoes de credito"
   [cartoes]
