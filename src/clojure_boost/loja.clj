@@ -72,8 +72,7 @@
   [compras compra]
   (let [id (gera-id compras)
         compra-new (assoc compra :id id)]
-    (conj compras compra-new)
-    ))
+    (conj compras compra-new)))
 
 
 
@@ -109,7 +108,7 @@
 (println "----------------------LISTA DE COMPRAS COM ATOM-------------------------------------")
 (lista-compras! repositorio-de-compras)
 
-(println "----------------------EXCLUINDO COMPRAS-------------------------------------")
+(println "------------------------------EXCLUINDO COMPRAS-------------------------------------")
 
 
 (defn exclui-compra
@@ -123,8 +122,7 @@
 (defn exclui-compra!
   "Persiste no atom a exlusão da compra"
   [compras id]
-  (swap! compras exclui-compra id)
-  )
+  (swap! compras exclui-compra id))
 
 (pprint (exclui-compra! repositorio-de-compras 1))
 
@@ -134,22 +132,26 @@
 (def compra-temp-teste-throw (->nova-compra nil, "09-11-199a0", 100.0, "Outback", "Casa", 1000000000000))
 
 
-(defn data-formato-correto? [compra]
+(defn data-formato-correto?
+  [compra]
   (->> compra
        (:data)
        (re-matches #"[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]")
        (not= nil)))
 
-(defn valor-e-bigdecimal? [compra]
+(defn valor-e-bigdecimal?
+  [compra]
   (let [valor (:valor compra)]
     (and (decimal? valor)
      (> valor 0))))
 
-(defn mais-de-duas-letras-no-estabelecimento? [compra]
+(defn mais-de-duas-letras-no-estabelecimento?
+  [compra]
   (let [estabelecimento (:estabelecimento compra)]
     (> (count estabelecimento) 2)))
 
-(defn categoria-correta? [compra]
+(defn categoria-correta?
+  [compra]
   (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
     (->> compra
          (:categoria)
@@ -180,16 +182,13 @@
 (defn data-formato-correto? [compra]
   (if (= (re-matches #"[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" (:data compra)) nil)
     {:data-incorreta "Data está no formato incorreto."}
-    {:data-incorreta false})
-  )
+    {:data-incorreta false}))
 
 (defn valor-e-bigdecimal? [compra]
   (let [valor (:valor compra)]
     (if (and (not= true (decimal? valor) (> valor 0)))
       {:valor-incorreto "Valor está no formato errado"}
-      {:valor-incorreto false}
-      )
-    ))
+      {:valor-incorreto false})))
 
 (defn mais-de-duas-letras-no-estabelecimento? [compra]
   (let [estabelecimento (:estabelecimento compra)]
@@ -201,8 +200,7 @@
   (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
     (if (not= true (contains? categoria-permitida (:categoria compra)))
       {:categoria-incorreta "A categoria está incorreta."}
-      {:categoria-incorreta false})
-    ))
+      {:categoria-incorreta false})))
 
 (defn valida-compra
   "Função responsável por gerar os mapas com os erros"
@@ -219,7 +217,6 @@
   [compra repositorio-de-compra]
   (if (= (valida-compra compra) ())
     (swap! repositorio-de-compra insere-compra compra))
-    (valida-compra compra)
-  )
+    (valida-compra compra))
 
 (pprint (insere-compra-teste! compra-temp-teste-maps repositorio-de-compras))
