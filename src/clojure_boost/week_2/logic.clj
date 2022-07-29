@@ -1,38 +1,35 @@
-(ns clojure-boost.week-2.logic
+(ns clojure-boost.week_2.logic
   (:use [clojure.pprint])
   (:require [clojure-boost.week_2.utils :as utils.week_2]))
 
 (defrecord compra [ID data valor estabelecimento categoria cartao])
 (defrecord compra-otimizada [^Long ID ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
 
-(time (pprint (compra. nil "25-10-2022" 10.00 "pp" "games" 1234123412341234)))
-
 ;-------------------------------------------------------------------------------------------------------------------
 ;Criar a função "insere-compra". Ela vai atribuir um "id" a uma compra e armazená-la num vetor.
 
 (defn gera-id
   "Funcao para gerar um ID de compra.
-  Ela espera receber uma colecao"
+  Ela espera receber um vetor"
   [compras]
   (let [id-gerado (last (sort (map #(get % :ID) compras)))]
     (if (nil? id-gerado)
       (int 1)
       (inc id-gerado))))
 
-(swap! repositorio-de-compras gera-id)
+;SO DESCOMENTAR PARA DEBUGAR, SENAO QUEBRA QUANDO RODAR O NAMESPACE
+;(swap! utils.week_2/repositorio-de-compras gera-id)
 
 (defn insere-compra
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
-  A Funcao espera receber uma compra e uma coleção de compras"
+  A Funcao espera receber uma compra e um vetor de compras"
   [compras nova-compra]
   (->>
     (conj compras (assoc nova-compra :ID (gera-id compras)))
     ))
 
-;Teste:
-(pprint (insere-compra (compra. nil "25-10-2022" 1000.00 "Games Mania" "games" 1234123412341234) repositorio-de-compras))
 (pprint (insere-compra utils.week_2/compras-exemplo (compra. 140 "25-10-2022" 1000.00 "Games Mania" "games" 1234123412341234)))
-(pprint (insere-compra (compra. nil "25-10-2021" 109.99 "Fliperama do Zé" "games" 1234124212341234) utils.week_2/compras-vazio))
+(pprint (insere-compra utils.week_2/compras-vazio (compra. nil "25-10-2021" 109.99 "Fliperama do Zé" "games" 1234124212341234)))
 
 ;Observacoes:
 ;- Nao tem logica para tratar compras repetidas
@@ -43,11 +40,43 @@
 
 (defn insere-compra!
   "Funcao para inserir uma nova compra no atomo."
-  [nova-compra compras]
+  [compras nova-compra]
   (swap! compras insere-compra nova-compra)
   )
 
-(pprint (insere-compra! (->compra nil "25-10-2022" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234) utils.week_2/repositorio-de-compras))
+(pprint (insere-compra! utils.week_2/repositorio-de-compras (->compra nil "25-10-2022" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234)))
+;---------------------------------------------------------------------------------------------------------
+(defn lista-compras!
+  "Funcao para listar as compras de um atomo"
+  [compras]
+  (pprint @compras)
+  )
+
+(lista-compras! utils.week_2/repositorio-de-compras)
+
+;---------------------------------------------------------------------------------------------------------
+(defn exclui-compra
+  "Funcao para excluir uma compra.
+  Ela espera receber um ID e a um vetor"
+  [compras ID]
+  (vec (remove #(= (get % :ID) ID) compras))
+  )
+
+(defn exclui-compra!
+  "Funcao para excluir uma compra de um atomo.
+  Ela espera receber um ID e a um vetor"
+  [compras ID]
+  (swap! compras exclui-compra ID)
+  )
+
+(remove #(= % "nenem") [1 2 4 6 8 9 "pp" nil "nenem"])
+(map #(=(get % :ID) 1) (deref utils.week_2/repositorio-de-compras))
+(remove #(= (get % :ID) 1) (deref utils.week_2/repositorio-de-compras))
+(pprint (exclui-compra utils.week_2/compras-exemplo 3))
+(pprint (count @utils.week_2/repositorio-de-compras))
+(class @utils.week_2/repositorio-de-compras)
+(pprint (exclui-compra! utils.week_2/repositorio-de-compras 18))
+
 ;---------------------------------------------------------------------------------------------------------
 ;(pprint (get (compra. 2 "25-10-2022" 10.00 "pp" "games" 1234123412341234) :ID))
 ;
