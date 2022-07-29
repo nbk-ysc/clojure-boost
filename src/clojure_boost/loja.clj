@@ -16,8 +16,7 @@
 (defn lista-compras-vazia
   "Lista de compra vazia criada apenas para teste."
   []
-  []
-  )
+  [])
 
 (defn gera-lista-vetor
   "Faz a primeira geração de lista para vetor para ser usada em outra função"
