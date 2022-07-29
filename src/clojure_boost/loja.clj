@@ -130,7 +130,8 @@
 
 (pprint @repositorio-de-compras)
 
-(println "----------------------VALIDANDO COMPRAS-------------------------------------")
+(println "----------------------VALIDANDO COMPRAS COM THROW-------------------------------------")
+(def compra-temp-teste-throw (->nova-compra nil, "09-11-199a0", 100.0, "Outback", "Casa", 1000000000000))
 
 
 (defn data-formato-correto? [compra]
@@ -163,16 +164,62 @@
     (not= true (mais-de-duas-letras-no-estabelecimento? compra)) (throw (ex-info "Estabelecimento precisa ter mais de 2 caracteres" {:erro compra}))
     (not= true (categoria-correta? compra)) (throw (ex-info "Essa categoria não é permitida" {:erro compra}))))
 
-(def compra-temp-teste-valida (->nova-compra nil, "09k-11-1990", 100.0M, "Outback", "Casa", 1000000000000))
-
 (defn insere-compra-teste!
   "Método que insere compra no atom - este é apenas para testar a validação"
   [compra repositorio-de-compra]
   (if (= (valida-compra compra) nil)
     (swap! repositorio-de-compra insere-compra compra)))
 
-(pprint (insere-compra-teste! compra-temp-teste-valida repositorio-de-compras))
+;(pprint (insere-compra-teste! compra-temp-teste-throw repositorio-de-compras))
+
+(println "----------------------VALIDANDO COMPRAS COM MAPAS-------------------------------------")
+
+(def compra-temp-teste-maps (->nova-compra nil, "09-11-199a0", 100.0, "O", "Casad", 1000000000000))
 
 
+(defn data-formato-correto? [compra]
+  (if (= (re-matches #"[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" (:data compra)) nil)
+    {:data-incorreta "Data está no formato incorreto."}
+    {:data-incorreta false})
+  )
 
+(defn valor-e-bigdecimal? [compra]
+  (let [valor (:valor compra)]
+    (if (and (not= true (decimal? valor) (> valor 0)))
+      {:valor-incorreto "Valor está no formato errado"}
+      {:valor-incorreto false}
+      )
+    ))
 
+(defn mais-de-duas-letras-no-estabelecimento? [compra]
+  (let [estabelecimento (:estabelecimento compra)]
+    (if (not= true (> (count estabelecimento) 2))
+    {:estabelecimento-errado "Estabelecimento está com menos de 2 caracteres!"}
+    {:estabelecimento-errado false})))
+
+(defn categoria-correta? [compra]
+  (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
+    (if (not= true (contains? categoria-permitida (:categoria compra)))
+      {:categoria-incorreta "A categoria está incorreta."}
+      {:categoria-incorreta false})
+    ))
+
+(defn valida-compra
+  "Função responsável por gerar os mapas com os erros"
+  [compra]
+  (let [erros [(data-formato-correto? compra), (valor-e-bigdecimal? compra),
+               (mais-de-duas-letras-no-estabelecimento? compra), (categoria-correta? compra)]]
+    (->> erros
+         (into {})
+         vals
+         (filter #(not= false %)))))
+
+(defn insere-compra-teste!
+  "Função que insere compra no atom - este é apenas para testar a validação"
+  [compra repositorio-de-compra]
+  (if (= (valida-compra compra) ())
+    (swap! repositorio-de-compra insere-compra compra))
+    (valida-compra compra)
+  )
+
+(pprint (insere-compra-teste! compra-temp-teste-maps repositorio-de-compras))
