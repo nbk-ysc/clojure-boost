@@ -181,7 +181,7 @@
 (defmulti validador-compra valida-data)
 
 (defmethod validador-compra :valida-data [compra-record])
-(defmetthod validador-compra :valida-estabelecimento [compra-record])
+(defmetthod  validador-compra :valida-estabelecimento [compra-record])
 (defmethod validador-compra :valida-valor [compra-record])
 
 (defmulti normalize-book dispatch-book-format)

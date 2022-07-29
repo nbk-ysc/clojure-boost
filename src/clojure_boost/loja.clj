@@ -6,74 +6,61 @@
 
 (def repositorio-de-compras (atom []))
 
+(def lista-compras-atom (atom []))
+
 (defrecord nova-compra [^Long id, ^String data, ^BigDecimal valor,
                         ^String estabelecimento, ^String categoria, ^Long cartao])
 
-(pprint (->nova-compra 10.0, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
+(pprint (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
 
-(defn lista-compras-vazia []
+(defn lista-compras-vazia
+  "Lista de compra vazia criada apenas para teste."
+  []
   []
   )
 
-(defn lista-compras []
-  [{
-    :id              1,
-    :data            "10/10/1000",
-    :valor           100.0,
-    :estabelecimento "Outback",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              2,
-    :data            "10/10/1000",
-    :valor           150.0,
-    :estabelecimento "Tordesilhas",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              3,
-    :data            "10/10/1000",
-    :valor           10.0,
-    :estabelecimento "DOM",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              4,
-    :data            "10/10/1000",
-    :valor           1000.0,
-    :estabelecimento "MCDonalds",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              10,
-    :data            "10/10/1000",
-    :valor           100.0,
-    :estabelecimento "Outback",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              6,
-    :data            "10/10/1000",
-    :valor           100.0,
-    :estabelecimento "Outback",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }
-   {
-    :id              22,
-    :data            "10/10/1000",
-    :valor           100.0,
-    :estabelecimento "Outback",
-    :categoria       "Alimentação",
-    :cartao          1000000000000
-    }])
+(defn gera-lista-vetor
+  "Faz a primeira geração de lista para vetor para ser usada em outra função"
+  []
+  (->> (utils/lista-compras)
+       (map vector)
+       vec))
 
-(defn gera-id [lista-compras]
+(defn filtra-lista-vetor
+  "Faz a filtragem de apenas uma compra.
+  O campo id será passado no loop que contará a quantidade de compras do csv e gerará os ids automaticamente."
+  [lista-vetor id]
+  (get lista-vetor id))
+
+(defn retorna-lista
+  "Gera a lista com o campo :id"
+  [lista-vetor id]
+  (->> lista-vetor
+       (map #(assoc % :id id))
+       (into {})))
+
+(defn gera-lista-compras
+  "Executa o loop para gerar os ids automáticos com base na quantidade de compras do mapa.
+  Ele passa os ids automáticos por parâmetro para as funções acima.
+  Por fim grava em um átomo a lista."
+  []
+  (let [lista-atualizada (utils/lista-compras)
+        quantidade-pos (atom 1)]
+         (while (< @quantidade-pos (count lista-atualizada))
+           (do
+             (swap! lista-compras-atom conj (retorna-lista (filtra-lista-vetor (gera-lista-vetor) @quantidade-pos) @quantidade-pos))
+             (swap! quantidade-pos inc)))))
+
+(defn lista-compras
+  "Gera a lista de compras a partir do átomo de lista de compras."
+  []
+  (gera-lista-compras)
+  (->> @lista-compras-atom))
+
+
+(defn gera-id
+  "Gera o id novo para uma compra nova"
+  [lista-compras]
   (if-let [count-id (> (count (map :id lista-compras)) 0)]
     (->> lista-compras
          (map :id)
@@ -103,7 +90,7 @@
 (insere-compra! compra-temp repositorio-de-compras)
 
 (defn testa-insere-compra
-  "Testa o insere compras"
+  "Função de teste de inserir compras"
   []
   (def compra-temp-teste (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
   (def compra-temp-teste2 (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
@@ -117,6 +104,8 @@
 (defn lista-compras!
   [repositorio-de-compras]
   (pprint @repositorio-de-compras))
+
+
 (println "----------------------LISTA DE COMPRAS COM ATOM-------------------------------------")
 (lista-compras! repositorio-de-compras)
 
@@ -124,6 +113,7 @@
 
 
 (defn exclui-compra
+  "Gera mapa com compras excluidas"
   [compras id]
   (->> compras
        (remove #(= (:id %) id))
@@ -131,6 +121,7 @@
 
 
 (defn exclui-compra!
+  "Persiste no atom a exlusão da compra"
   [compras id]
   (swap! compras exclui-compra id)
   )
@@ -164,6 +155,8 @@
          (contains? categoria-permitida))))
 
 (defn valida-compra [compra]
+  "Responsável pela validação de cada campo da compra.
+   Essas validações estão sendo feitas pelas funções referenciadas."
   (cond
     (not= true (data-formato-correto? compra)) (throw (ex-info "A data não esta no formato ok" {:erro compra}))
     (not= true (valor-e-bigdecimal? compra)) (throw (ex-info "Valor está no formato errado" {:erro compra}))
@@ -173,7 +166,7 @@
 (def compra-temp-teste-valida (->nova-compra nil, "09k-11-1990", 100.0M, "Outback", "Casa", 1000000000000))
 
 (defn insere-compra-teste!
-  "Método que insere compra no atom"
+  "Método que insere compra no atom - este é apenas para testar a validação"
   [compra repositorio-de-compra]
   (if (= (valida-compra compra) nil)
     (swap! repositorio-de-compra insere-compra compra)))
