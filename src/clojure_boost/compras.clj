@@ -6,7 +6,7 @@
 
 (def repositorio-de-compras (atom []))
 
-(defrecord Compra [id ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
+(defrecord Compra [^Long id ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
 
 ;(pprint (->Compra nil (java-time/local-date 2022 07 28), 100.99M, "Outback", "Lazer", 3939393939393939))
 
