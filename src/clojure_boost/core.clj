@@ -63,4 +63,4 @@
 (logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)
 
 ;excluir uma compra do atomo
-(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 20))
+(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 23))

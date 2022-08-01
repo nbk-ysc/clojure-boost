@@ -67,19 +67,19 @@
 ;(lista-compras! utils.week_2/repositorio-de-compras)
 
 ;---------------------------------------------------------------------------------------------------------
-(defn exclui-compra
-  "Funcao para excluir uma compra.
-  Ela espera receber um ID e a um vetor"
-  [compras ID]
-  (vec (remove #(= (get % :ID) ID) compras))
-  )
-
-(defn exclui-compra!
-  "Funcao para excluir uma compra de um atomo.
-  Ela espera receber um ID e a um vetor"
-  [compras ID]
-  (swap! compras exclui-compra ID)
-  )
+;(defn exclui-compra
+;  "Funcao para excluir uma compra.
+;  Ela espera receber um ID e a um vetor"
+;  [compras ID]
+;  (vec (remove #(= (get % :ID) ID) compras))
+;  )
+;
+;(defn exclui-compra!
+;  "Funcao para excluir uma compra de um atomo.
+;  Ela espera receber um ID e a um vetor"
+;  [compras ID]
+;  (swap! compras exclui-compra ID)
+;  )
 
 ;debug
 ;(remove #(= % "nenem") [1 2 4 6 8 9 "pp" nil "nenem"])
