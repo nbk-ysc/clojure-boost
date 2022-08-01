@@ -18,6 +18,7 @@
       (int 1)
       (inc id-gerado))))
 
+;test gitignore
 
 (defn insere-compra
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.

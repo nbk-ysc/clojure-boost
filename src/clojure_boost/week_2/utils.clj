@@ -1,7 +1,6 @@
 (ns clojure-boost.week_2.utils
   (:use [clojure.pprint])
-  (:require [ultra-csv.core :as csv]
-            [java-time :as jt]))
+  (:require [ultra-csv.core :as csv]))
 
 (def lista-compras-id
   (vec (csv/read-csv "files/compras-com-id.csv"
