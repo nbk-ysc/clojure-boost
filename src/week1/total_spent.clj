@@ -1,5 +1,5 @@
-(ns clojure-boost.total-spent
-  (:require [clojure-boost.db :as l.db]))
+(ns week1.total-spent
+  (:require [week1.db :as l.db]))
 
 
 (defn purchases-by-card

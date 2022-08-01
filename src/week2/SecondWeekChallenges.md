@@ -1,20 +1,15 @@
 Sobre o Desafio
 
 Criar um código em Clojure que simula o cartão de crédito de um cliente Nubank.
-O que esse projeto faz:
-Trabalha com estruturas de dados para representar e manipular dados das estruturas Cartão e Compra;
-Realiza listagem de compras com critérios diferentes;
-Agrega dados para relatório de gastos por categoria, e por mês;
-Trabalha com biblioteca de datas nativa no Java;
-Lê e processa arquivos CSV.
-Massa de dados:
-O arquivo Massa de dados contém dados para utilizar no desenvolvimento e avaliar os resultados esperados.
 
+O que esse projeto faz:
+Trabalha com records para representar e manipular dados das estruturas Cartão e Compra;
+Usa polimorfismo com uso de multi methods;
+Manipula átomos para processamento concorrente.
 Bom projeto!
 
 
 ------------------------------------------------------------------------------------------------------------------------
-
 
 Material para estudos
 
@@ -22,163 +17,162 @@ Para realizar o desafio dessa semana você precisa ter conhecimentos da linguage
 
 Preparamos um plano de estudos para você estudar e se preparar para o desafio:
 
-Clojure: Introdução à programação funcional
-Clojure: Coleções no dia a dia
+Clojure: Mutabilidade com átomos e refs
+Clojure: Record, protocol e multi method
 Bons estudos!
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Essencial*
 
-Setup Inicial
+Definir átomo como banco de dados em memória
 
-Acesse o projeto https://github.com/nbk-ysc/clojure-boost e crie um fork (uma "cópia" do projeto para o seu usuário do GitHub). Caso não tenha conta no GitHub, crie uma (as entregas de código serão por lá 😊).
-
-Após o fork, faça o clone do projeto em sua máquina local.
+Tarefa
+Definir um átomo no símbolo repositorio-de-compras onde serão salvos os maps de compras.
+O átomo deve ser inicializado com um vetor vazio [].
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Essencial*
 
-Compras Realizadas
+Criar Record para Compra
 
 Tarefa
-Criar a função nova-compra, que retorne uma estrutura de dados que represente uma compra realizada em um determinado cartão.
+Crie um record para representar uma Compra realizada em um determinado Cartão.
 
-Parâmetros:
-data (String: yyyy-mm-dd)
-valor (BigDecimal)
-estabelecimento (String)
-categoria (String)
-cartao (Long)
-Retorno:
-Map com a seguinte estrutura:
-{:data ...
-  :valor ...
-  :estabelecimento ...
-  :categoria ...
-  :cartao ...}
+Atributos do record devem ser:
+ID (Long ou nil)
+Data (String: yyyy-mm-dd ou LocalDate)
+Valor (BigDecimal)
+Estabelecimento (String)
+Categoria (String)
+Cartão (Long)
+
+
+A função nova-compra ainda faz sentido?
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Essencial*
 
-Listar Compras
+Inserir Compra
 
 Tarefa
-Crie as funções lista-compras que retorna uma coleção com todas as compras realizadas.
+Criar a função insere-compra. Ela vai atribuir um id a uma compra e armazená-la num vetor.
 
-Parâmetros
-A função não recebe parâmetros.
+Parâmetros da função:
+um record de uma compra sem id;
+um vetor com as compras já cadastradas..
 
-Retorno
-Deve retornar um vetor de maps de compras.
+Retorno da função:
+um vetor com a nova compra inserida nele.
 
-Critérios de aceitação
-O vetor deve ter os 19 maps de compras, com os dados da planilha Massa de dados.
+Critérios de aceitação:
+O ID da nova compra deve ser o valor máximo de ID da lista de compras mais 1;
+Se a lista de compras estiver vazia, o ID deve ser o valor 1.
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Essencial*
 
-Calcular o total gasto em compras de um cartao
+Inserir compra no átomo
 
 Tarefa
-Criar a função total-gasto, que recebe um vetor de compras e retorna a soma dos valores gastos.
+Criar a função insere-compra! para incluir uma nova compra no átomo de compras usando swap!.
 
-Parametros
-compras (vetor com maps de compra)
-Retorno
-BigDecimal com a soma do valor das compras
-Exemplo:
-[{:valor: 100.00 ; demais chaves do mapa
-  {:valor: 250.00 ; demais chaves do mapa
-  {:valor: 400.00 ; demais chaves do mapa}]
+Parâmetros da função:
+um record de uma compra;
+átomo repositorio-de-compras criado anteriormente .
 
-TOTAL: R$ 750,00
+Retorno da função:
+"sem retorno"
+
+Critérios de aceitação:
+A função deve substituir o valor interno do átomo por meio de um swap!;
+O valor do átomo deve ser atualizado com a função insere-compracriada anteriormente.
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Essencial*
 
-Buscar compras por mes
+Listar compras do átomo
+
 
 Tarefa
-Criar uma função que, dado um mês e uma lista de compras, retorne um vetor das compras feitas somente naquele mês.
+Crie a função lista-compras!, que lista as compras de um átomo.
 
-Parâmetros
-mes (inteiro)
-lista de compras (vetor ou list com maps de compras)
-Retorno
-vetor com maps de compra
+Parâmetros da função:
+átomo repositorio-de-compras criado anteriormente.
 
+Retorno da função:
+"sem retorno".
 
-------------------------------------------------------------------------------------------------------------------------
-*Essencial*
-
-Calcular o total da fatura de um mes
-
-Tarefa
-Criar a função total-gasto-no-mes, que calcule a soma dos valores gastos num determinado cartão em um mês.
-
-Para facilitar, considere que todas as compras sejam de um mesmo cartão.
-
-
-------------------------------------------------------------------------------------------------------------------------
-*Essencial*
-
-Agrupar gastos por categoria
-
-Tarefa
-Criar uma função que retorne os total gasto agrupados por categoria.
-
-Parâmetros
-compras (vetor com maps de compras)
-Retorno
-Map* com as categorias associadas ao valor gasto
-Exemplo
-[{:categoria  "Educação" :valor 700.00 ; demais chaves do mapa}
- {:categoria  "Saúde" :valor 1500.00 ; demais chaves do mapa}
- {:categoria  "Educação" :valor 50.00 ; demais chaves do mapa}
- {:categoria  "Alimentação" :valor 100.00 ; demais chaves do mapa}
- {:categoria  "Alimentação" :valor 89.90 ; demais chaves do mapa}]
-
-Saída
-{"Educação" 750.00
- "Saúde" 1500.00
- "Alimentação" 189.90}
-
-OBSERVAÇÃO
-A saída não precisa ser ordenada
+Critérios de aceitação:
+A função deve executar um println no deref em cima do átomo;
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Opcional*
 
-Filtrar compras num intervalo de valores
+Excluir Compra
 
 Tarefa
-Criar uma função que retorne as compras que estão dentro de um intervalo de valor máximo e valor mínimo.
+Crie a função exclui-compra, que exclui uma compra de determinado id de um vetor.
+
+Parâmetros da função:
+id da compra a ser excluída;
+vetor de compras.
+Retorno da função:
+Novo vetor sem a compra excluída.
+Critérios de aceitação:
+Caso a compra não exista, retornar o vetor original recebido por parâmetro.
+
+
+------------------------------------------------------------------------------------------------------------------------
+*Opcional* 
+
+Excluir compra do átomo
+
+Tarefa
+Criar a função exclui-compra! para uma compra de um átomo por meio de swap!.
+
+Parâmetros da função:
+id da compra a ser excluída;
+átomo repositorio-de-compras criado anteriormente .
+
+Retorno da função:
+"sem retorno"
+
+Critérios de aceitação:
+A função deve substituir o valor interno do átomo por meio de um swap!;
+O valor do átomo deve ser atualizado com a função exclui-compracriada anteriormente.
 
 
 ------------------------------------------------------------------------------------------------------------------------
 *Opcional* *Desafio*
 
-Usar API Java Time para datas
+Validar cadastro de compra
 
 Tarefa
-Utilizar a API de datas do Java (Java Time) para representar as datas das compras, e da validade do cartão.
+Criar a função valida-compra para validar uma compra. Depois, altere a função insere-compra! definida anteriormente para validar a compra antes de salvá-la no átomo.
 
-Adaptar também a função que filtra compras no mês.
+Parâmetros da função:
+um record da nova compra.
 
+Regras de aceitação:
 
-------------------------------------------------------------------------------------------------------------------------
-*Opcional* *Desafio*
+Data da compra:
+Se você estiver usando a data como String, então ela deve ter o formato yyyy-mm-dd;
+Se você estiver usando API do Java Time, então ela deve ser uma data menor ou igual à data atual.
 
-Carregar dados de arquivo CSV
+Valor:
+deve ser um BigDecimal positivo.
 
-Adapte a função lista-compras para carregar os dados do arquivo compras.csv anexo nesta tarefa.
-(esta na pasta utils do projeto)
+Estabelecimento:
+Deve ter pelo menos 2 caracteres.
+
+Categoria:
+Deve ser uma das opções: Alimentação, Automóvel, Casa, Educação, Lazer ou Saúde.
 
 
 

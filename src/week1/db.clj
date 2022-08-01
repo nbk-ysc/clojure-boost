@@ -1,4 +1,4 @@
-(ns clojure-boost.db)
+(ns week1.db)
 
 (def purchases [{:date"2022-01-01"                             :value 129.90,
                     :establishment "Outback"                   :category "Alimentação",

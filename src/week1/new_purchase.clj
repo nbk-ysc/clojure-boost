@@ -1,5 +1,5 @@
-(ns clojure-boost.new-purchase
-    (:require [clojure-boost.db :as l.db]))
+(ns week1.new-purchase
+    (:require [week1.db :as l.db]))
 
 
 (defn new-purchase

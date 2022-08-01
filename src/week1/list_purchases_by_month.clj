@@ -1,5 +1,5 @@
-(ns clojure-boost.list-purchases-by-month
-  (:require [clojure-boost.db :as l.db]
+(ns week1.list-purchases-by-month
+  (:require [week1.db :as l.db]
             [clojure.string :as str]))
 
 (defn get-month
