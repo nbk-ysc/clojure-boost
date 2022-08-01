@@ -25,7 +25,7 @@
     ))
 
 ;---------------------------------------------------------------------------------------------------------
-(defn insere-compra!
+(defn insere-compra
   "Funcao para inserir uma nova compra no atomo."
   [compras nova-compra]
   (swap! compras insere-compra nova-compra)
