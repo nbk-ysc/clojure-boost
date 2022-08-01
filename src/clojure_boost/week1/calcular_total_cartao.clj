@@ -1,5 +1,5 @@
-(ns clojure-boost.calcular-total_cartao
-  (:require [clojure-boost.lista-compras :as calculo]))
+(ns clojure-boost.week1.calcular-total_cartao
+  (:require [clojure-boost.week1.lista-compras :as calculo]))
 
 (defn total-de-gastos
   [cartao compras]

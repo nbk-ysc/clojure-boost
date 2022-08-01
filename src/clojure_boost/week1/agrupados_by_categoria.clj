@@ -1,5 +1,5 @@
-(ns clojure-boost.agrupados-by-categoria
-  (:require [clojure-boost.lista-compras :as lista]))
+(ns clojure-boost.week1.agrupados-by-categoria
+  (:require [clojure-boost.week1.lista-compras :as lista]))
 
 (defn calcula-total
   [lista-compras]

@@ -1,5 +1,5 @@
-(ns clojure-boost.buscar-by-mes
-  (:require [clojure-boost.lista-compras :as lista]))
+(ns clojure-boost.week1.buscar-by-mes
+  (:require [clojure-boost.week1.lista-compras :as lista]))
 
 
 (defn mes-da-data [data]

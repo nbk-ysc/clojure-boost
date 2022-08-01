@@ -1,4 +1,4 @@
-(ns clojure-boost.compra-realizada
+(ns clojure-boost.week1.compra-realizada
   (:require [clojure-boost.lista-compras :as lista]))
 
 ;Neste cenário, eu retorno um determinado cartão mas sem mostrar o nuúmero do cartao para a segurancça do cliente ou não?
@@ -10,9 +10,20 @@
                       :cartão          1234123412341234}})
 
 (defn nova-compra [compra]
-  (println "Compra" (class compra) compra))
+  (println "Compra" compra))
 
-(println (map nova-compra compra))
+(nova-compra compra)
+
+;(def compra {:data            "2022-01-02"
+;              :valor           260.00
+;              :estabelecimento "Dentista"
+;              :categoria       "Saúde"
+;              :cartao          1234123412341234})
+;
+;(nova-compra compra)
+
+
+;(println (map nova-compra compra))
 
 ;(defn nova-compra
 ;  [numerocartao cartoes]

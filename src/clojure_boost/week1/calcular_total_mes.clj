@@ -1,6 +1,6 @@
-(ns clojure-boost.calcular-total-mes
-  (:require [clojure-boost.buscar-by-mes :as mes]
-            [clojure-boost.lista-compras :as lista]))
+(ns clojure-boost.week1.calcular-total-mes
+  (:require [clojure-boost.week1.buscar-by-mes :as mes]
+            [clojure-boost.week1.lista-compras :as lista]))
 
 (defn total-de-gasto-no-mes
   [mes lista]

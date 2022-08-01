@@ -1,5 +1,5 @@
-(ns clojure-boost.valor-minimi-valor-maximo
-  (:require [clojure-boost.lista-compras :as lista]))
+(ns clojure-boost.week1.valor-minimi-valor-maximo
+  (:require [clojure-boost.week1.lista-compras :as lista]))
 
 
 (let [minimo 100
