@@ -46,7 +46,8 @@
   "Recebe lista de compras e id, retornando uma lista sem a compra do id enviado"
   [lista-de-compras id]
   (->> lista-de-compras
-       (filter #(not= (:id %) id))))
+       (filter #(not= (:id %) id))
+       vec))
 
 (defn exclui-compra!
   "Exclui a compra por id do atomo enviado"
@@ -73,4 +74,4 @@
 
   (lista-compras! repositorio-de-compras))
 
-;(testador-compras-no-repositorio-de-compras repositorio-de-compras)
+(testador-compras-no-repositorio-de-compras repositorio-de-compras)
