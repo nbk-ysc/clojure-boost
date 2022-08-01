@@ -60,7 +60,7 @@
 (pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil "2022-10-25" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234)))
 
 ;Listar o conteudo do atomo
-(logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)
+(logic.week_2/lista-compras utils.week_2/repositorio-de-compras)
 
 ;excluir uma compra do atomo
 (pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 23))
