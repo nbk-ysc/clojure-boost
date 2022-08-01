@@ -8,7 +8,6 @@
 (defrecord compra-otimizada [^Long ID ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
 
 ;-------------------------------------------------------------------------------------------------------------------
-;Criar a função "insere-compra". Ela vai atribuir um "id" a uma compra e armazená-la num vetor.
 
 (defn gera-id
   "Funcao para gerar um ID de compra.
@@ -19,8 +18,6 @@
       (int 1)
       (inc id-gerado))))
 
-;SO DESCOMENTAR PARA DEBUGAR, SENAO QUEBRA QUANDO RODAR O NAMESPACE
-;(swap! utils.week_2/repositorio-de-compras gera-id)
 
 (defn insere-compra
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
@@ -98,14 +95,28 @@
 ;  "Funcao para converter o formato das datas de um atomo com java-time"
 ;  [compras]
 ;  (swap! compras logic.week_1/convert-datas-compras)
+;  (swap! compras vec)
 ;  )
 ;
 ;(converte-data-atomo! utils.week_2/repositorio-de-compras)
 ;
+
+;(defn insere-compra
+;  "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
+;  A Funcao espera receber uma compra e um vetor de compras"
+;  [compras nova-compra]
+;  (->>
+;    (conj compras (assoc nova-compra :ID (gera-id compras)))
+;    ))
+;
 ;(defn valida-compra
 ;  "Funcao responsavel por validar uma determinada compra antes de inserir na base/atomo"
 ;  [compra]
+;  (if (<= #(get % :data) jt/local-date)
+;    (pprint "data ok")
+;    (pprint "data zoada"))
 ;  )
+;
 ;
 ;(pprint utils.week_2/repositorio-de-compras)
 ;---------------------------------------------------------------------------------------------------------

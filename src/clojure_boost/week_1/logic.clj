@@ -93,7 +93,7 @@
        (map #(update % :validade jt/year-month))))
 
 (defn convert-datas-compras
-  "Funcao para converter em datas as strings de datas de compras"
+  "Funcao para converter o formato das datas de string para java-time/local-date de compras"
   [lista-compras]
   (->> lista-compras
        (map #(update % :data jt/local-date))))
