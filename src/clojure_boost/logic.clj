@@ -1,125 +1,61 @@
 (ns clojure-boost.logic
-  (:use clojure.pprint)
-  (:require [clojure-boost.utils :as utils]
-            [java-time :as jt]))
+  (:require [java-time :as java-time]
+            [clojure-boost.logic :as logic]
+            [clojure-boost.model.mensagens :as mensagens]))
 
-(defn nova-compra
-  "Retorna estrutura de dados de uma compra realizada"
-  [data, valor, estabelecimento, categoria, cartao]
-  {:data            (jt/local-date data)
-   :valor           (bigdec valor)
-   :estabelecimento estabelecimento
-   :categoria       categoria
-   :cartao          cartao})
+(defn id-maximo-da-lista-incrementado
+  "A partir do id maximo da lista retorna o mesmo incrementando 1"
+  [lista]
+  (->> lista
+       (map :id)
+       (apply max)
+       inc))
 
-(pprint (nova-compra "2022-01-01", 129.90, "Outback", "Alimentação", 1234123412341234))
+(defn gera-id
+  "Gera id para cadastro a partir da lista, caso a lista esteja vazia o número será 1"
+  [lista]
+  (if (not-empty lista)
+    (id-maximo-da-lista-incrementado lista)
+    1))
 
+(defn valor-valido?
+  "Retorna true caso o valor for positivo e do tipo bigDecimal, falso caso for inválido"
+  [valor]
+  (let [valida-positivo   (pos? valor)
+        valida-bigDecimal (decimal? valor)]
+    (and valida-positivo valida-bigDecimal)))
 
-(defn lista-compras []
-  "Retorna lista de compras a partir do csv"
-  (let [arquivo "arquivos/compras.csv"
-        campos [:data, :valor, :estabelecimento, :categoria, :cartao]]
-    (utils/ler-csv arquivo campos)))
+(defn estabelecimento-valido?
+  "Retorna true se o estabelecimento contém mais de 2 letras, falso caso for inválido"
+  [estabelecimento]
+  (let [limite-caracteres 2]
+    (>= (count estabelecimento) limite-caracteres)))
 
-;(pprint (lista-compras))
+(defn data-menor-or-igual-data-atual?
+  "Retorna true caso a data, no padrão java-time, for menor que a data atual, falso caso for maior que a data atual"
+  [data]
+  (let [data-atual (java-time/local-date)]
+    (java-time/not-after? data data-atual)))
 
+(defn categoria-valida?
+  "Retorna true caso a categoria for valida, falso caso for inválido "
+  [categoria]
+  (let [categorias-validas ["Alimentação", "Automóvel", "Casa", "Educação", "Saúde", "Lazer"]]
+    (.contains categorias-validas categoria)))
 
-(defn lista-compras-formatada
-  "Retorna lista de compras formatada com a data padrão dd/MM/yyyy e campo valor como bigDecimal"
-  [lista-compras-original]
-  (->> lista-compras-original
-       (map #(update % :data jt/local-date))
-       (map #(update % :valor bigdec))))
+(defrecord Response [status campo valor mensagem])
 
-;(pprint (lista-compras-formatada (lista-compras)))
+(defn formata-response-validacao
+  "Retorna um vetor com o resultado das validações das compras enviadas, no padrao do record Response"
+  [compra]
+  [(->Response (logic/valor-valido? (:valor compra)) :valor (:valor compra) mensagens/valor)
+   (->Response (logic/data-menor-or-igual-data-atual? (:data compra)) :data (:data compra) mensagens/data)
+   (->Response (logic/estabelecimento-valido? (:estabelecimento compra)) :estabelecimento (:estabelecimento compra) mensagens/estabelecimento)
+   (->Response (logic/categoria-valida? (:categoria compra)) :categoria (:categoria compra) mensagens/categoria)])
 
-
-(defn total-gasto
-  "Retorna o total gasto a partir de uma lista de compras"
-  [compras]
-  (->>
-    compras
-    (map :valor)
-    (reduce +)
-    bigdec))
-
-;(pprint (total-gasto (lista-compras)))
-
-
-(defn compras-por-cartao
-  "Retorna lista de compras a partir de um determinado número de cartão"
-  [compras cartao]
-  (filter #(= (:cartao %) cartao) compras))
-
-;(pprint (compras-por-cartao (lista-compras) 3939393939393939))
-
-
-(defn compras-por-mes
-  "Retorna lista de compras a partir de um mês.
-  Formato da data espero na lista de compras é yyyy-MM-dd"
-  [mes compras]
-  (->> compras
-       (filter #(= (jt/as (jt/local-date (:data %)) :month-of-year) mes))))
-
-;(pprint (compras-por-mes 3 (lista-compras)))
-;(pprint (total-gasto (compras-por-cartao (compras-por-mes 03 (lista-compras)) 3939393939393939)))
-
-
-(defn total-gasto-no-mes
-  "Retorna o valor total de gasto em bigDecimal das compras de um determinado mês"
-  [mes compras]
-  (let [compras-do-mes (compras-por-mes mes compras)]
-    (total-gasto compras-do-mes)))
-
-;(pprint (total-gasto-no-mes 1 (lista-compras)))
-
-
-(defn agrupa-categoria
-  "Retorna uma lista com as compras agrupadas por categoria "
-  [compras]
-  (->> compras
-       (group-by :categoria)))
-
-(defn mapeia-compras-por-categoria
-  "Retorna uma lista com vetores que contém o nome da categoria e total de compras da categoria"
-  [[categoria compras]]
-  [categoria
-   (total-gasto compras)])
-
-;(pprint (map mapeia-compras-por-categoria (agrupa-categoria (lista-compras))))
-
-(defn total-compras-por-categoria
-  "Retorna uma coleção com o nome da categoria e o valor total da categoria"
-  [compras]
-  (->> compras
-       agrupa-categoria
-       (map mapeia-compras-por-categoria)
-       (into {})))
-
-;(pprint (total-compras-por-categoria (lista-compras)))
-
-
-(defn filtra-compras-por-valor
-  "Retorna compras a partir de um valor máximo e valor minimo"
-  [valor-maximo valor-minimo]
-  (->> (lista-compras)
-       (filter #(>= (:valor %) valor-minimo))
-       (filter #(<= (:valor %) valor-maximo))))
-
-;(pprint (filtra-compras-por-valor 100 0))
-
-
-(defn lista-cartoes []
-  "Retorna lista de cartões a partir do csv"
-  (let [arquivo "arquivos/cartao.csv"
-        campos [:numero, :cvv, :validade, :limite, :cliente]]
-    (utils/ler-csv arquivo campos)))
-
-(defn lista-cartao-formatada
-  "Retorna lista de cartões formatada com a validade padrão dd/MM/yyyy e campo limite como bigDecimal"
-  [lista-cartao-original]
-  (->> lista-cartao-original
-       (map #(update % :validade jt/year-month))
-       (map #(update % :limite bigdec))))
-
-;(pprint (lista-cartao-formatada (lista-cartoes)))
+(defn valida-compra
+  "Retorna um vetor com os erros que tiverem nas validações da compra, caso não tenha volta vazio"
+  [compra]
+  (->> (logic/formata-response-validacao compra)
+       (filter #(= (:status %) false))
+       vec))
