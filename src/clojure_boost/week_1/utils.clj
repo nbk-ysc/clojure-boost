@@ -3,9 +3,19 @@
   (:use [clojure.pprint]))
 
 (def lista-compras
-  (csv/read-csv "compras.csv"
-                {:field-names [:data,:valor,:estabelecimento,:categoria,:cartao]}))
+  (csv/read-csv "files/compras.csv"
+                {:field-names [:data,
+                               :valor,
+                               :estabelecimento,
+                               :categoria,
+                               :cartao]}))
 
 (def cartoes
-  (csv/read-csv "cartoes.csv"
-                {:field-names [:numero,:cvv,:validade,:limite,:cliente]}))
+  (csv/read-csv "files/cartoes.csv"
+                {:field-names [:numero,
+                               :cvv,
+                               :validade,
+                               :limite,
+                               :cliente]}))
+
+

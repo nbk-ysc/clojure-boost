@@ -39,23 +39,28 @@
 (logic.week_1/convert-datas-cartao utils.week_1/cartoes)
 (logic.week_1/convert-datas-compras utils.week_1/lista-compras)
 
+;Visualizar a lista de compras e cartões
+(pprint utils.week_1/lista-compras)
+(pprint utils.week_1/cartoes)
+
+
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 1:
 ;-----------------------------------------------------------
 ;Chamada do atomo
 (pprint utils.week_2/repositorio-de-compras)
 
-;insere uma nova compra em um vetor com compras
-(pprint (logic.week_2/insere-compra utils.week_2/compras-exemplo (logic.week_2/->compra nil "25-10-2022" 10.00 "pp" "games" 1234123412341234)))
+;insere uma nova compra de um vetor com compras
+(pprint (logic.week_2/insere-compra utils.week_2/compras-exemplo (logic.week_2/->compra nil "2022-10-25" 10.00 "pp" "games" 1234123412341234)))
 
-;insere uma nova compra em um vetor vazio
-(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "25-10-2022" 10.00 "pp" "games" 1234123412341234)))
+;insere uma nova compra de um vetor vazio
+(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "2022-10-25" 10.00 "pp" "games" 1234123412341234)))
 
 ;inserir uma nova compra em um atomo
-(pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil "25-10-2022" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234)))
+(pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil "2022-10-25" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234)))
 
 ;Listar o conteudo do atomo
 (logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)
 
 ;excluir uma compra do atomo
-(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 1))
+(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 18))
