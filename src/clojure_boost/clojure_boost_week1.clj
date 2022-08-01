@@ -1,4 +1,4 @@
-(ns clojure-boost.core)
+(ns clojure-boost.clojure_boost_week1)
 (require '[clojure-boost.mock :as mock])
 (require '[clojure-boost.functions-compra :as functions])
 
