@@ -1,4 +1,4 @@
-(ns clojure-boost.lista-de-compras
+(ns clojure-boost.semana1.lista-de-compras
   (:require [java-time :as jt]))
 (defn lista-compras_old
   []

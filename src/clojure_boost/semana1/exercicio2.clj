@@ -1,4 +1,4 @@
-(ns clojure-boost.exercicio2)
+(ns clojure-boost.semana1.exercicio2)
 ;Crie as funções lista-compras que retorna uma coleção
 ; com todas as compras realizadas.
 ;

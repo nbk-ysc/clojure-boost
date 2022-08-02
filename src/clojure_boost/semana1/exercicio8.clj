@@ -1,4 +1,4 @@
-(ns clojure-boost.exercicio8
+(ns clojure-boost.semana1.exercicio8
   (:require [java-time :as jt]))
 (defn aplica-java-time-na-chave-data
   []
