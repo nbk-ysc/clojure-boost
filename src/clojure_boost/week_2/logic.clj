@@ -30,7 +30,7 @@
   )
 
 ;---------------------------------------------------------------------------------------------------------
-(defn lista-compras
+(defn lista-compras!
   "Funcao para listar as compras de um atomo"
   [compras]
   (pprint @compras)

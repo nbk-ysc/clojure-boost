@@ -1,6 +1,7 @@
 (ns clojure-boost.week_1.logic
   (:use [clojure.pprint])
-  (:require [java-time :as jt]))
+  (:require [java-time :as jt])
+  (:import (clojure.lang LazySeq)))
 
 ;-----------------------------------------------------------
 (defn nova-compra
@@ -39,6 +40,14 @@
     ))
 
 ;-----------------------------------------------------------
+(defn obter-compras-por-mes
+  "Funcao para obter a lista de compras para um determinado mes
+  utiliza funcoes que entendem java-time e string para filtar"
+  [lista-compras mes]
+  (if (= String (nth (map #(class (get % :data)) lista-compras) 1))
+    (obter-compras-por-mes-string lista-compras mes)
+    (obter-compras-por-mes-java-time lista-compras mes)))
+
 (defn splitar-mes
   "Funcao que transforma a data em um mes (inteiro)"
   [lista-compras]
@@ -47,12 +56,21 @@
     (get 1)
     (Integer/parseInt)))
 
-(defn obter-compras-por-mes
-  "Funcao para obter todas as compras de um mes (inteiro)"
+(defn obter-compras-por-mes-string
+  "Funcao para obter todas as compras de um mes
+  Utilizando string"
   [lista-compras mes]
   (->>
     lista-compras
     (filter #(= mes (splitar-mes (:data %))))))
+
+(defn obter-compras-por-mes-java-time
+  "Funcao para obter todas as compras de um mes
+  Utilizando Java-Time"
+  [lista-compras mes]
+  (->>
+    lista-compras
+    (filter #(= (jt/month mes) (jt/month (:data %))))))
 
 ;-----------------------------------------------------------
 (defn total-gasto-no-mes

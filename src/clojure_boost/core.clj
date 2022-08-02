@@ -3,7 +3,8 @@
   (:require [clojure-boost.week_1.logic :as logic.week_1]
             [clojure-boost.week_2.logic :as logic.week_2]
             [clojure-boost.week_1.utils :as utils.week_1]
-            [clojure-boost.week_2.utils :as utils.week_2]))
+            [clojure-boost.week_2.utils :as utils.week_2]
+            [java-time :as jt]))
 
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 1:
@@ -43,7 +44,6 @@
 (pprint utils.week_1/lista-compras)
 (pprint utils.week_1/cartoes)
 
-
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 1:
 ;-----------------------------------------------------------
@@ -63,4 +63,8 @@
 (logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)
 
 ;excluir uma compra do atomo
-(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 23))
+(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 20))
+
+;-----------------------------------------------------------
+;Chamadas de funcoes da semana 3:
+;-----------------------------------------------------------
