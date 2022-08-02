@@ -5,7 +5,6 @@
 (defrecord compra-otimizada [^Long ID ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
 
 ;-------------------------------------------------------------------------------------------------------------------
-
 (defn gera-id
   "Funcao para gerar um ID de compra.
   Ela espera receber um vetor"
@@ -14,7 +13,6 @@
     (if (nil? id-gerado)
       (int 1)
       (inc id-gerado))))
-
 
 (defn insere-compra
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
@@ -32,7 +30,7 @@
   )
 
 ;---------------------------------------------------------------------------------------------------------
-(defn lista-compras!
+(defn lista-compras
   "Funcao para listar as compras de um atomo"
   [compras]
   (pprint @compras)
@@ -53,4 +51,3 @@
   (swap! compras exclui-compra ID)
   )
 
-;---------------------------------------------------------------------------------------------------------
