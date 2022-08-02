@@ -1,4 +1,4 @@
-(ns clojure-boost.core
+(ns clojure-boost.semana1.core
   (:require [clojure-boost.lista-de-compras-csv :refer [lista-compras]])
   (:require [ultra-csv.core :as ultra])
   (:require [clojure.string :as cs])
