@@ -49,6 +49,7 @@
 ;-------------------------------------------------------------------------------------------------------------------
 ;
 (defn categoria-valida?
+  "Valida se a categoria está dentro das permitidas"
   [nova-compra]
   (let [categoria (get nova-compra :categoria)]
     (not (nil? (some #(= % categoria) utils.week_2/categorias)))))
@@ -57,11 +58,15 @@
   (let [caracteres (count (get nova-compra :estabelecimento))]
     (>= caracteres 2)))
 
-(defn valor-e-bigdec? [nova-compra]
+(defn valor-e-bigdec?
+  "Valida se o valor é um bigDec positivo"
+  [nova-compra]
   (and (decimal? (get nova-compra :valor))
        (> (get nova-compra :valor) 0)))
 
-(defn data-valida? [nova-compra]
+(defn data-valida?
+  "Valida se a data não está no futuro"
+  [nova-compra]
   (jt/not-after? (get nova-compra :data) (jt/local-date)))
 
 (defn valida-compra
@@ -69,7 +74,7 @@
   * A data da compra deve ser menor ou igual à data atual
   * O valor deve um BigDeecimal positivo
   * O estabelecimento precisa ter pelo menos dois caracteres
-  * A categoria precisa respeitar um grupo Alimentação, Automóvel, Casa, Educação, Lazer ou Saúde"
+  * A categoria precisa respeitar um grupo pré-determinado"
   [nova-compra]
   (cond
     (not= true (categoria-valida? nova-compra)) (throw (ex-info "A categoria utilizada não é permitida" {:erro nova-compra}))
