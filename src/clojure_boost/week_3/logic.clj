@@ -1,1 +1,4 @@
-(ns clojure-boost.week-3.logic)
+(ns clojure-boost.week-3.logic
+  (:use [clojure.pprint]))
+
+

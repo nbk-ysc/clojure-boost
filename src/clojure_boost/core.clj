@@ -4,6 +4,7 @@
             [clojure-boost.week_2.logic :as logic.week_2]
             [clojure-boost.week_1.utils :as utils.week_1]
             [clojure-boost.week_2.utils :as utils.week_2]
+            [clojure-boost.week-3.logic :as logic.week_3]
             [java-time :as jt]))
 
 ;-----------------------------------------------------------
@@ -22,7 +23,7 @@
 (logic.week_1/total-gastos-por-cartao 3939393939393939 utils.week_1/lista-compras)
 
 ;retornar uma lista com todas as compras para um mes especifico
-(logic.week_1/obter-compras-por-mes utils.week_1/lista-compras 4)
+(logic.week_1/obter-compras-por-mes utils.week_1/lista-compras 1)
 
 ;retorna o total da fatura de um cartao para um mes especifico
 (logic.week_1/total-gasto-no-mes utils.week_1/lista-compras 4 3939393939393939)
@@ -51,19 +52,22 @@
 (pprint utils.week_2/repositorio-de-compras)
 
 ;insere uma nova compra de um vetor com compras
-(pprint (logic.week_2/insere-compra utils.week_2/compras-exemplo (logic.week_2/->compra nil "2022-10-25" 10.00 "pp" "games" 1234123412341234)))
+(pprint (logic.week_2/insere-compra utils.week_2/compras-exemplo (logic.week_2/->compra nil "2022-10-25" 10.00M "pp" "Saúde" 1234123412341234)))
 
 ;insere uma nova compra de um vetor vazio
-(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "2022-10-25" 10.00 "pp" "games" 1234123412341234)))
+(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "2022-10-25" 10.00M "pp" "Saúde" 1234123412341234)))
 
 ;inserir uma nova compra em um atomo
-(pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil "2022-10-25" 32.00 "Lojinha do seu Ze" "Pub" 1234123412341234)))
+(pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil (jt/local-date "2022-07-25") 32.00M "LM" "Saúde" 1234123412341234)))
 
 ;Listar o conteudo do atomo
 (logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)
 
 ;excluir uma compra do atomo
-(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 20))
+(pprint (logic.week_2/exclui-compra! utils.week_2/repositorio-de-compras 19))
+
+;Validacao de uma compra
+(logic.week_2/valida-compra (logic.week_2/->compra nil (jt/local-date "2022-02-10") 10.0M "pastel" "Saúde" 1234123412341234))
 
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 3:

@@ -34,3 +34,9 @@
 
 (def compras-vazio [])
 
+(def categorias ["Alimentação",
+                 "Automóvel",
+                 "Casa",
+                 "Educação",
+                 "Lazer",
+                 "Saúde"])
