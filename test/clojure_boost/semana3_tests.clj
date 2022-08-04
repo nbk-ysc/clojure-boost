@@ -3,7 +3,6 @@
             [clojure-boost.testes :refer :all]
             [clojure-boost.compras :as compras]))
 
-;teste total gasto
 (deftest total-gasto-test
   (let [lista-compras
         [{:data            "2022/02/10",
@@ -71,34 +70,35 @@
       (is (= compra-valida
              (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação", 10000000000000000)))))
   (testing "Compra com data inválida"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-data-formato-correto*"
                  (nova-compra-validate "23/10/1996", 10.0M, "Outback", "Alimentação", 10000000000000000))))
+  (testing "Compra com data vazia"
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-data-formato-correto*"
+                          (nova-compra-validate "", 10.0M, "Outback", "Alimentação", 10000000000000000))))
   (testing "Compra com valor inválido não BigDecimal"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-valor-e-bigdecimal*"
                  (nova-compra-validate "23-10-1996", 10.0, "Outback", "Alimentação", 10000000000000000))))
   (testing "Compra com valor negativo"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-valor-e-bigdecimal*"
                  (nova-compra-validate "23-10-1996", -10.0, "Outback", "Alimentação", 10000000000000000))))
+  (testing "Compra com valor zero"
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-valor-e-bigdecimal*"
+                          (nova-compra-validate "23-10-1996", 0, "Outback", "Alimentação", 10000000000000000))))
   (testing "Compra com estabelecimento vazio"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-mais-de-duas-letras-no-estabelecimento*"
                  (nova-compra-validate "23-10-1996", 10.0M, "", "Alimentação", 10000000000000000))))
   (testing "Compra com estabelecimento menos de 2 letras"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-mais-de-duas-letras-no-estabelecimento*"
                  (nova-compra-validate "23-10-1996", 10.0M, "O", "Alimentação", 10000000000000000))))
   (testing "Compra com Categoria inválida"
-    (is (thrown? clojure.lang.ExceptionInfo
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-categoria-correta*"
                  (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação batata", 10000000000000000))))
+  (testing "Compra com Categoria vazia"
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cond-categoria-correta*"
+                          (nova-compra-validate "23-10-1996", 10.0M, "Outback", "", 10000000000000000))))
   (testing "Compra com cartão inválido"
-    (is (thrown? clojure.lang.ExceptionInfo
-                 (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação", 0)))))
-
-
-
-
-
-
-
-
+    (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cartao-correto*"
+                 (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação", 0))))
 
 
 

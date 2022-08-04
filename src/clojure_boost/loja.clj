@@ -145,21 +145,25 @@
 (defn cond-categoria-correta?
   [compra]
   (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
-         (contains? categoria-permitida compra)))
+    (contains? categoria-permitida compra)))
 
-(defn valida-compra [compra]
+(defn valida-compra-cond [compra]
   "Responsável pela validação de cada campo da compra.
    Essas validações estão sendo feitas pelas funções referenciadas."
   (cond
     (not= true (cond-data-formato-correto? (:data compra))) (throw (ex-info "A data não esta no formato ok" {:erro compra}))
     (not= true (cond-valor-e-bigdecimal? (:valor compra))) (throw (ex-info "Valor está no formato errado" {:erro compra}))
     (not= true (cond-mais-de-duas-letras-no-estabelecimento? (:estabelecimento compra))) (throw (ex-info "Estabelecimento precisa ter mais de 2 caracteres" {:erro compra}))
-    (not= true (cond-categoria-correta? (:categoria compra))) (throw (ex-info "Essa categoria não é permitida" {:erro compra}))))
+    (not= true (cond-categoria-correta? (:categoria compra))) (throw (ex-info "Essa categoria não é permitida" {:erro compra}))
+    :else nil))
+
+;(pprint (valida-compra {:id 1, :data "09-99-2222", :valor 100.0M, :estabelecimento "Outback", :categoria "Alimentação"
+;                        :cartao 1000000000000}))
 
 (defn insere-compra-teste!
   "Método que insere compra no atom - este é apenas para testar a validação"
   [compra repositorio-de-compra]
-  (if (= (valida-compra compra) nil)
+  (if (= (valida-compra-cond compra) nil)
     (swap! repositorio-de-compra insere-compra compra)))
 
 ;(pprint (insere-compra-teste! compra-temp-teste-throw repositorio-de-compras))
@@ -175,7 +179,7 @@
     {:data-incorreta false}))
 
 (defn valor-e-bigdecimal? [compra]
-  (let [valor  compra]
+  (let [valor compra]
     (if (and (not= true (decimal? valor) (> valor 0)))
       {:valor-incorreto "Valor está no formato errado"}
       {:valor-incorreto false})))
