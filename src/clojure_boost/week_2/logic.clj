@@ -49,25 +49,54 @@
 ;-------------------------------------------------------------------------------------------------------------------
 ;
 (defn categoria-valida?
-  "Valida se a categoria está dentro das permitidas"
+  "Valida se a categoria está entre as permitidas"
   [nova-compra]
-  (let [categoria (get nova-compra :categoria)]
-    (not (nil? (some #(= % categoria) utils.week_2/categorias)))))
+  (let [categoria nova-compra]
+    (not (nil? (some #(= categoria %) utils.week_2/categorias)))))
+
+;(defn nome-do-estabelecimento-e-valido? [nova-compra]
+;  (if (string? nova-compra)
+;    (>= (count nova-compra) 2)
+;    (if-let [caracteres (count (get nova-compra :estabelecimento))]
+;      (>= caracteres 2)
+;      false)))
 
 (defn nome-do-estabelecimento-e-valido? [nova-compra]
-  (let [caracteres (count (get nova-compra :estabelecimento))]
-    (>= caracteres 2)))
+  (let [caracteres nova-compra]
+    (>= (count caracteres) 2)))
+
+;(defn valor-e-bigdec?
+;  "Valida se o valor é um bigDec positivo"
+;  [nova-compra]
+;  (if (decimal? nova-compra)
+;    (pos? nova-compra)
+;    (if-let [valor (get nova-compra :valor)]
+;      (valor-e-bigdec? valor)
+;      false)))
 
 (defn valor-e-bigdec?
-  "Valida se o valor é um bigDec positivo"
   [nova-compra]
-  (and (decimal? (get nova-compra :valor))
-       (> (get nova-compra :valor) 0)))
+  "Valida se o valor é um bigDec positivo"
+  (let [valor nova-compra]
+    (and (decimal? valor)
+         (pos? valor))))
 
 (defn data-valida?
   "Valida se a data não está no futuro"
   [nova-compra]
-  (jt/not-after? (get nova-compra :data) (jt/local-date)))
+  (let [data nova-compra]
+    (jt/not-after? data (jt/local-date))))
+
+;(defn numeracao-do-cartao-atende?
+;  [cartao]
+;  (if (int? cartao)
+;  (and (> cartao 0) (< cartao 10000000000000000))
+;  false))
+
+(defn numeracao-do-cartao-atende?
+  [cartao]
+  (and (> cartao 0) (< cartao 10000000000000000))
+   )
 
 (defn valida-compra
   "Funcao para validar se uma compra pode ser inserida
@@ -77,15 +106,14 @@
   * A categoria precisa respeitar um grupo pré-determinado"
   [nova-compra]
   (cond
-    (not= true (categoria-valida? nova-compra)) (throw (ex-info "A categoria utilizada não é permitida" {:erro nova-compra}))
-    (not= true (nome-do-estabelecimento-e-valido? nova-compra)) (throw (ex-info "O nome de estabelecimento possui menos de 2 caracteres" {:erro nova-compra}))
-    (not= true (valor-e-bigdec? nova-compra)) (throw (ex-info "O valor está no formato incorreto ou não é positivo" {:erro nova-compra}))
-    (not= true (data-valida? nova-compra)) (throw (ex-info "Data utilizada está no futuro" {:erro nova-compra}))))
+    (not= true (categoria-valida? (:categoria nova-compra))) (throw (ex-info "A categoria utilizada não é permitida" {:erro nova-compra}))
+    (not= true (nome-do-estabelecimento-e-valido? (:estabelecimento nova-compra))) (throw (ex-info "O nome de estabelecimento possui menos de 2 caracteres" {:erro nova-compra}))
+    (not= true (valor-e-bigdec? (:valor nova-compra))) (throw (ex-info "O valor está no formato incorreto ou não é positivo" {:erro nova-compra}))
+    (not= true (data-valida? (:data nova-compra))) (throw (ex-info "Data utilizada está no futuro" {:erro nova-compra}))))
 
 ;---------------------------------------------------------------------------------------------------------
 (defn insere-compra!
   "Funcao para inserir uma nova compra no atomo."
   [compras nova-compra]
   (if (nil? (valida-compra nova-compra))
-    (swap! compras insere-compra nova-compra))
-  )
+    (swap! compras insere-compra nova-compra)))

@@ -5,7 +5,8 @@
             [clojure-boost.week_1.utils :as utils.week_1]
             [clojure-boost.week_2.utils :as utils.week_2]
             [clojure-boost.week-3.logic :as logic.week_3]
-            [java-time :as jt]))
+            [java-time :as jt])
+  (:require [schema.core :as s]))
 
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 1:
@@ -55,7 +56,7 @@
 (pprint (logic.week_2/insere-compra utils.week_2/compras-exemplo (logic.week_2/->compra nil "2022-10-25" 10.00M "pp" "Saúde" 1234123412341234)))
 
 ;insere uma nova compra de um vetor vazio
-(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "2022-10-25" 10.00M "pp" "Saúde" 1234123412341234)))
+(pprint (logic.week_2/insere-compra utils.week_2/compras-vazio (logic.week_2/->compra nil "2022-10-25" 10.0M "pp" "Saúde" 1234123412341234)))
 
 ;inserir uma nova compra em um atomo
 (pprint (logic.week_2/insere-compra! utils.week_2/repositorio-de-compras (logic.week_2/->compra nil (jt/local-date "2022-07-25") 32.00M "LM" "Saúde" 1234123412341234)))
@@ -72,3 +73,16 @@
 ;-----------------------------------------------------------
 ;Chamadas de funcoes da semana 3:
 ;-----------------------------------------------------------
+;Chamada da função nova-compra
+(logic.week_3/nova-compra @utils.week_2/repositorio-de-compras (logic.week_2/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234))
+
+;-----------------------------------------------------------
+;Debug Area:
+;-----------------------------------------------------------
+
+(logic.week_2/valor-e-bigdec? (logic.week_2/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234))
+
+(pprint (class utils.week_2/compras-vazio))
+
+(logic.week_3/nova-compra 0 (jt/local-date "2022-06-25") 10.0M "Saúde" "Saúde" 1234123412341234)
+
