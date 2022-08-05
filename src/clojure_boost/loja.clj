@@ -1,8 +1,14 @@
 (ns clojure-boost.loja
   (:use clojure.pprint)
   (:require [clojure-boost.utils :as utils]
+            [schema.core :as s
+             :include-macros true]
             [clojure.string :as string]
-            [java-time :as jt]))
+            [java-time :as jt]
+            [clojure-boost.schemas :as schema]
+            [clojure-boost.utils :as utils]
+            [clojure-boost.logic :as logic]))
+(s/set-fn-validation! true)
 
 (def repositorio-de-compras (atom []))
 
@@ -11,7 +17,7 @@
 (defrecord nova-compra [^Long id, ^String data, ^BigDecimal valor,
                         ^String estabelecimento, ^String categoria, ^Long cartao])
 
-(pprint (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
+;(pprint (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
 
 (defn lista-compras-vazia
   "Lista de compra vazia criada apenas para teste."
@@ -56,10 +62,10 @@
   (gera-lista-compras)
   (->> @lista-compras-atom))
 
-
-(defn gera-id
+(pprint (lista-compras))
+(s/defn gera-id
   "Gera o id novo para uma compra nova"
-  [lista-compras]
+  [lista-compras :- schema/CompraSchemaWithId]
   (if-let [count-id (> (count (map :id lista-compras)) 0)]
     (->> lista-compras
          (map :id)
@@ -67,20 +73,19 @@
          inc)
     1))
 
-(defn insere-compra
-  [compras compra]
+(s/defn insere-compra
+  [compras :- schema/CompraSchemaWithId compra :- schema/CompraSchemaWithIdOptional]
   (let [id (gera-id compras)
         compra-new (assoc compra :id id)]
     (conj compras compra-new)))
 
-(def compra-temp (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
+(def compra-temp (->nova-compra nil, "10-10-1000", 100.0M, "Outback", "Alimentação", 1000000000000))
 (println "----------------------LISTA DE COMPRAS SEM ATOM-------------------------------------")
 (pprint (insere-compra (lista-compras) compra-temp))
 
-
-(defn insere-compra!
+(s/defn insere-compra!
   "Método que insere compra no atom"
-  [compra repositorio-de-compra]
+  [compra :- schema/CompraSchemaWithIdOptional repositorio-de-compra :- schema/Atom?]
   (swap! repositorio-de-compra insere-compra compra))
 
 (insere-compra! compra-temp repositorio-de-compras)
@@ -88,19 +93,14 @@
 (defn testa-insere-compra
   "Função de teste de inserir compras"
   []
-  (def compra-temp-teste (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
-  (def compra-temp-teste2 (->nova-compra nil, "10/10/1000", 100.0, "Outback", "Alimentação", 1000000000000))
-  (def compra-temp-teste3 (->nova-compra nil, "10/10/1000", 100.0, "Mc donalds", "Alimentação", 1000000000000))
+  (let [testando-compra (->nova-compra nil, "10-10-1996", 100.0M, "Outback", "Alimentação", 1000000000000)]
+    (insere-compra! testando-compra repositorio-de-compras)))
 
-  (insere-compra! compra-temp-teste repositorio-de-compras)
-  (insere-compra! compra-temp-teste2 repositorio-de-compras)
-  (insere-compra! compra-temp-teste3 repositorio-de-compras))
 (testa-insere-compra)
 
-(defn lista-compras!
-  [repositorio-de-compras]
+(s/defn lista-compras!
+  [repositorio-de-compras :- schema/Atom?]
   (pprint @repositorio-de-compras))
-
 
 (println "----------------------LISTA DE COMPRAS COM ATOM-------------------------------------")
 (lista-compras! repositorio-de-compras)
@@ -108,17 +108,17 @@
 (println "------------------------------EXCLUINDO COMPRAS-------------------------------------")
 
 
-(defn exclui-compra
+(s/defn exclui-compra
   "Gera mapa com compras excluidas"
-  [compras id]
+  [compras :- schema/CompraSchemaWithId id :- Long]
   (->> compras
        (remove #(= (:id %) id))
        (into [])))
 
 
-(defn exclui-compra!
+(s/defn exclui-compra!
   "Persiste no atom a exlusão da compra"
-  [compras id]
+  [compras id :- Long]
   (swap! compras exclui-compra id))
 
 (pprint (exclui-compra! repositorio-de-compras 1))
@@ -128,41 +128,22 @@
 (println "----------------------VALIDANDO COMPRAS COM THROW-------------------------------------")
 (def compra-temp-teste-throw (->nova-compra nil, "09-11-1990", 100.0, "Outback", "Casa", 1000000000000))
 
-
-(defn cond-data-formato-correto?
-  [compra]
-  (not= nil (re-matches #"[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" compra)))
-
-(defn cond-valor-e-bigdecimal? [compra]
-  (let [valor compra]
-    (and (decimal? valor)
-         (> valor 0))))
-(defn cond-mais-de-duas-letras-no-estabelecimento?
-  [compra]
-  (let [estabelecimento compra]
-    (> (count estabelecimento) 2)))
-
-(defn cond-categoria-correta?
-  [compra]
-  (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
-    (contains? categoria-permitida compra)))
-
 (defn valida-compra-cond [compra]
   "Responsável pela validação de cada campo da compra.
    Essas validações estão sendo feitas pelas funções referenciadas."
   (cond
-    (not= true (cond-data-formato-correto? (:data compra))) (throw (ex-info "A data não esta no formato ok" {:erro compra}))
-    (not= true (cond-valor-e-bigdecimal? (:valor compra))) (throw (ex-info "Valor está no formato errado" {:erro compra}))
-    (not= true (cond-mais-de-duas-letras-no-estabelecimento? (:estabelecimento compra))) (throw (ex-info "Estabelecimento precisa ter mais de 2 caracteres" {:erro compra}))
-    (not= true (cond-categoria-correta? (:categoria compra))) (throw (ex-info "Essa categoria não é permitida" {:erro compra}))
+    (not= true (logic/cond-data-formato-correto? (:data compra))) (throw (ex-info "A data não esta no formato ok" {:erro compra}))
+    (not= true (logic/cond-valor-e-bigdecimal? (:valor compra))) (throw (ex-info "Valor está no formato errado" {:erro compra}))
+    (not= true (logic/cond-mais-de-duas-letras-no-estabelecimento? (:estabelecimento compra))) (throw (ex-info "Estabelecimento precisa ter mais de 2 caracteres" {:erro compra}))
+    (not= true (logic/cond-categoria-correta? (:categoria compra))) (throw (ex-info "Essa categoria não é permitida" {:erro compra}))
     :else nil))
 
 ;(pprint (valida-compra {:id 1, :data "09-99-2222", :valor 100.0M, :estabelecimento "Outback", :categoria "Alimentação"
 ;                        :cartao 1000000000000}))
 
-(defn insere-compra-teste!
+(s/defn insere-compra-teste!
   "Método que insere compra no atom - este é apenas para testar a validação"
-  [compra repositorio-de-compra]
+  [compra :- schema/CompraSchemaWithIdOptional repositorio-de-compra :- schema/Atom?]
   (if (= (valida-compra-cond compra) nil)
     (swap! repositorio-de-compra insere-compra compra)))
 
@@ -170,35 +151,35 @@
 
 (println "----------------------VALIDANDO COMPRAS COM MAPAS-------------------------------------")
 
-(def compra-temp-teste-maps (->nova-compra nil, "09-11-199a0", 100.0, "O", "Casad", 1000000000000))
+(def compra-temp-teste-maps (->nova-compra nil, "09-11-1990", 100.0M, "Outback", "Casa", 1000000000000))
 
 
-(defn data-formato-correto? [compra]
+(s/defn data-formato-correto? [compra]
   (if (= (re-matches #"[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9]" compra) nil)
     {:data-incorreta "Data está no formato incorreto."}
     {:data-incorreta false}))
 
-(defn valor-e-bigdecimal? [compra]
+(s/defn valor-e-bigdecimal? [compra]
   (let [valor compra]
     (if (and (not= true (decimal? valor) (> valor 0)))
       {:valor-incorreto "Valor está no formato errado"}
       {:valor-incorreto false})))
 
-(defn mais-de-duas-letras-no-estabelecimento? [compra]
+(s/defn mais-de-duas-letras-no-estabelecimento? [compra]
   (let [estabelecimento compra]
     (if (not= true (> (count estabelecimento) 2))
       {:estabelecimento-errado "Estabelecimento está com menos de 2 caracteres!"}
       {:estabelecimento-errado false})))
 
-(defn categoria-correta? [compra]
-  (let [categoria-permitida {"Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"}]
-    (if (not= true (contains? categoria-permitida compra))
+(s/defn categoria-correta? [compra]
+  (let [categoria-permitida ["Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde"]]
+    (if (not= true (.contains categoria-permitida compra))
       {:categoria-incorreta "A categoria está incorreta."}
       {:categoria-incorreta false})))
 
-(defn valida-compra
+(s/defn valida-compra
   "Função responsável por gerar os mapas com os erros"
-  [compra]
+  [compra :- schema/CompraSchemaWithIdOptional]
   (let [erros [(data-formato-correto? (:data compra)), (valor-e-bigdecimal? (:valor compra)),
                (mais-de-duas-letras-no-estabelecimento? (:estabelecimento compra)), (categoria-correta? (:categoria compra))]]
     (->> erros
@@ -206,11 +187,13 @@
          vals
          (filter #(not= false %)))))
 
-(defn insere-compra-teste!
+(s/defn insere-compra-teste!
   "Função que insere compra no atom - este é apenas para testar a validação"
-  [compra repositorio-de-compra]
+  [compra :- schema/CompraSchemaWithIdOptional repositorio-de-compra :- schema/Atom?]
   (if (= (valida-compra compra) ())
     (swap! repositorio-de-compra insere-compra compra))
   (valida-compra compra))
 
-(pprint (insere-compra-teste! compra-temp-teste-maps repositorio-de-compras))
+(insere-compra-teste! compra-temp-teste-maps repositorio-de-compras)
+
+(pprint @repositorio-de-compras)

@@ -1,7 +1,10 @@
 (ns clojure-boost.compras
   (:use clojure.pprint)
   (:require
-    [clojure-boost.utils :as utils]))
+    [clojure-boost.utils :as utils]
+    [clojure-boost.schemas :as schema]
+    [schema.core :as s
+     :include-macros true]))
 
 (println "Nova compra" (utils/nova-compra "2022-10-03" 40.10 "Fake SA" "Alimentação" 10101010110101010))
 
@@ -11,7 +14,7 @@
   (->> lista-compras
        (filter #(= (get % :cartao) cartao))))
 
-(defn total-gasto [lista-compras]
+(s/defn total-gasto [lista-compras]
   "Retorna o valor total gasto nas compras"
   (->> lista-compras
        (map :valor)
@@ -63,13 +66,7 @@
   (->> (utils/lista-compras)
        (filter #(and (<= (:valor %) valor-maximo) (>= (:valor %) valor-minimo)))))
 (println "Filtro por valor máximo e mínimo" (filtra-compras-valor 100.0 50.0))
-
-
-(println "------------------LISTA DE COMPRAS FORMATADA--------------")
-
-(pprint (->> (utils/lista-compras)
-             (map #(update % :data utils/formata-data-compras "yyyy-MM-dd" "yyyy/MM/dd"))))
-
+(pprint (filtra-compras-valor 150.0 100.0))
 
 (println "-----------LISTA DE CARTOES FORMATADO-----------")
 (pprint (->> (utils/lista-cartoes)
@@ -83,6 +80,7 @@
   [lista-compras mes]
   (->> lista-compras
        (filter #(= mes (utils/formata-data-cartao-mes (:data %))))))
+
 
 (println "Lista de compras por mês" (lista-compras-mes-cartao (utils/lista-compras) 04))
 

@@ -37,10 +37,11 @@
   (->> lista-compras
        (group-by :categoria)))
 
-(defn lista-compras []
+(defn lista-compras-csv []
   "retorna lista via csv"
   (csv/read-csv "compras.csv"
                 {:field-names [:data :valor :estabelecimento :categoria :cartao]}))
+
 
 (defn lista-cartoes []
   "retorna lista de cartoes via csv"
@@ -59,6 +60,11 @@
   Essa função está sendo usada no caso de filtrar por mês"
   [data]
   (->> data
-       (jt/local-date "yyyy-MM-dd")
+       (jt/local-date "dd-MM-yyyy")
        (jt/format "MM")
        (Integer/parseInt)))
+
+(defn lista-compras []
+  (->> (lista-compras-csv)
+       (map #(update % :data formata-data-compras "yyyy-MM-dd" "dd-MM-yyyy"))
+       (map #(update % :valor bigdec))))

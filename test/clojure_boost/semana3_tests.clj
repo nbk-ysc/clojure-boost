@@ -1,7 +1,8 @@
 (ns clojure_boost.semana3_tests
   (:require [clojure.test :refer :all]
             [clojure-boost.testes :refer :all]
-            [clojure-boost.compras :as compras]))
+            [clojure-boost.compras :as compras]
+            [clojure-boost.loja :as validacoes]))
 
 (deftest total-gasto-test
   (let [lista-compras
@@ -98,19 +99,145 @@
                           (nova-compra-validate "23-10-1996", 10.0M, "Outback", "", 10000000000000000))))
   (testing "Compra com cartão inválido"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #".*cartao-correto*"
-                 (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação", 0))))
+                 (nova-compra-validate "23-10-1996", 10.0M, "Outback", "Alimentação", 0)))))
+
+(deftest gera-id?
+  (let [id-mapa 3
+        id-mapa-mais-um (+ id-mapa 1)
+        id-mapa-menos-um (- id-mapa 1)
+        compra [{:id              id-mapa
+                 :data            "23-10-1996",
+                 :valor           10.0M,
+                 :estabelecimento "Outback",
+                 :categoria       "Alimentação",
+                 :cartao          10000000000000000}]]
+    (testing "Deve gerar id com 1+ do id da compra"
+      (is (= (validacoes/gera-id compra) id-mapa-mais-um)))
+  (testing "Id não deve ser o mesmo id da compra"
+    (is (not (= (validacoes/gera-id compra) id-mapa))))
+  (testing "Não deve gerar id com id inferior ao id da compra"
+    (is (not (= (validacoes/gera-id compra) id-mapa-menos-um))))))
+
+;(deftest lista-compras-de-um-atomo?
+;  (let [atomo-de-teste (atom [{:id 2,
+;                               :data "10-10-1996",
+;                               :valor 100.0M,
+;                               :estabelecimento "Outback",
+;                               :categoria "Alimentação",
+;                               :cartao 1000000000000}
+;                              {:id 3,
+;                               :data "09-11-1990",
+;                               :valor 100.0M,
+;                               :estabelecimento "Outback",
+;                               :categoria "Casa",
+;                               :cartao 1000000000000}])
+;        atomo-valida {:id 2,
+;                       :data "10-10-1996",
+;                       :valor 100.0M,
+;                       :estabelecimento "Outback",
+;                       :categoria "Alimentação",
+;                       :cartao 1000000000000}
+;                      {:id 3,
+;                       :data "09-11-1990",
+;                       :valor 100.0M,
+;                       :estabelecimento "Outback",
+;                       :categoria "Casa",
+;                       :cartao 1000000000000}]
+;    (testing "Deve trazer uma lista com um atomo"
+;      (is (= atomo-valida
+;             (validacoes/lista-compras! atomo-de-teste))))))
+
+(deftest total-gasto-por-cartao
+  (let [lista-compras [{:data "01-01-2022",
+                        :valor 129.9M,
+                        :estabelecimento "Outback",
+                        :categoria "Alimentação",
+                        :cartao 1234123412341234}
+                       {:data "02-01-2022",
+                        :valor 260.0M,
+                        :estabelecimento "Dentista",
+                        :categoria "Saúde",
+                        :cartao 1234123412341234}
+                       {:data "01-02-2022",
+                        :valor 20.0M,
+                        :estabelecimento "Cinema",
+                        :categoria "Lazer",
+                        :cartao 1234123412341234}
+                       {:data "10-01-2022",
+                        :valor 150.0M,
+                        :estabelecimento "Show",
+                        :categoria "Lazer",
+                        :cartao 4321432143214321}
+                       {:data "10-02-2022",
+                        :valor 289.99M,
+                        :estabelecimento "Posto de gasolina",
+                        :categoria "Automóvel",
+                        :cartao 4321432143214321}]]
+    (testing "Total gasto de um cartão com valor correto"
+      (is (= 409.9M
+             (compras/total-gasto-por-cartao lista-compras 1234123412341234))))
+  (testing "Total gasto de um cartão com valor incorreto"
+    (is (not (= 409.9M
+                (compras/total-gasto-por-cartao lista-compras 4321432143214321)))))))
+
+(deftest total-gasto-no-mes
+  (let [lista-compras [{:data "01-01-2022",
+                        :valor 129.9M,
+                        :estabelecimento "Outback",
+                        :categoria "Alimentação",
+                        :cartao 1234123412341234}
+                       {:data "02-01-2022",
+                        :valor 260.0M,
+                        :estabelecimento "Dentista",
+                        :categoria "Saúde",
+                        :cartao 1234123412341234}
+                       {:data "01-02-2022",
+                        :valor 20.0M,
+                        :estabelecimento "Cinema",
+                        :categoria "Lazer",
+                        :cartao 1234123412341234}
+                       {:data "10-01-2022",
+                        :valor 150.0M,
+                        :estabelecimento "Show",
+                        :categoria "Lazer",
+                        :cartao 4321432143214321}
+                       {:data "10-02-2022",
+                        :valor 289.99M,
+                        :estabelecimento "Posto de gasolina",
+                        :categoria "Automóvel",
+                        :cartao 4321432143214321}]]
+    (testing "Total gasto no mês com valor correto"
+      (is (= 539.9M
+             (compras/total-gasto-no-mes lista-compras 01))))
+    (testing "Total gasto no mês com valor incorreto"
+      (is (not (= 539.9M
+                  (compras/total-gasto-no-mes lista-compras 02)))))))
 
 
-
-
-
-
-
-
-
-
-
-
+(deftest compras-com-filtro-maximo-e-minimo
+  (let [assert-compra [{:data            "01-01-2022",
+                        :valor           129.9M,
+                        :estabelecimento "Outback",
+                        :categoria       "Alimentação",
+                        :cartao          1234123412341234}
+                       {:data            "10-01-2022",
+                        :valor           150.0M,
+                        :estabelecimento "Show",
+                        :categoria       "Lazer",
+                        :cartao          4321432143214321}
+                       {:data            "10-04-2022",
+                        :valor           130.0M,
+                        :estabelecimento "Drogaria",
+                        :categoria       "Saúde",
+                        :cartao          6655665566556655}
+                       {:data            "10-03-2022",
+                        :valor           100.0M,
+                        :estabelecimento "Show de pagode",
+                        :categoria       "Lazer",
+                        :cartao          3939393939393939}]]
+    (testing "Filtro com valor correto"
+      (is (= assert-compra
+             (compras/filtra-compras-valor 150.0 100.0))))))
 
 
 
