@@ -8,7 +8,7 @@
   [arquivo nome-campos]
   (csv/read-csv arquivo {:field-names nome-campos}))
 
-(s/defn id-maximo-da-lista-incrementado :- s/Int
+(s/defn numero-maximo-da-lista-incrementado :- s/Int
   "A partir do id maximo da lista retorna o mesmo incrementando 1"
   [seq :- schemas.base/SeqInt]
   (if (not-empty seq)
@@ -23,5 +23,5 @@
   (if (not-empty vetor)
     (->> vetor
          (map :id)
-         id-maximo-da-lista-incrementado)
+         numero-maximo-da-lista-incrementado)
     1))

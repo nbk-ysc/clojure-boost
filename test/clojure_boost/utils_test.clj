@@ -7,13 +7,13 @@
 (s/set-fn-validation! true)
 
 
-(deftest id-maximo-da-lista-incrementado-test
+(deftest numero-maximo-da-lista-incrementado-test
   (testing "Quando enviado sequência"
     (let [sequencia '(99, 2, 0, 101, 4, -1, 30, 99, 03, 12)]
-      (is (= 102 (id-maximo-da-lista-incrementado sequencia)))))
+      (is (= 102 (numero-maximo-da-lista-incrementado sequencia)))))
 
   (testing "Quando enviado sequência vazia"
-    (is (= 1 (id-maximo-da-lista-incrementado '())))))
+    (is (= 1 (numero-maximo-da-lista-incrementado '())))))
 
 (deftest gera-id-test
   (testing "Quando enviado vetor de coleções de ids"
