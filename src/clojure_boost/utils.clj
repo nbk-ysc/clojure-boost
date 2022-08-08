@@ -39,13 +39,13 @@
 
 (defn lista-compras-csv []
   "retorna lista via csv"
-  (csv/read-csv "compras.csv"
+  (csv/read-csv "massa/compras.csv"
                 {:field-names [:data :valor :estabelecimento :categoria :cartao]}))
 
 
 (defn lista-cartoes []
   "retorna lista de cartoes via csv"
-  (csv/read-csv "cartoes.csv"
+  (csv/read-csv "massa/cartoes.csv"
                 {:field-names [:numero :cvv :validade :limite :cliente]}))
 
 (defn formata-data-compras
