@@ -3,17 +3,17 @@
   (:require [java-time :as jt]))
 
 ;-----------------------------------------------------------
-(defn nova-compra
-  "Funcao para inserir uma nova compra"
-  [data, valor, estabelecimento, categoria, cartao]
-  {:data            (str data)
-   :valor           (bigdec valor)
-   :estabelecimento (str estabelecimento)
-   :categoria       (str categoria)
-   :cartao          (long cartao)})
+;(defn nova-compra
+;  "Funcao para inserir uma nova compra"
+;  [data, valor, estabelecimento, categoria, cartao]
+;  {:data            (str data)
+;   :valor           (bigdec valor)
+;   :estabelecimento (str estabelecimento)
+;   :categoria       (str categoria)
+;   :cartao          (long cartao)})
 
 ;-----------------------------------------------------------
-(defn total-gastos
+(defn total-gasto
   "Funcao para retornar o total gasto em todos os cartoes"
   [lista-compras]
   (->>
@@ -47,29 +47,41 @@
     (get 1)
     (Integer/parseInt)))
 
-(defn obter-compras-por-mes-string
-  "Funcao para obter todas as compras de um mes
-  Utilizando string"
-  [lista-compras mes]
+(defmulti obter-compras-por-mes (fn [lista-compras _] (nth (map #(class (get % :data)) lista-compras) 1)))
+
+(defmethod obter-compras-por-mes java.lang.String [lista-compras mes]
   (->>
     lista-compras
     (filter #(= mes (splitar-mes (:data %))))))
 
-(defn obter-compras-por-mes-java-time
-  "Funcao para obter todas as compras de um mes
-  Utilizando Java-Time"
-  [lista-compras mes]
+(defmethod obter-compras-por-mes java.time.LocalDate [lista-compras mes]
   (->>
     lista-compras
     (filter #(= (jt/month mes) (jt/month (:data %))))))
 
-(defn obter-compras-por-mes
-  "Funcao para obter a lista de compras para um determinado mes
-  utiliza funcoes que entendem java-time e string para filtar"
-  [lista-compras mes]
-  (if (= String (nth (map #(class (get % :data)) lista-compras) 1))
-    (obter-compras-por-mes-string lista-compras mes)
-    (obter-compras-por-mes-java-time lista-compras mes)))
+;(defn obter-compras-por-mes-string
+;  "Funcao para obter todas as compras de um mes
+;  Utilizando string"
+;  [lista-compras mes]
+;  (->>
+;    lista-compras
+;    (filter #(= mes (splitar-mes (:data %))))))
+;
+;(defn obter-compras-por-mes-java-time
+;  "Funcao para obter todas as compras de um mes
+;  Utilizando Java-Time"
+;  [lista-compras mes]
+;  (->>
+;    lista-compras
+;    (filter #(= (jt/month mes) (jt/month (:data %))))))
+;
+;(defn obter-compras-por-mes
+;  "Funcao para obter a lista de compras para um determinado mes
+;  utiliza funcoes que entendem java-time e string para filtar"
+;  [lista-compras mes]
+;  (if (= String (nth (map #(class (get % :data)) lista-compras) 1))
+;    (obter-compras-por-mes-string lista-compras mes)
+;    (obter-compras-por-mes-java-time lista-compras mes)))
 
 ;-----------------------------------------------------------
 (defn total-gasto-no-mes
@@ -90,7 +102,7 @@
   "Funcao que retorna o total por categoria"
   [lista-compras]
   (into (sorted-map) (map (fn [[categoria compras]]
-                            [categoria (total-gastos compras)])
+                            [categoria (total-gasto compras)])
                           (obtem-categorias lista-compras))))
 
 ;-----------------------------------------------------------

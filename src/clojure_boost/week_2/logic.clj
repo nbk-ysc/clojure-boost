@@ -4,7 +4,6 @@
             [clojure-boost.week_2.utils :as utils.week_2]))
 
 (defrecord compra [ID data valor estabelecimento categoria cartao])
-(defrecord compra-otimizada [^Long ID ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^Long cartao])
 
 ;-------------------------------------------------------------------------------------------------------------------
 (defn gera-id
@@ -20,9 +19,7 @@
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
   A Funcao espera receber uma compra e um vetor de compras"
   [compras nova-compra]
-  (->>
-    (conj compras (assoc nova-compra :ID (gera-id compras)))
-    ))
+    (conj compras (assoc nova-compra :ID (gera-id compras))))
 
 ;---------------------------------------------------------------------------------------------------------
 (defn lista-compras!
@@ -54,25 +51,9 @@
   (let [categoria nova-compra]
     (not (nil? (some #(= categoria %) utils.week_2/categorias)))))
 
-;(defn nome-do-estabelecimento-e-valido? [nova-compra]
-;  (if (string? nova-compra)
-;    (>= (count nova-compra) 2)
-;    (if-let [caracteres (count (get nova-compra :estabelecimento))]
-;      (>= caracteres 2)
-;      false)))
-
 (defn nome-do-estabelecimento-e-valido? [nova-compra]
   (let [caracteres nova-compra]
     (>= (count caracteres) 2)))
-
-;(defn valor-e-bigdec?
-;  "Valida se o valor é um bigDec positivo"
-;  [nova-compra]
-;  (if (decimal? nova-compra)
-;    (pos? nova-compra)
-;    (if-let [valor (get nova-compra :valor)]
-;      (valor-e-bigdec? valor)
-;      false)))
 
 (defn valor-e-bigdec?
   [nova-compra]
@@ -87,13 +68,8 @@
   (let [data nova-compra]
     (jt/not-after? data (jt/local-date))))
 
-;(defn numeracao-do-cartao-atende?
-;  [cartao]
-;  (if (int? cartao)
-;  (and (> cartao 0) (< cartao 10000000000000000))
-;  false))
-
 (defn numeracao-do-cartao-atende?
+  "Validacao da numeracao do cartao"
   [cartao]
   (and (> cartao 0) (< cartao 10000000000000000))
    )
