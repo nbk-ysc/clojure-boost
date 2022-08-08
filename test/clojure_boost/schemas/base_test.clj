@@ -16,7 +16,7 @@
                           (s/validate Atom 10)))))
 
 (deftest SeqInt-test
-  (testing "Quando é uma sequência inteira"
+  (testing "Quando é uma sequência contendo itens inteiro"
     (let [seq-valida '(0 9 2)]
       (is (= seq-valida
              (s/validate SeqInt seq-valida)))))
@@ -25,7 +25,7 @@
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"\bseq-int?\b"
                           (s/validate SeqInt [10]))))
 
-  (testing "Quando é uma sequência não inteira"
+  (testing "Quando é uma sequência não contendo itens inteiro"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo #"\bseq-int?\b"
                           (s/validate SeqInt '(10 "30" 10))))))
 
