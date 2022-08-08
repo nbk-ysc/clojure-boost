@@ -11,8 +11,10 @@
   [[categoria valor]]
   [categoria (calcula-total valor)])
 
-(->> lista/lista-compras
-     (group-by :categoria)
-     (map total-categoria)
-     (into {})
-     println)
+(defn calcula-e-lista-categoria [lista-compras]
+  (->> lista-compras
+       (group-by :categoria)
+       (map total-categoria)
+       (into {})))
+
+(calcula-e-lista-categoria lista/lista-compras)

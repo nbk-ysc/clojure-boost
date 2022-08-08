@@ -40,7 +40,7 @@
   (let [id  (gera-id lista-compras)
         nova-compra (assoc compra :id id)]
     (conj lista-compras nova-compra)))
-(comment (pprint (insere-compra lista-compras (->compra nil "2022-01-01" 10.00 "Ifood" "Alimentação" 1234123412341234))))
+(comment (pprint (insere-compra lista-compras (->compra 10 "2022-01-01" 10.00 "Ifood" "Alimentação" 1234123412341234))))
 
 ; Insere compra! no atomo
 (defn insere-compra! [repositorio-de-compras compra]
@@ -53,38 +53,23 @@
   (pprint repositorio-de-compras))
 (pprint (lista-compra! @repositorio-de-compras))
 
-; excluir compra na lista
+; Excluir compra na lista
 (defn exclui-compra [lista-compras id-compra]
   (->> lista-compras
        (remove #(= (:id %) id-compra))
        (vec)))
-(pprint (exclui-compra lista-compras 02))
+(pprint (exclui-compra lista-compras 2))
 
 ; Excluir compra! no atomo
 (defn exclui-compra! [repositorio-de-compras id-para-exclusao]
   (swap! repositorio-de-compras exclui-compra id-para-exclusao))
 (comment (pprint (exclui-compra! repositorio-de-compras 1)))
 
-
-
-
-
-
-
-
-;(delete-compra 5 lista-compra)
-
-;(insere-compra lista-compras compra)
-
-;(defn insere-compra [compra lista-de-compras]
-;  (let [id-gerado (:id (last lista-de-compras))
-;        nova-compra (assoc compra :id (+ 1 id-gerado))]
-;    (conj lista-de-compras nova-compra)))
-
-;(defn lista-compra! [repositorio-de-compras]
-;(pprint @repositorio-de-compras))
-;(defn lista-compras [lista]
-;  (pprint (map #(:id %) lista)))
-
+; Validar cadastro de compra
+(defn valida-compra [compra]
+  (let [data-valida (re-matches #"\d{4}-\d{2}-\d{2}" (:data compra))
+        valida-compra (> (:valor compra) 0)]
+    (if (and data-valida valida-compra))))
+(pprint (valida-compra (->compra 10 "2022-31-01" 10.00 "Ifood" "Alimentação" 1234123412341234)))
 
 

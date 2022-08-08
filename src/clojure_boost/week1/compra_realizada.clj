@@ -1,34 +1,43 @@
 (ns clojure-boost.week1.compra-realizada
-  (:require [clojure-boost.lista-compras :as lista]))
+  (:use clojure.pprint)
+  (:require [clojure-boost.week3.schemata.compra_client :as cs]
+            [schema.core :as s]))
 
-;Neste cenário, eu retorno um determinado cartão mas sem mostrar o nuúmero do cartao para a segurancça do cliente ou não?
+(s/set-compile-fn-validation! true)
 
-(def compra {:cartão {:data            "2022-01-01"
-                      :valor           129.90
-                      :estabelecimento "Outback"
-                      :categoria       "Alimentação"
-                      :cartão          1234123412341234}})
-
-(defn nova-compra [compra]
-  (println "Compra" compra))
-
-(nova-compra compra)
-
-;(def compra {:data            "2022-01-02"
-;              :valor           260.00
-;              :estabelecimento "Dentista"
-;              :categoria       "Saúde"
-;              :cartao          1234123412341234})
-;
-;(nova-compra compra)
+(s/def compra :- cs/CompraSchema {:id               01
+                                   :data            "2022-01-01"
+                                   :valor           129.90
+                                   :estabelecimento "Outback"
+                                   :categoria       "Alimentação"
+                                   :cartão          1234123412341234})
 
 
-;(println (map nova-compra compra))
+;(comment (pprint compra))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ;(defn nova-compra
 ;  [numerocartao cartoes]
 ;  (->> cartoes
 ;       (filter #(= (get % :cartao) numerocartao))
 ;       (map :valor)))
-
+;
 ;(println (nova-compra 1234123412341234 lista/lista-compras))
