@@ -26,7 +26,7 @@
 
 (s/def CompraSchemaVetor [CompraSchema])
 (s/def CompraSchemaSemId (dissoc CompraSchema :id))
-(s/def CompraSchemaComIdNulo (conj (dissoc CompraSchema :id) {:id (s/maybe Long)}))
+(s/def CompraSchemaComIdNulo (conj CompraSchemaSemId {:id (s/maybe Long)}))
 
 (s/def TotalGastoPorCategoria
   {Categoria
