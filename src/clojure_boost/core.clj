@@ -74,3 +74,12 @@
 
 ;Chamada da função nova-compra
 (logic.week_3/nova-compra (jt/local-date "2022-06-25") 10M "Saúde" "Saúde" 1234123412341234)
+
+;-----------------------------------------------------------------------------------------------------------
+;Bônus:
+;------------------------------------------------------------------------------------------------------------
+;Chamada da função que preenche o atomo com compras já com ID a partir do CSV de compras sem IDs
+(logic.week_2/inseri-id! utils.week_1/lista-compras utils.week_2/repositorio-de-compras)
+
+;Listar o conteudo do atomo
+(logic.week_2/lista-compras! utils.week_2/repositorio-de-compras)

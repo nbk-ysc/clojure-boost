@@ -12,8 +12,7 @@
                                     :cartao]})))
 
 (def repositorio-de-compras
-  (atom lista-compras-id)
-  )
+  (atom []))
 
 (def compras-vazio [])
 

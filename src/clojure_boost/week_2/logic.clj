@@ -1,7 +1,8 @@
 (ns clojure-boost.week_2.logic
   (:use [clojure.pprint])
   (:require [java-time :as jt]
-            [clojure-boost.week_2.utils :as utils.week_2]))
+            [clojure-boost.week_2.utils :as utils.week_2]
+            [clojure-boost.week_1.utils :as utils.week_1]))
 
 (defrecord compra [ID data valor estabelecimento categoria cartao])
 
@@ -93,3 +94,22 @@
   [compras nova-compra]
   (if (nil? (valida-compra nova-compra))
     (swap! compras insere-compra nova-compra)))
+
+(defn insere-compra-sem-validacao!
+  "Funcao para inserir uma nova compra no atomo."
+  [compras nova-compra]
+    (swap! compras insere-compra nova-compra))
+
+;---------------------------------------------------------------------------------------------------------
+
+(defn inseri-id!
+  "Funacao para preencher um atomo com ID, baseado num vetor com compras sem ID"
+  [lista-compras atomo]
+  (let [compra-a-validar (first (map #(get % :ID) lista-compras))]
+    (if (not (nil? compra-a-validar))
+      (do (swap! atomo conj (first lista-compras))
+          (inseri-id! (next lista-compras) atomo))
+      (if (> (count lista-compras) 0)
+        (do (insere-compra-sem-validacao! atomo (first lista-compras))
+            (inseri-id!(next lista-compras) atomo))
+        false))))

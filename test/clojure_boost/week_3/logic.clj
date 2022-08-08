@@ -26,8 +26,8 @@
                                       {:ID              0
                                        :data            nil
                                        :valor           100M
-                                       :categoria       "Casa"
                                        :estabelecimento "Amazon"
+                                       :categoria       "Casa"
                                        :cartao          1111222233334444}))))
 
   (testing "Validar um valor negativo"
@@ -36,8 +36,8 @@
                                       {:ID              0
                                        :data            (jt/local-date "2022-05-09")
                                        :valor           -100M
-                                       :categoria       "Casa"
                                        :estabelecimento "Amazon"
+                                       :categoria       "Casa"
                                        :cartao          1111222233334444}))))
 
   (testing "Validar um estabelecimento com string vazia"
@@ -46,8 +46,8 @@
                                       {:ID              0
                                        :data            (jt/local-date "2022-05-09")
                                        :valor           100M
-                                       :categoria       "Casa"
                                        :estabelecimento ""
+                                       :categoria       "Casa"
                                        :cartao          1111222233334444}))))
 
   (testing "Validar uma categoria inválida"
@@ -56,8 +56,8 @@
                                       {:ID              0
                                        :data            (jt/local-date "2022-05-09")
                                        :valor           100M
-                                       :categoria       "Casa do meu tio"
                                        :estabelecimento "Amazon"
+                                       :categoria       "Casa do meu tio"
                                        :cartao          1111222233334444}))))
 
   (testing "Validar uma cartão com númro inválido"
@@ -66,8 +66,8 @@
                                       {:ID              0
                                        :data            (jt/local-date "2022-05-09")
                                        :valor           100M
-                                       :categoria       "Casa do meu tio"
                                        :estabelecimento "Amazon"
+                                       :categoria       "Casa"
                                        :cartao          -1111222233334444})))))
 
 ;--------------------------------------------------------------------------------------------------------------

@@ -19,8 +19,8 @@
   {:ID              Long
    :data            DataValida
    :valor           BigDecPositivo
-   :categoria       CategoriaValida
    :estabelecimento NomeEstabelecimento
+   :categoria       CategoriaValida
    :cartao          CartaoAtende})
 
 (s/def CompraSchemaVetor [CompraSchema])
