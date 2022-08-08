@@ -6,58 +6,58 @@
 
 (deftest total-gasto-test
   (let [lista-compras
-        [{:data            "2022/02/10",
-          :valor           100.0,
+        [{:data            "10-02-1990",
+          :valor           100.0M,
           :estabelecimento "Posto de gasolina",
           :categoria       "Automóvel",
           :cartao          4321432143214321}
-         {:data            "2022/02/20",
-          :valor           200.0,
+         {:data            "10-02-1991",
+          :valor           200.0M,
           :estabelecimento "iFood",
           :categoria       "Alimentação",
           :cartao          4321432143214321}
-         {:data            "2022/03/01",
-          :valor           300.0,
+         {:data            "10-02-1996",
+          :valor           300.0M,
           :estabelecimento "Alura",
           :categoria       "Educação",
           :cartao          4321432143214321}]]
     (testing "Validando se o total gasto funciona"
-      (is (= (compras/total-gasto lista-compras) 600.0)))))
+      (is (= (compras/total-gasto lista-compras) 600.0M)))))
 
 
 (deftest agrupa-gastos-por-categoria-test
-  (let [lista-compras [{:data "2022/02/10",
-                        :valor 100.0,
+  (let [lista-compras [{:data "10-02-2020",
+                        :valor 100.0M,
                         :estabelecimento "Posto de gasolina",
                         :categoria "Automóvel",
                         :cartao 4321432143214321}
-                       {:data "2022/02/10",
-                        :valor 30000.0,
+                       {:data "10-02-2021",
+                        :valor 30000.0M,
                         :estabelecimento "BMW 320i",
                         :categoria "Automóvel",
                         :cartao 4321432143214321}
-                       {:data "2022/02/20",
-                        :valor 200.0,
+                       {:data "10-02-2021",
+                        :valor 200.0M,
                         :estabelecimento "iFood",
                         :categoria "Alimentação",
                         :cartao 4321432143214321}
-                       {:data "2022/02/20",
-                        :valor 400.0,
+                       {:data "10-02-2022",
+                        :valor 400.0M,
                         :estabelecimento "Outback",
                         :categoria "Alimentação",
                         :cartao 4321432143214321}
-                       {:data "2022/03/01",
-                        :valor 300.0,
+                       {:data "10-02-2019",
+                        :valor 300.0M,
                         :estabelecimento "Alura",
                         :categoria "Educação",
                         :cartao 4321432143214321}
-                       {:data "2022/03/01",
-                        :valor 200.0,
+                       {:data "10-02-2017",
+                        :valor 200.0M,
                         :estabelecimento "Escolinha do batatinha",
                         :categoria "Educação",
                         :cartao 4321432143214321}]]
     (testing "Validar que esteja somando os valores"
-      (is (= {"Automóvel" 30100.0, "Alimentação" 600.0, "Educação" 500.0}
+      (is (= {"Automóvel" 30100.0M, "Alimentação" 600.0M, "Educação" 500.0M}
              (compras/lista-todas-categorias lista-compras))))))
 
 
@@ -118,35 +118,69 @@
   (testing "Não deve gerar id com id inferior ao id da compra"
     (is (not (= (validacoes/gera-id compra) id-mapa-menos-um))))))
 
-;(deftest lista-compras-de-um-atomo?
-;  (let [atomo-de-teste (atom [{:id 2,
-;                               :data "10-10-1996",
-;                               :valor 100.0M,
-;                               :estabelecimento "Outback",
-;                               :categoria "Alimentação",
-;                               :cartao 1000000000000}
-;                              {:id 3,
-;                               :data "09-11-1990",
-;                               :valor 100.0M,
-;                               :estabelecimento "Outback",
-;                               :categoria "Casa",
-;                               :cartao 1000000000000}])
-;        atomo-valida {:id 2,
-;                       :data "10-10-1996",
-;                       :valor 100.0M,
-;                       :estabelecimento "Outback",
-;                       :categoria "Alimentação",
-;                       :cartao 1000000000000}
-;                      {:id 3,
-;                       :data "09-11-1990",
-;                       :valor 100.0M,
-;                       :estabelecimento "Outback",
-;                       :categoria "Casa",
-;                       :cartao 1000000000000}]
-;    (testing "Deve trazer uma lista com um atomo"
-;      (is (= atomo-valida
-;             (validacoes/lista-compras! atomo-de-teste))))))
+(deftest insere-compra-de-um-atomo
+  (let [lista-compra-valida [{:id 1,
+                              :data "10-10-1996",
+                              :valor 100.0M,
+                              :estabelecimento "Outback",
+                              :categoria "Alimentação",
+                              :cartao 1000000000000}]
+        lista-compra {:id 1
+                       :data "10-10-1996",
+                       :valor 100.0M,
+                       :estabelecimento "Outback",
+                       :categoria "Alimentação",
+                       :cartao 1000000000000}
+        repositorio-compra (atom [])]
+    (testing "Inserindo compra válida"
+      (is (= lista-compra-valida
+             (validacoes/insere-compra! lista-compra repositorio-compra))))))
 
+
+(deftest lista-compras-de-um-atomo?
+  (let [atomo-de-teste (atom [{:id 2,
+                               :data "10-10-1996",
+                               :valor 100.0M,
+                               :estabelecimento "Outback",
+                               :categoria "Alimentação",
+                               :cartao 1000000000000}
+                              {:id 3,
+                               :data "09-11-1990",
+                               :valor 100.0M,
+                               :estabelecimento "Outback",
+                               :categoria "Casa",
+                               :cartao 1000000000000}])]
+    (testing "Trazer nil na lista de atomos"
+      (is (nil?
+             (validacoes/lista-compras! atomo-de-teste))))))
+
+(deftest exclui-compras-de-um-atomo
+  (let [lista-compras-atomo (atom [{:id 2,
+                                    :data "10-10-1996",
+                                    :valor 100.0M,
+                                    :estabelecimento "Outback",
+                                    :categoria "Alimentação",
+                                    :cartao 1000000000000}
+                                   {:id 3,
+                                    :data "09-11-1990",
+                                    :valor 100.0M,
+                                    :estabelecimento "Outback",
+                                    :categoria "Casa",
+                                    :cartao 1000000000000}])
+        lista-compras-validacao [{:id 3,
+                                  :data "09-11-1990",
+                                  :valor 100.0M,
+                                  :estabelecimento "Outback",
+                                  :categoria "Casa",
+                                  :cartao 1000000000000}]]
+    (testing "Excluindo uma compra de um átomo"
+      (is (= lista-compras-validacao
+             (validacoes/exclui-compra! lista-compras-atomo 2))))
+    (testing "Excluindo uma compra de um átomo que não existe"
+      (is (= lista-compras-validacao
+             (validacoes/exclui-compra! lista-compras-atomo 20))))))
+
+;testes de compras
 (deftest total-gasto-por-cartao
   (let [lista-compras [{:data "01-01-2022",
                         :valor 129.9M,
@@ -237,7 +271,10 @@
                         :cartao          3939393939393939}]]
     (testing "Filtro com valor correto"
       (is (= assert-compra
-             (compras/filtra-compras-valor 150.0 100.0))))))
+             (compras/filtra-compras-valor 150.0 100.0))))
+    (testing "Filtro com valor correto"
+      (is (= ()
+             (compras/filtra-compras-valor 1544440.0 104440.0))))))
 
 
 

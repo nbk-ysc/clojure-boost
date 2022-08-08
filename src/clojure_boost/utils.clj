@@ -67,4 +67,5 @@
 (defn lista-compras []
   (->> (lista-compras-csv)
        (map #(update % :data formata-data-compras "yyyy-MM-dd" "dd-MM-yyyy"))
-       (map #(update % :valor bigdec))))
+       (map #(update % :valor bigdec))
+       vec))

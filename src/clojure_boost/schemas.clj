@@ -23,6 +23,9 @@
                    :categoria Categoria
                    :cartao Cartao})
 
+
+(def ListaCompraSchema [CompraSchema])
+
 (def CompraSchemaWithId [{
                           :id              Long
                           :data            DataCompra
@@ -31,10 +34,5 @@
                           :categoria       Categoria
                           :cartao          Cartao}])
 
-(def CompraSchemaWithIdOptional {
-                                  (s/optional-key :id) (s/maybe Long)
-                                  :data                DataCompra
-                                  :valor               ValorCompra
-                                  :estabelecimento     Estabelecimento
-                                  :categoria           Categoria
-                                  :cartao              Cartao})
+(def CompraSchemaWithIdOptional
+  (assoc CompraSchema (s/optional-key :id) (s/maybe Long)))
