@@ -4,7 +4,7 @@
             [clojure-boost.week_2.logic :as logic.week_2]
             [clojure-boost.week_1.utils :as utils.week_1]
             [clojure-boost.week_2.utils :as utils.week_2]
-            [clojure-boost.week-3.logic :as logic.week_3]
+            [clojure-boost.week_3.logic :as logic.week_3]
             [java-time :as jt]))
 
 ;---------------------------------------------------------------------------------------------------------
@@ -69,6 +69,8 @@
 ;---------------------------------------------------------------------------------------------------------
 ;Chamadas de funcoes da semana 3:
 ;---------------------------------------------------------------------------------------------------------
+;Chamada do record compra
+(logic.week_3/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234)
+
 ;Chamada da função nova-compra
-;(logic.week_3/nova-compra @utils.week_2/repositorio-de-compras (logic.week_3/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234))
-(logic.week_3/nova-compra (logic.week_3/->compra 0 (jt/local-date "2022-06-25") 10M "pp" "Casa" 1234123412341234))
+(logic.week_3/nova-compra (jt/local-date "2022-06-25") 10M "Saúde" "Saúde" 1234123412341234)
