@@ -1,22 +1,16 @@
 # clojure-boost
 
-A Clojure library designed to ... well, that part is up to you.
+Um projeto de estudo do bootcamp de QA sobre a linguagem Clojure e Datomic.
+Nesse projeto foi aplicado diversos conceitos das tecnologias dentro de um contexto prático de compras de cartão de crédito de clientes.
+
+## Requirements
+* Java;
+* Clojure e Repl instalado.
 
 ## Usage
+Deve ser usado para projetos de cadastro e validação de compras de clientes.
 
-FIXME
 
 ## License
 
-Copyright © 2022 FIXME
-
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 2.0 which is available at
-http://www.eclipse.org/legal/epl-2.0.
-
-This Source Code may also be made available under the following Secondary
-Licenses when the conditions for such availability set forth in the Eclipse
-Public License, v. 2.0 are satisfied: GNU General Public License as published by
-the Free Software Foundation, either version 2 of the License, or (at your
-option) any later version, with the GNU Classpath Exception which is available
-at https://www.gnu.org/software/classpath/license.html.
+Copyright © 2022 Alura & Nubank
