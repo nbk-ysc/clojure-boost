@@ -1,7 +1,7 @@
-(ns clojure-boost.schemas
+(ns clojure-boost.schemas.schemas
   (:require [schema.core :as s
              :include-macros true]
-            [clojure-boost.logic :as logic]))
+            [clojure-boost.validations.validations_compras :as logic]))
 
 (defn cartao-correto?
   [cartao]

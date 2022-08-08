@@ -1,6 +1,6 @@
 (ns clojure_boost.semana3_tests
   (:require [clojure.test :refer :all]
-            [clojure-boost.testes :refer :all]
+            [clojure-boost.testes_semana3 :refer :all]
             [clojure-boost.compras :as compras]
             [clojure-boost.loja :as validacoes]))
 

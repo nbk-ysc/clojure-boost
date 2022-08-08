@@ -2,7 +2,7 @@
   (:use clojure.pprint)
   (:require
     [clojure-boost.utils :as utils]
-    [clojure-boost.schemas :as schema]
+    [clojure-boost.schemas.schemas :as schema]
     [schema.core :as s
      :include-macros true]))
 

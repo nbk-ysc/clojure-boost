@@ -1,8 +1,8 @@
-(ns clojure-boost.testes
+(ns clojure-boost.testes_semana3
   (:use clojure.pprint)
   (:require [schema.core :as s
              :include-macros true]
-            [clojure-boost.schemas :as schema]))
+            [clojure-boost.schemas.schemas :as schema]))
 (s/set-fn-validation! true)
 
 (println "-----------------------VALIDANDO ENTRADA--------------------------------------")
@@ -34,16 +34,6 @@
 
 (def compra-temp [{:id 1, :data "23-10-1995", :valor 10.0M, :estabelecimento "Outback",
                    :categoria "Alimentação", :cartao 1000000000}])
-
-
-
-;(let [compra [{:id              0
-;               :data            "23-10-1996",
-;               :valor           10.0M,
-;               :estabelecimento "Outback",
-;               :categoria       "Alimentação",
-;               :cartao          10000000000000000}]]
-;  (pprint (validacoes/insere-compra compra compra-temp)))
 
 
 

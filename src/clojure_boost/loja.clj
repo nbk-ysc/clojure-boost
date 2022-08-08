@@ -3,11 +3,9 @@
   (:require [clojure-boost.utils :as utils]
             [schema.core :as s
              :include-macros true]
-            [clojure.string :as string]
-            [java-time :as jt]
-            [clojure-boost.schemas :as schema]
+            [clojure-boost.schemas.schemas :as schema]
             [clojure-boost.utils :as utils]
-            [clojure-boost.logic :as logic]))
+            [clojure-boost.validations.validations_compras :as logic]))
 (s/set-fn-validation! true)
 
 (def repositorio-de-compras (atom []))

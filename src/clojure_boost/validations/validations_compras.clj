@@ -1,4 +1,4 @@
-(ns clojure-boost.logic
+(ns clojure-boost.validations.validations_compras
   (:use clojure.pprint))
 
 
