@@ -1,7 +1,6 @@
 (ns week1.new-purchase
     (:require [week1.db :as l.db]))
 
-
 (defn new-purchase
   "This function receive parameters from one purchase and return its maps"
   [date value establishment category card]

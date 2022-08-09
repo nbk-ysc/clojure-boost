@@ -23,7 +23,7 @@
 ;----------------------------------------------------Before Refactor------------------------------------------------
 
 
-;it was working whitout threading last
+;it was working whitouth threading last
 
 ;(defn purchases-by-month
 ;  "This function returns all purchases in the selected month"

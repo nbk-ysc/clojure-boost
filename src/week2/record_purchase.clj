@@ -1,6 +1,5 @@
 (ns week2.record-purchase
-  (:use [clojure pprint])
-  (:require [week2.db :as l.db]))
+  (:use [clojure pprint]))
 
 (defrecord Purchase
   "This record its a model for one purchase"
