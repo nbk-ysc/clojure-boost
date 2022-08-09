@@ -102,14 +102,14 @@
 
 ;---------------------------------------------------------------------------------------------------------
 
-(defn inseri-id!
+(defn insere-id!
   "Funacao para preencher um atomo com ID, baseado num vetor com compras sem ID"
   [lista-compras atomo]
   (let [compra-a-validar (first (map #(get % :ID) lista-compras))]
     (if (not (nil? compra-a-validar))
       (do (swap! atomo conj (first lista-compras))
-          (inseri-id! (next lista-compras) atomo))
+          (insere-id! (next lista-compras) atomo))
       (if (> (count lista-compras) 0)
         (do (insere-compra-sem-validacao! atomo (first lista-compras))
-            (inseri-id!(next lista-compras) atomo))
+            (insere-id!(next lista-compras) atomo))
         false))))
