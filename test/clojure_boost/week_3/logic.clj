@@ -68,6 +68,20 @@
                                        :valor           100M
                                        :estabelecimento "Amazon"
                                        :categoria       "Casa"
-                                       :cartao          -1111222233334444})))))
+                                       :cartao          -1111222233334444}))))
+
+  (testing "Validando de um schema de compra com ID"
+    (let [validacao-schema (s/validate CompraSchema {:data            (jt/local-date "2022-04-10"),
+                                                     :ID              57
+                                                     :valor           85.0M,
+                                                     :estabelecimento "Alura",
+                                                     :categoria       "Educação",
+                                                     :cartao          3939393939393939})]
+      (is (= validacao-schema {:data            (jt/local-date "2022-04-10"),
+                               :valor           85.0M,
+                               :estabelecimento "Alura",
+                               :categoria       "Educação",
+                               :cartao          3939393939393939,
+                               :ID              57})))))
 
 ;--------------------------------------------------------------------------------------------------------------

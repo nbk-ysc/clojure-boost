@@ -70,7 +70,7 @@
 ;Chamadas de funcoes da semana 3:
 ;---------------------------------------------------------------------------------------------------------
 ;Chamada do record compra
-(logic.week_3/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234)
+;(logic.week_3/->compra 0 (jt/local-date "2022-06-25") 10.0M "pp" "Saúde" 1234123412341234)
 
 ;Chamada da função nova-compra
 (logic.week_3/nova-compra (jt/local-date "2022-06-25") 10M "Saúde" "Saúde" 1234123412341234)

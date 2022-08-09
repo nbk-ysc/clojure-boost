@@ -19,12 +19,12 @@
                           :estabelecimento "Alura",
                           :categoria       "Automóvel",
                           :cartao          3939393939393939}
-                         {:ID              20,
-                          :data            "2022-04-10",
-                          :valor           100.00M,
-                          :estabelecimento "LM",
-                          :categoria       "Saúde",
-                          :cartao          1234123412341234}]) 600.00M)))
+                         {:data            "2022-04-10",
+                          :valor           100.0M,
+                          :estabelecimento "Alura",
+                          :categoria       "Educação",
+                          :cartao          3939393939393939,
+                          :ID              57}]) 600.00M)))
 
   (testing "Calcula o total de gastos de algumas compras"
     (is (not (= (total-gasto [{:ID              18,

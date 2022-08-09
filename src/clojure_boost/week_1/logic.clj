@@ -103,3 +103,9 @@
   (->> lista-compras
        (map #(update % :data jt/local-date))))
 
+(defn convert-bigdec
+  "Funcao para converter numeros para formato bigdec"
+  [lista-compras]
+  (->> lista-compras
+       (map #(update % :valor bigdec))))
+

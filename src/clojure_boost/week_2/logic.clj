@@ -95,11 +95,6 @@
   (if (nil? (valida-compra nova-compra))
     (swap! compras insere-compra nova-compra)))
 
-(defn insere-compra-sem-validacao!
-  "Funcao para inserir uma nova compra no atomo."
-  [compras nova-compra]
-    (swap! compras insere-compra nova-compra))
-
 ;---------------------------------------------------------------------------------------------------------
 
 (defn insere-id!
@@ -110,6 +105,7 @@
       (do (swap! atomo conj (first lista-compras))
           (insere-id! (next lista-compras) atomo))
       (if (> (count lista-compras) 0)
-        (do (insere-compra-sem-validacao! atomo (first lista-compras))
+        (do (insere-compra! atomo (first lista-compras))
             (insere-id!(next lista-compras) atomo))
-        false))))
+        (do (pprint "Conversão finalizada com sucesso!")
+          false)))))
