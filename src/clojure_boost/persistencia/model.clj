@@ -4,18 +4,18 @@
                      :db/valueType   :db.type/long
                      :db/cardinality :db.cardinality/one}
                     {:db/ident       :compra/data
-                     :db/valueType   :db.type/instant
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
-                    {:db/ident       :student/valor
+                    {:db/ident       :compra/valor
                      :db/valueType   :db.type/bigdec
-                     :db/cardinality :db.cardinality/one
-                     :db/unique      :db.unique/identity}
-                    {:db/ident       :semester/estabelecimento
+                     :db/cardinality :db.cardinality/one}
+                    {:db/ident       :compra/estabelecimento
                      :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
-                    {:db/ident       :semester/categoria
+                    {:db/ident       :compra/categoria
                      :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
-                    {:db/ident       :semester/cartao
+                    {:db/ident       :compra/cartao
                      :db/valueType   :db.type/long
                      :db/cardinality :db.cardinality/one}])
+

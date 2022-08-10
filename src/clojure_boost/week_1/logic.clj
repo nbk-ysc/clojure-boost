@@ -108,4 +108,3 @@
   [lista-compras]
   (->> lista-compras
        (map #(update % :valor bigdec))))
-
