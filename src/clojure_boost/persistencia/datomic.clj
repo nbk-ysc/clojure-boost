@@ -30,15 +30,15 @@
 (insere-compra! {:compra/ID              2
                  :compra/data            "2022-06-25",
                  :compra/valor           10.0M,
-                 :compra/estabelecimento "Saúde",
+                 :compra/estabelecimento "Cursos",
                  :compra/categoria       "Saúde",
-                 :compra/cartao          12341234123412})
+                 :compra/cartao          1})
 
 ;-----------------------------------------------------------------------------------------------------------------------
 (defn lista-compras!
   "Função para listar todas as compras do banco"
   [db]
-  (d/q '[:find ?entidade
+  (d/q '[:find (pull ?entidade [*])
          :where [?entidade :compra/ID]] db))
 
 (lista-compras! db)
@@ -48,11 +48,30 @@
 (defn lista-compras-por-cartao!
   "Função para listar todas as compras do banco"
   [db cartao]
-  (d/q '[:find ?entidade
+  (d/q '[:find (pull ?entidade [*])
          :in $ ?cartao-a-ser-buscado
          :where [?entidade :compra/cartao ?cartao-a-ser-buscado]] db cartao))
 
-(lista-compras-por-cartao! db 12341234123412)
+(lista-compras-por-cartao! db 1)
+
+;-----------------------------------------------------------------------------------------------------------------------
+;Drafts
+
+(defn lista-de-cartoes!
+  "Função para listar os cartões"
+  [db]
+  (d/q '[:find ?cartoes
+         :where [_ :compra/estabelecimento ?cartoes]] db))
+
+(defn lista-de-brinks!
+  "Função para listar os cartões"
+  [db]
+  (d/q '[:find ?cartao ?estabelecimento
+         :keys compra/cartao, compra/estabelecimento
+         :where [?e-one :compra/estabelecimento ?estabelecimento]
+                [?e-one :compra/cartao ?cartao]] db))
+
+(lista-de-brinks! db)
 
 
 
