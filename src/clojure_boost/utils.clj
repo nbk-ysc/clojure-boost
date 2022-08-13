@@ -1,6 +1,7 @@
 (ns clojure-boost.utils
   (:require [ultra-csv.core :as csv]
             [schema.core :as s]
+            [java-time :as java-time]
             [clojure-boost.schemas.base :as schemas.base]))
 
 (defn ler-csv
@@ -25,3 +26,8 @@
          (map :id)
          numero-maximo-da-lista-incrementado)
     1))
+
+(defn convert-date-inst-date
+  [data]
+  (->> (.format (java.text.SimpleDateFormat. "yyyy-MM-dd") data)
+       (java-time/local-date)))
