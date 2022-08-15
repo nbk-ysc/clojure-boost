@@ -108,3 +108,9 @@
   [lista-compras]
   (->> lista-compras
        (map #(update % :valor bigdec))))
+
+(defn convert-bigdec-db
+  "Funcao para converter numeros para formato bigdec"
+  [lista-compras]
+  (->> lista-compras
+       (map #(update % :compra/valor bigdec))))

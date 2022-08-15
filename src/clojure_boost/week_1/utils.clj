@@ -13,12 +13,22 @@
                                    :categoria,
                                    :cartao]}))))
 
+(def lista-compras-db
+  (logic.week_1/convert-bigdec-db
+      (csv/read-csv "files/compras.csv"
+                    {:field-names [:compra/data,
+                                   :compra/valor,
+                                   :compra/estabelecimento,
+                                   :compra/categoria,
+                                   :compra/cartao]})))
+
 (def cartoes
-  (logic.week_1/convert-datas-cartao (csv/read-csv "files/cartoes.csv"
-                                                   {:field-names [:numero,
-                                                                  :cvv,
-                                                                  :validade,
-                                                                  :limite,
-                                                                  :cliente]})))
+  (logic.week_1/convert-datas-cartao
+    (csv/read-csv "files/cartoes.csv"
+                  {:field-names [:numero,
+                                 :cvv,
+                                 :validade,
+                                 :limite,
+                                 :cliente]})))
 
 

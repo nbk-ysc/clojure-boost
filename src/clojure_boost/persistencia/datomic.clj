@@ -1,6 +1,9 @@
 (ns clojure-boost.persistencia.datomic
+  (:use clojure.pprint)
   (:require [datomic.api :as d]
-            [clojure-boost.persistencia.model :as persistencia.model]))
+            [clojure-boost.persistencia.model :as persistencia.model]
+            [clojure-boost.week_1.utils :as utils.week_1]
+            [clojure-boost.week_2.logic :as logic.week_2]))
 
 (def db-uri "datomic:dev://localhost:4334/clojure-boost")
 
@@ -21,27 +24,45 @@
 (apaga-banco!)
 
 ;-----------------------------------------------------------------------------------------------------------------------
-(defn insere-compra!
-  "Função para inserir uma compra no Datomic"
-  [nova-compra]
-  (d/transact (cria-conexao!) [nova-compra])
-  )
-
-(insere-compra! {:compra/ID              2
-                 :compra/data            "2022-06-25",
-                 :compra/valor           10.0M,
-                 :compra/estabelecimento "Cursos",
-                 :compra/categoria       "Saúde",
-                 :compra/cartao          1})
-
-;-----------------------------------------------------------------------------------------------------------------------
 (defn lista-compras!
   "Função para listar todas as compras do banco"
   [db]
   (d/q '[:find (pull ?entidade [*])
          :where [?entidade :compra/ID]] db))
 
-(lista-compras! db)
+(count (lista-compras! db))
+
+;-----------------------------------------------------------------------------------------------------------------------
+
+(defn insere-compra!
+  "Função para inserir uma compra no Datomic"
+  [nova-compra]
+  (d/transact (cria-conexao!) [nova-compra])
+  )
+
+(defn insere-compras-com-id!
+  "Funacao para preencher um atomo com ID, baseado num vetor com compras sem ID"
+  [lista-compras]
+  (let [compra-a-validar (first (map #(get % :ID) lista-compras))]
+    (if (not (nil? compra-a-validar))
+      (do (def db (d/db (cria-conexao!)))
+          (insere-compra! (assoc (first lista-compras) :compra/ID (logic.week_2/gera-id (lista-compras! db))))
+          (insere-compras-com-id! (next lista-compras)))
+      (if (> (count lista-compras) 0)
+        (do (def db (d/db (cria-conexao!)))
+            (insere-compra! (assoc (first lista-compras) :compra/ID (logic.week_2/gera-id (lista-compras! db))))
+            (insere-compras-com-id! (next lista-compras)))
+        (do (pprint "Conversão finalizada com sucesso!")
+            false)))))
+
+(insere-compras-com-id! utils.week_1/lista-compras-db)
+
+(insere-compra! {:compra/data            "2022-06-25",
+                 :compra/valor           10.0M,
+                 :compra/estabelecimento "Cursos",
+                 :compra/categoria       "Saúde",
+                 :compra/cartao          1
+                 :compra/ID              2})
 
 ;-----------------------------------------------------------------------------------------------------------------------
 
@@ -52,7 +73,7 @@
          :in $ ?cartao-a-ser-buscado
          :where [?entidade :compra/cartao ?cartao-a-ser-buscado]] db cartao))
 
-(lista-compras-por-cartao! db 1)
+(lista-compras-por-cartao! db 1234123412341234)
 
 ;-----------------------------------------------------------------------------------------------------------------------
 ;Drafts
@@ -69,7 +90,7 @@
   (d/q '[:find ?cartao ?estabelecimento
          :keys compra/cartao, compra/estabelecimento
          :where [?e-one :compra/estabelecimento ?estabelecimento]
-                [?e-one :compra/cartao ?cartao]] db))
+         [?e-one :compra/cartao ?cartao]] db))
 
 (lista-de-brinks! db)
 

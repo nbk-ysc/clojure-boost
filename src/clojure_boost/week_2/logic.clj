@@ -20,7 +20,7 @@
   "Funcao para inserir uma nova compra e atribuir um ID para essa compra caso seja necessario.
   A Funcao espera receber uma compra e um vetor de compras"
   [compras nova-compra]
-    (conj compras (assoc nova-compra :ID (gera-id compras))))
+  (conj compras (assoc nova-compra :ID (gera-id compras))))
 
 ;---------------------------------------------------------------------------------------------------------
 (defn lista-compras!
@@ -73,7 +73,7 @@
   "Validacao da numeracao do cartao"
   [cartao]
   (and (> cartao 0) (< cartao 10000000000000000))
-   )
+  )
 
 (defn valida-compra
   "Funcao para validar se uma compra pode ser inserida
@@ -106,6 +106,6 @@
           (insere-id! (next lista-compras) atomo))
       (if (> (count lista-compras) 0)
         (do (insere-compra! atomo (first lista-compras))
-            (insere-id!(next lista-compras) atomo))
+            (insere-id! (next lista-compras) atomo))
         (do (pprint "Conversão finalizada com sucesso!")
-          false)))))
+            false)))))
