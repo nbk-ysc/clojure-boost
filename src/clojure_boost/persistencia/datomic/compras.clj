@@ -15,6 +15,7 @@
    :compra/categoria       categoria,
    :compra/cartao          cartao})
 
+
 (defn insere-compra! [db compra]
     (d/transact db [compra]))
 
@@ -28,11 +29,12 @@
                       :compra/cartao])
          :in $ ?cartao
          :where [?id :compra/cartao ?cartao]] db cartao))
+
 ;insere uma compra nova
 ;(pprint (insere-compra! conn (insere-compra 4, "11-11-1990", 100.11M, "Outback", "Alimentação", 2939393939393939)))
 
 ;Lista todas as compras
-(pprint (lista-compras! (d/db conn)))
+;(pprint (lista-compras! (d/db conn)))
 
 ;Lista por cartão
 (pprint (lista-compras-por-cartao! (d/db conn) 2939393939393939))

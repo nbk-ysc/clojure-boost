@@ -37,7 +37,5 @@
   (d/transact conn schema))
 
 
-
-
 (defn apaga-banco []
   (d/delete-database db-url))
