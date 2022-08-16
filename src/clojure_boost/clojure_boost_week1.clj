@@ -1,6 +1,6 @@
 (ns clojure-boost.clojure_boost_week1)
 (require '[clojure-boost.mock :as mock])
-(require '[clojure-boost.functions-compra :as functions])
+(require '[clojure-boost.functions_compra :as functions])
 
 ;exercicio 1
 (println "Exercicio 1")

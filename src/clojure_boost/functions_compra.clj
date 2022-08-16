@@ -1,4 +1,4 @@
-(ns clojure-boost.functions-compra)
+(ns clojure-boost.functions_compra)
 (require '[clojure-boost.filters :as filtro])
 
 (defn listar-compras

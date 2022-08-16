@@ -35,19 +35,29 @@
 
 (def Cartao-Valido (s/pred verifica-cartao-valido 'cartao))
 
-(def ComprasSchema "Define Schema de Compra"
-{:id Id-Valido :data s/Str :valor s/Int :estabelecimento Estabelecimento-Valido :categoria Categoria-Valida :cartao Cartao-Valido})
+(defn verifica-valor-valido
+  "Verifica o valor valido da compra"
+  [valor]
+  (if (pos? valor)
+    (decimal? valor)
+    false
+    )
+  )
 
+(def Valor-Valido (s/pred verifica-valor-valido 'valor))
+
+(def ComprasSchema "Define Schema de Compra"
+{:id Id-Valido :data s/Str :valor Valor-Valido :estabelecimento Estabelecimento-Valido :categoria Categoria-Valida :cartao Cartao-Valido})
 
 (s/defn nova-compra :- ComprasSchema
   "Valida Schema de Compras"
     [id :- Id-Valido
     data :- s/Str
-    valor :- s/Int
+    valor :- Valor-Valido
     estabelecimento :- Estabelecimento-Valido
     categoria :- Categoria-Valida
     cartao :- Cartao-Valido]
   {:id id, :data data, :valor valor, :estabelecimento estabelecimento, :categoria categoria, :cartao cartao}
   )
 
-(p/pprint (nova-compra 1, "26/02/2022", 5, "Starbucks", "Alimentação", 1234123412341234))
+(println (nova-compra 1, "26/02/2022", 5M, "Starbucks", "Alimentação", 1234123412341234))
