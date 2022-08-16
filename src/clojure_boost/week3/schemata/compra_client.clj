@@ -34,9 +34,10 @@
 (get testes 1)
 
 (defn valida-categoria [categoria]
-  (if (nil? (some #(= categoria %) testes)) false true)); perguntar para o Cácio!!
+  (if (some #(= categoria %) testes) true false)
+  (pprint "teste")); perguntar para o Cácio!!
 
-(valida-categoria "Ifood")
+(valida-categoria "Alimentacao")
 
 (defn dois-caracteres? [estabelecimento]
   (>= (count estabelecimento) 2))
@@ -77,7 +78,7 @@
    cartao :- ValidaCartaoAtende]
   {:id id, :data data, :valor valor, :estabelecimento estabelecimento, :categoria categoria :cartao cartao})
 
-(pprint (nova-compra 02, "2022-01-01", 129M, "CA", "Automóvel", 1231231234123123))
+(pprint (nova-compra 02, "2022-01-01", 129, "CA", "Automóvel", 1231231234123123))
 
 ;----------------------------------------------------------------------------------------------------------
 

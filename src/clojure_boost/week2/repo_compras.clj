@@ -5,7 +5,7 @@
 (comment (pprint repositorio-de-compras))
 
 (defrecord compra [^Long id ^String data ^BigDecimal valor ^String estabelecimento ^String categoria ^long cartao])
-(comment (pprint (->compra nil "2022-01-01" 10.00 "Ifood" "Alimentação" 1234123412341234)))
+(comment (pprint (->compra nil "2022-01-01" 100.00 "Ifood" "Alimentação" 1234123412341234)))
 
 (def lista-compras
   [{:id              02
@@ -45,7 +45,7 @@
 ; Insere compra! no atomo
 (defn insere-compra! [repositorio-de-compras compra]
   (swap! repositorio-de-compras insere-compra compra))
-(comment (pprint (insere-compra! repositorio-de-compras (->compra 10 "2022-01-01" 10.00 "Ifood" "Alimentação" 1234123412341234))))
+(comment (pprint (insere-compra! repositorio-de-compras (->compra 10 "2022-01-01" 100.00 "Ifood" "Alimentação" 1234123412341234))))
 (pprint @repositorio-de-compras)
 
 ; listar compras do átomo
@@ -58,12 +58,12 @@
   (->> lista-compras
        (remove #(= (:id %) id-compra))
        (vec)))
-(pprint (exclui-compra lista-compras 2))
+(pprint (exclui-compra lista-compras 1))
 
 ; Excluir compra! no atomo
 (defn exclui-compra! [repositorio-de-compras id-para-exclusao]
   (swap! repositorio-de-compras exclui-compra id-para-exclusao))
-(comment (pprint (exclui-compra! repositorio-de-compras 1)))
+(comment (pprint (exclui-compra! repositorio-de-compras 2)))
 
 ; Validar cadastro de compra
 (defn valida-compra [compra]

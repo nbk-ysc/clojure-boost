@@ -12,4 +12,4 @@
                  (and (>= (:valor compra) minimo)
                       (<= (:valor compra) maximo))))))
 
-(println (compras-filtro 100 1000 lista/lista-compras))
+(println (compras-filtro 100 1000 lista/lista-compras))Ú

@@ -14,30 +14,3 @@
 
 
 ;(comment (pprint compra))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-;(defn nova-compra
-;  [numerocartao cartoes]
-;  (->> cartoes
-;       (filter #(= (get % :cartao) numerocartao))
-;       (map :valor)))
-;
-;(println (nova-compra 1234123412341234 lista/lista-compras))
