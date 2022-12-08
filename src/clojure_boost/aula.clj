@@ -34,12 +34,28 @@
        (map :valor)
        (reduce +)))
 
+(defn mes-igual?
+  [mes compra]
+  (let [data (clojure.string/split (:data compra) #"-")
+        mes-data (Long/valueOf (get data 1))]
+    (= mes mes-data)))
+
 (defn compras-mes
   [mes compras]
-  (+ 1 1))
+  (filter #(mes-igual? mes %) compras))
 
+(defn total-compras-mes
+  [mes compras]
+  (->> (compras-mes mes compras)
+       (total-gasto)))
+
+(defn gastos-por-categoria [compras]
+  {:saude 10})
 
 (println (nova-compra "2022-12-07" 47.50 "loja" "livro" 7567))
 (println (lista-compras))
 (println (total-gasto (lista-compras)))
+(println (mes-igual? 1 (get (lista-compras) 1)))
 (println (compras-mes 1 (lista-compras)))
+(println (total-compras-mes 1 (lista-compras)))
+(println (gastos-por-categoria (lista-compras)))
