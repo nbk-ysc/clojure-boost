@@ -70,7 +70,8 @@
 (defn compra-em-intervalo?
   [compra min max]
   (if (and (mes-menor-igual? (mes-data max) compra) (mes-maior-igual? (mes-data min) compra))
-    true))
+    true
+    false))
 
 (defn compras-intervalo
   [compras min max]
@@ -83,4 +84,5 @@
 (println (compras-mes 1 (lista-compras)))
 (println (total-compras-mes 1 (lista-compras)))
 (println (gastos-por-categoria (lista-compras)))
+(println (compra-em-intervalo? (get (lista-compras) 1) "2022-01-01" "2022-05-10"))
 (println (compras-intervalo (lista-compras) "2022-03-01" "2022-04-10"))
