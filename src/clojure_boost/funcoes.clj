@@ -1,6 +1,7 @@
 (ns clojure-boost.funcoes
-  (:require clojure.java.io
-            clojure.data.csv))
+  (:require clojure.data.csv
+            clojure.java.io
+            clojure.string))
 
 (defn nova-compra
   [[data valor estabelecimento categoria cartao]]
@@ -29,3 +30,8 @@
          (map #(Float/parseFloat %))
          (reduce +)
          (float))))
+
+(defn busca-compras-do-mes
+  [mes lista-de-compras]
+  ;; (into [] (filter #(= mes (:data %)) lista-de-compras))
+  (into [] (filter #(clojure.string/includes? (subs (:data %) 5 7) (str mes)) lista-de-compras)))
