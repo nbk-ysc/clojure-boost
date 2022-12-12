@@ -39,3 +39,10 @@
 (defn total-gasto-no-mes
   [mes]
   (total-gasto (busca-compras-do-mes mes (lista-compras))))
+
+(defn total-gasto-por-categoria
+  [compras]
+  (->> compras
+       (group-by #(get % :categoria))
+       (map (fn [[key vals]] {key (total-gasto vals)}))
+       (into {})))
