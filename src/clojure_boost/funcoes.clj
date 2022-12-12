@@ -35,3 +35,7 @@
   [mes lista-de-compras]
   ;; (into [] (filter #(= mes (:data %)) lista-de-compras))
   (into [] (filter #(clojure.string/includes? (subs (:data %) 5 7) (str mes)) lista-de-compras)))
+
+(defn total-gasto-no-mes
+  [mes]
+  (total-gasto (busca-compras-do-mes mes (lista-compras))))
