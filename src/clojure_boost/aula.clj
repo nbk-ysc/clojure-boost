@@ -45,14 +45,6 @@
   [mes compra]
   (= mes (mes-compra compra)))
 
-(defn mes-maior-igual?
-  [mes compra]
-  (>= mes (mes-compra compra)))
-
-(defn mes-menor-igual?
-  [mes compra]
-  (<= mes (mes-compra compra)))
-
 (defn compras-mes
   [mes compras]
   (filter #(mes-igual? mes %) compras))
@@ -67,15 +59,15 @@
         chaves (keys map-categoria)]
     (reduce (fn [acc curr] (assoc acc curr (total-gasto (get map-categoria curr)))) {} chaves)))
 
-(defn compra-em-intervalo?
+(defn valor-compra-em-intervalo?
   [compra min max]
-  (if (and (mes-menor-igual? (mes-data max) compra) (mes-maior-igual? (mes-data min) compra))
+  (if (and (<= (:valor compra) max) (>= (:valor compra) min))
     true
     false))
 
 (defn compras-intervalo
   [compras min max]
-  (filter #(compra-em-intervalo? % min max) compras))
+  (filter #(valor-compra-em-intervalo? % min max) compras))
 
 (println (nova-compra "2022-12-07" 47.50 "loja" "livro" 7567))
 (println (lista-compras))
@@ -84,5 +76,5 @@
 (println (compras-mes 1 (lista-compras)))
 (println (total-compras-mes 1 (lista-compras)))
 (println (gastos-por-categoria (lista-compras)))
-(println (compra-em-intervalo? (get (lista-compras) 1) "2022-01-01" "2022-05-10"))
+(println (valor-compra-em-intervalo? (get (lista-compras) 1) "2022-01-01" "2022-05-10"))
 (println (compras-intervalo (lista-compras) "2022-03-01" "2022-04-10"))
