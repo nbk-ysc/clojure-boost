@@ -46,3 +46,10 @@
        (group-by #(get % :categoria))
        (map (fn [[key vals]] {key (total-gasto vals)}))
        (into {})))
+
+(defn filtrar-compras-por-intervalo-de-valores
+  [valor-minimo valor-maximo]
+  (let [compras (lista-compras)]
+    (filter
+     #(and (>= (Float/parseFloat (:valor %)) valor-minimo)
+           (<= (Float/parseFloat (:valor %)) valor-maximo)) compras)))
