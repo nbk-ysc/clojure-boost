@@ -34,11 +34,24 @@
        (map :valor)
        (reduce +)))
 
+(defn mes-data [data]
+  (let [data-split (clojure.string/split data #"-")]
+    (Long/valueOf (get data-split 1))))
+
+(defn mes-compra [compra]
+  (mes-data (:data compra)))
+
 (defn mes-igual?
   [mes compra]
-  (let [data (clojure.string/split (:data compra) #"-")
-        mes-data (Long/valueOf (get data 1))]
-    (= mes mes-data)))
+  (= mes (mes-compra compra)))
+
+(defn mes-maior-igual?
+  [mes compra]
+  (>= mes (mes-compra compra)))
+
+(defn mes-menor-igual?
+  [mes compra]
+  (<= mes (mes-compra compra)))
 
 (defn compras-mes
   [mes compras]
@@ -50,7 +63,18 @@
        (total-gasto)))
 
 (defn gastos-por-categoria [compras]
-  {:saude 10})
+  (let [map-categoria (group-by :categoria compras)
+        chaves (keys map-categoria)]
+    (reduce (fn [acc curr] (assoc acc curr (total-gasto (get map-categoria curr)))) {} chaves)))
+
+(defn compra-em-intervalo?
+  [compra min max]
+  (if (and (mes-menor-igual? (mes-data max) compra) (mes-maior-igual? (mes-data min) compra))
+    true))
+
+(defn compras-intervalo
+  [compras min max]
+  (filter #(compra-em-intervalo? % min max) compras))
 
 (println (nova-compra "2022-12-07" 47.50 "loja" "livro" 7567))
 (println (lista-compras))
@@ -59,3 +83,4 @@
 (println (compras-mes 1 (lista-compras)))
 (println (total-compras-mes 1 (lista-compras)))
 (println (gastos-por-categoria (lista-compras)))
+(println (compras-intervalo (lista-compras) "2022-03-01" "2022-04-10"))
