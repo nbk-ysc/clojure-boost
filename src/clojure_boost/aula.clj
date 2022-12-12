@@ -76,5 +76,5 @@
 (println (compras-mes 1 (lista-compras)))
 (println (total-compras-mes 1 (lista-compras)))
 (println (gastos-por-categoria (lista-compras)))
-(println (valor-compra-em-intervalo? (get (lista-compras) 1) "2022-01-01" "2022-05-10"))
-(println (compras-intervalo (lista-compras) "2022-03-01" "2022-04-10"))
+(println (valor-compra-em-intervalo? (get (lista-compras) 1) 100 500))
+(println (compras-intervalo (lista-compras) 100 500))
