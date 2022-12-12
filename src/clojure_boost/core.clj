@@ -137,11 +137,15 @@
 (defn agrupa-total-gastos-por-categoria
   "Calcula o total de gastor por categoria"
   [compras]
-  (reduce + :valor compras)
+  (->> compras
+       agrupa-compras-por-categoria
+       (map (fn [[key vals]] {key (total-gasto vals)}))
+       (into {}))
   )
+
 ;(println (lista-compras))
 ;(println (lista-compras-mes (lista-compras) 1))
 ;(println (total-gasto-no-mes (lista-compras) 2))
 ;(println (total-gasto (lista-compras)))
 ;(println (agrupa-compras-por-categoria (lista-compras)))
-;(println (agrupa-total-gastos-por-categoria (agrupa-compras-por-categoria (lista-compras))))
+;(println (agrupa-total-gastos-por-categoria (lista-compras)))
