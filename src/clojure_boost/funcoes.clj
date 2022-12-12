@@ -21,3 +21,11 @@
          (rest)
          (map nova-compra)
          (into []))))
+
+(defn total-gasto [compras]
+  (let [valores (into [] (map :valor compras))]
+
+    (->> valores
+         (map #(Float/parseFloat %))
+         (reduce +)
+         (float))))
