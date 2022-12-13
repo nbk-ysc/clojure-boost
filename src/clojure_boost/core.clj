@@ -58,9 +58,11 @@
   (= cartao (:cartao compras)))
 
 (defn total-gasto-no-mes [mes cartao compras]
-  (->>(compras-mes mes compras)
-      (filter (fn [x] cartao-igual? cartao x))
-      (reduce +))
+   (let[mapas (compras-mes mes compras)]
+  (->> mapas
+       (filter (fn [x] cartao-igual? cartao x))
+       (map :valor)
+       (reduce +)))
   )
 
 
@@ -70,3 +72,5 @@
        (group-by  (fn [x] (get x :categoria)))
        (map (fn [[key vals]] {key (total-gasto vals)}))
        (into {})))
+
+
