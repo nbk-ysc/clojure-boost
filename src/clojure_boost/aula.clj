@@ -61,9 +61,7 @@
 
 (defn valor-compra-em-intervalo?
   [compra min max]
-  (if (and (<= (:valor compra) max) (>= (:valor compra) min))
-    true
-    false))
+  (>= max (:valor compra) min))
 
 (defn compras-intervalo
   [compras min max]
