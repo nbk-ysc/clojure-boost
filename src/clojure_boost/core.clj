@@ -67,6 +67,6 @@
 (defn total-gasto-por-categoria
   [compras]
   (->> compras
-       (group-by #(get % :categoria))
+       (group-by  (fn [x] (get x :categoria)))
        (map (fn [[key vals]] {key (total-gasto vals)}))
        (into {})))
