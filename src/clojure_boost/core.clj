@@ -49,7 +49,7 @@
 
 (defn compras-mes
   [mes compras]
-  (filter (fn [x] mes-igual? mes x) compras))
+  (filter (fn [x] (mes-igual? mes x)) compras))
 
 ; teste compras-mes
 (compras-mes 1 (lista-compras))
@@ -60,7 +60,7 @@
 (defn total-gasto-no-mes [mes cartao compras]
    (let[mapas (compras-mes mes compras)]
   (->> mapas
-       (filter (fn [x] cartao-igual? cartao x))
+       (filter (fn [x] (cartao-igual? cartao x)))
        (map :valor)
        (reduce +)))
   )
