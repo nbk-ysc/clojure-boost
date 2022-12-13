@@ -142,10 +142,15 @@
        (map (fn [[key vals]] {key (total-gasto vals)}))
        (into {}))
   )
-
+(defn compras-no-intervalo
+  "Retornas as compras feitas no intervalo passado"
+  [compras min max]
+  (filter #((and (>= max :valor compras) (<= min :valor compras)) compras))
+  )
 ;(println (lista-compras))
 ;(println (lista-compras-mes (lista-compras) 1))
 ;(println (total-gasto-no-mes (lista-compras) 2))
 ;(println (total-gasto (lista-compras)))
 ;(println (agrupa-compras-por-categoria (lista-compras)))
 ;(println (agrupa-total-gastos-por-categoria (lista-compras)))
+;(println (compras-no-intervalo (lista-compras) 100 1))
