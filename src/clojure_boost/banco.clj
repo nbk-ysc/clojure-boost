@@ -20,4 +20,8 @@
 
 (defn exclui-compra
   [id vetor-de-compras]
-  (remove #(= % id) vetor-de-compras))
+  (into [] (remove #(= (get % :id) id) vetor-de-compras)))
+
+(defn exclui-compra!
+  [id vetor-de-compras]
+  (swap! vetor-de-compras #(exclui-compra %2 %1) id))
