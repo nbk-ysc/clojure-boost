@@ -13,3 +13,7 @@
 (defn insere-compra!
   [compra vetor-de-compras]
   (swap! vetor-de-compras #(insere-compra %2 %1) compra))
+
+(defn lista-compras!
+  [vetor-de-compras]
+  (println (deref vetor-de-compras)))
