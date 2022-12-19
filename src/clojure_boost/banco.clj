@@ -17,3 +17,7 @@
 (defn lista-compras!
   [vetor-de-compras]
   (println (deref vetor-de-compras)))
+
+(defn exclui-compra
+  [id vetor-de-compras]
+  (remove #(= % id) vetor-de-compras))
