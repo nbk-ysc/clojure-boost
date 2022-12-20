@@ -9,6 +9,10 @@
     (conj vetcompra vetcompracomid))
   )
 
+(defn insere-compra! [compra atomcompra]
+  (swap! atomcompra (fn [x] (insere-compra compra x))))
+
+
 
 
 
