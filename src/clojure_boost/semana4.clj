@@ -2,4 +2,6 @@
 
 (def repositorio-de-compras (atom []))
 
-(defrecord Compra [id data valor estabelecimento categoria cartao])
+(defrecord compra [id data valor estabelecimento categoria cartao])
+
+
