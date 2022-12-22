@@ -1,6 +1,7 @@
 (ns clojure-boost.compra-test
   (:require [clojure-boost.funcoes :refer [total-gasto
                                            total-gasto-por-categoria]]
+            [clojure-boost.schema.Compra :refer [CompraSchema]]
             [clojure.test :refer :all]
             [schema.core :as s]))
 
@@ -28,7 +29,6 @@
                     :cartao 9999999999999999}]]
 
       (is (= 600.0, (total-gasto compras))))))
-
 
 (deftest total-gasto-por-categoria-test
   (testing "Que a função total-gasto-por-categoria retorna a soma de todos os gastos por categoria"
@@ -58,3 +58,17 @@
                     :cartao 9999999999999999}]]
 
       (is (= {"Alimentação" 400.0, "Casa" 900.0} (total-gasto-por-categoria compras))))))
+
+(deftest compra-schema-test
+  (testing "Que o esquema CompraSquema retorna os valores conforme os tipos esperados"
+    (let [compra {:data "2022-05-09"
+                  :valor 100M
+                  :estabelecimento "Amazon"
+                  :categoria "Casa"
+                  :cartao 1111222233334444}]
+
+      (is (= compra (s/validate CompraSchema {:data "2022-05-09"
+                                              :valor 100M
+                                              :estabelecimento "Amazon"
+                                              :categoria "Casa"
+                                              :cartao 1111222233334444}))))))
