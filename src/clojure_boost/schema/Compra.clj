@@ -26,7 +26,7 @@
                                           (and (>= valor 1) (< valor 10000000000000000)))))
 
 (def CompraSchema {(s/optional-key :id) PosInt,
-                   :data-da-compra DataRetroativa,
+                   :data DataRetroativa,
                    :valor ValorValido,
                    :estabelecimento EstabelecimentoValido,
                    :categoria CategoriasValidas,
