@@ -71,4 +71,72 @@
                                               :valor 100M
                                               :estabelecimento "Amazon"
                                               :categoria "Casa"
-                                              :cartao 1111222233334444}))))))
+                                              :cartao 1111222233334444})))))
+
+  (testing "Que o esquema CompraSchema não aceita uma data invalida"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data ""
+                                           :valor 100M
+                                           :estabelecimento "Amazon"
+                                           :categoria "Casa"
+                                           :cartao 1111222233334444})))
+
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "09-05-2022"
+                                           :valor 100M
+                                           :estabelecimento "Amazon"
+                                           :categoria "Casa"
+                                           :cartao 1111222233334444}))))
+
+  (testing "Que o esquema CompraSchema não aceita um valor negativo"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor -100M
+                                           :estabelecimento "Amazon"
+                                           :categoria "Casa"
+                                           :cartao 1111222233334444}))))
+
+  (testing "Que o esquema CompraSchema não aceita um estabelecimento com menos de 2 caracteres"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor 100M
+                                           :estabelecimento "A"
+                                           :categoria "Casa"
+                                           :cartao 1111222233334444})))
+
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor 100M
+                                           :estabelecimento ""
+                                           :categoria "Casa"
+                                           :cartao 1111222233334444}))))
+
+  (testing "Que o esquema CompraSchema não aceita uma categoria que não esteja entre as aceitas"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor 100M
+                                           :estabelecimento "Amazon"
+                                           :categoria "Categoria invalida"
+                                           :cartao 1111222233334444})))
+
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor 100M
+                                           :estabelecimento "Amazon"
+                                           :categoria ""
+                                           :cartao 1111222233334444}))))
+
+  (testing "Que o esquema CompraSchema não aceita um cartao invalido"
+    (is (thrown? clojure.lang.ExceptionInfo
+                 (s/validate CompraSchema {:data "2022-05-09"
+                                           :valor 100M
+                                           :estabelecimento "Amazon"
+                                           :categoria "Casa"
+                                           :cartao -1111222233334444}))))
+
+  (is (thrown? clojure.lang.ExceptionInfo
+               (s/validate CompraSchema {:data "2022-05-09"
+                                         :valor 100M
+                                         :estabelecimento "Amazon"
+                                         :categoria "Casa"
+                                         :cartao 0}))))
