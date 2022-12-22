@@ -1,9 +1,13 @@
 (ns clojure-boost.funcoes
   (:require clojure.data.csv
             clojure.java.io
-            clojure.string))
+            clojure.string
+            [schema.core :as s]
+            [clojure-boost.schema.Compra :refer [CompraSchema]]))
 
-(defn nova-compra
+(s/set-fn-validation! true)
+
+(s/defn nova-compra :- CompraSchema
   [[data valor estabelecimento categoria cartao]]
   {:data data
    :valor valor
