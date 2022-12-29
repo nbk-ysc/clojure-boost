@@ -1,4 +1,4 @@
-(ns clojure-boost.core)
+(ns clojure-boost.week3)
 (defn nova-compra
   "Retorna lista de compras"
   [data valor estabelecimento categoria cartao]

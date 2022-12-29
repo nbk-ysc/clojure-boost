@@ -1,4 +1,4 @@
-(ns clojure-boost.week2
+(ns clojure-boost.week4
   (:use clojure.pprint))
 
 (defn nova-compra
