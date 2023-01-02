@@ -5,3 +5,4 @@
 ;Para validar os tipos nas funcoes
 (s/set-fn-validation! true)
 
+

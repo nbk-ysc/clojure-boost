@@ -9,6 +9,8 @@
 (def schemateste {:id s/Num, :nome s/Str (s/optional-key :optkeys) s/Str})
 
 ;Schema com chaves dinamicas
+;Note que existe duas entradas na funcao
+;um numero e um echema
 (def schemadinamico {s/Num schemateste} )
 
 (pprint/pprint (s/explain schemateste))
@@ -17,7 +19,12 @@
 (pprint/pprint (s/explain schemadinamico))
 (pprint/pprint (s/validate schemadinamico{3 {:id 3, :nome "str"}}))
 
+;Para validar os tipos nas funcoes
+(s/set-fn-validation! true)
+
 ;Funcao novoschemateste e definida como um tipo
+;x :- y significa que x deve satisfazer o esquema y.
+;x :- y é equivalente a ^y x
 (s/defn novoschemateste :- schemateste [id :- s/Num, nome :- s/Str]
   {:id id :nome nome})
 
