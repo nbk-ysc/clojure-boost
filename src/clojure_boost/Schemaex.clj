@@ -24,7 +24,6 @@
 
 ;Funcao novoschemateste e definida como um tipo
 ;x :- y significa que x deve satisfazer o esquema y.
-;x :- y é equivalente a ^y x
 (s/defn novoschemateste :- schemateste [id :- s/Num, nome :- s/Str]
   {:id id :nome nome})
 
