@@ -11,7 +11,7 @@
   (s/constrained Long (fn [x]
                           (and (> x 0) (< x 10000000000000000)))))
 
-(def ValorValid (s/pred (fn [x]
+(s/defschema ValorValid (s/pred (fn [x]
                            (and (bigdec x) (pos? x)))))
 
 (s/defschema CompraSchema
@@ -32,3 +32,14 @@
                           :categoria "Casa"
                           :cartao 9999999
                           :data "2022-12-30"})
+
+(s/defn nova-compra :- CompraSchema
+  [data valor estabelecimento
+                   categoria cartao]
+  {:data data
+   :valor valor
+   :estabelecimento estabelecimento
+   :categoria categoria
+   :cartao cartao}
+  )
+
