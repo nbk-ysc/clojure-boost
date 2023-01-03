@@ -3,7 +3,6 @@
             [clojure-boost.semana3 :refer :all])
   (:use clojure.pprint))
 
-
 (def listacompra
             [{:data            "2022-11-01"
               :valor           100
