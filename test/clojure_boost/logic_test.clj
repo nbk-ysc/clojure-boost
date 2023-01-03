@@ -1,6 +1,8 @@
 (ns clojure-boost.logic-test
   (:require [clojure.test :refer :all]
-            [clojure-boost.week3 :refer :all])
+            [clojure-boost.week3 :refer :all]
+            [schema.core :as s]
+            [clojure-boost.week5 :refer :all])
   (:use clojure.pprint))
 
 (def compra [{:data            "2022-01-01"
@@ -25,12 +27,19 @@
   (is (total-gasto compra) 600)
   )
 
+(def compras-agrupadas (agrupa-compras-por-categoria compra))
+
 (deftest agrupa-compras-por-categoria-test
   (testing "Testa se o agrupamento de gastos por categoria")
-  (is (keys (agrupa-compras-por-categoria compra)) ["Alimentação" "Saúde" "Lazer"])
+  (is (keys compras-agrupadas) ["Alimentação" "Saúde" "Lazer"])
   )
 
-(pprint (vals (agrupa-compras-por-categoria compra)))
+(pprint compras-agrupadas)
+(deftest valida-compra-test
+  (testing "Testa se uma compra for válida")
+  (s/validate Compra (nova-compra-schema (bigdec 100000000) "Amazon" "Casa" 11112222 "2022-05-09"))
+  (is Compra (nova-compra-schema (bigdec 100000000) "Amazon" "Casa" 11112222 "2022-05-09"))
+  )
 
 
 

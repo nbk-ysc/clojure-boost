@@ -18,10 +18,10 @@
 
 (s/defn cria-compra [id :- PosInt] :- Compra)
 
-(s/defn nova-compra :- Compra
+(s/defn nova-compra-schema :- Compra
   "Retorna lista de compras em formato de Schema"
   [valor :- Moeda estabelecimento :- EsbelecimentoValido categoria :- CategoriaValida cartao :- CartaoValido data :- DataRetroativa]
   {:valor valor :estabelecimento estabelecimento :categoria categoria :cartao cartao :data data}
   )
 
-(println (s/validate Compra (nova-compra (bigdec 2000) "Lala" "Alimentação" 32323 "1222-02-20")))
+(println (s/validate Compra (nova-compra-schema (bigdec 2000) "Lala" "Alimentação" 32323 "1222-02-20")))
