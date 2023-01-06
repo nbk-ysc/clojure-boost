@@ -44,3 +44,9 @@
 (defn insere-compra!
   [db compra]
   (d/transact db compra))
+
+(defn lista-compras!
+  [db]
+  (d/q '[:find (pull ?compra [*])
+         :where [?compra :compra/id]]
+       db))
