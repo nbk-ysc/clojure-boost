@@ -41,5 +41,10 @@
   (is Compra (nova-compra-schema (bigdec 100000000) "Amazon" "Casa" 11112222 "2022-05-09"))
   )
 
+(deftest nao-valida-compra-test
+  (testing "Testa se uma compra for válida")
+  (s/validate Compra (nova-compra-schema (bigdec 100000000) "Amazon" "Casa" 1111222233334444 "2022-05-09"))
+  (is Compra (nova-compra-schema (bigdec 100000000) "Amazon" "Casa" 11112222333344444 "2022-05-09"))
+  )
 
 
