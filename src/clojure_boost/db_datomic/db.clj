@@ -50,3 +50,10 @@
   (d/q '[:find (pull ?compra [*])
          :where [?compra :compra/id]]
        db))
+
+(defn lista-compras-por-cartao!
+  [conn cartao-a-ser-buscado]
+  (d/q '[:find (pull ?compra [*])
+         :in $ ?cartao
+         :where [?compra :compra/cartao ?cartao]]
+       conn cartao-a-ser-buscado))
