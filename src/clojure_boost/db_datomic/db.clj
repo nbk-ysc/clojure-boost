@@ -52,8 +52,17 @@
        db))
 
 (defn lista-compras-por-cartao!
-  [conn cartao-a-ser-buscado]
-  (d/q '[:find (pull ?compra [*])
-         :in $ ?cartao
-         :where [?compra :compra/cartao ?cartao]]
-       conn cartao-a-ser-buscado))
+  ([conn cartao-a-ser-buscado]
+   (d/q '[:find (pull ?compra [*])
+          :in $ ?cartao
+          :where [?compra :compra/cartao ?cartao]]
+        conn cartao-a-ser-buscado))
+
+  ([conn cartao-a-ser-buscado mes-a-ser-buscado]
+   (d/q '[:find (pull ?compra [*])
+          :in $ ?cartao ?mes-a-ser-buscado
+          :where
+          [?compra :compra/cartao ?cartao]
+          [?compra :compra/data ?mes]
+          [(clojure.string/includes? ?mes ?mes-a-ser-buscado)]]
+        conn cartao-a-ser-buscado (format "-%s-" mes-a-ser-buscado))))
