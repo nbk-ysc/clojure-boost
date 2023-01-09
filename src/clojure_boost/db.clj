@@ -61,7 +61,7 @@
   (d/connect db-uri)
   )
 
-(defn insere-compra!
+(defn insere-compra!K
   "Insere uma compra no banco de dados"
   [connection compra]
   (d/transact connection compra)
@@ -73,27 +73,32 @@
 (defn lista-compras!
   "Lista todas as compras do banco"
   [connection]
-  (d/q todas-as-compras-q connection)
+  (d/q todas-as-compras-q db)
   )
 
 (defn lista-compras-por-cartao!
   "lista as compras feitas por um determinado cartao em determinado mes"
   ([connection numero-cartao]
    (d/q '[:find ?valor
-          :where [?e :compra/valor ?valor]
-                 [?e :compra/cartao numero-cartao]] connection)
+          :in $ ?numero-cartao
+          :where [?e :compra/cartao ?numero-cartao]
+          [?e :compra/valor ?valor]]
+        connection
+        numero-cartao)
    )
   ([connection numero-cartao mes]
    (d/q '[:find ?valor
-          :where [?e :compra/valor ?valor]
-                 [?e :compra/cartao numero-cartao]
-                 [?e :compra/data mes]] connection))
+          :in $ ?numero-cartao
+          :where [?e :compra/cartao ?numero-cartao]
+          [?e :compra/valor ?valor]]
+        connection
+        numero-cartao))
   )
 
-(pprint (cria-conexao!))
+;(pprint (cria-conexao!))
 (pprint (insere-compra! conn compra-schema))
 (pprint (insere-compra! conn compra))
-(pprint (lista-compras! db))
+;(pprint (lista-compras! db))
 (pprint (lista-compras-por-cartao! db 111122224444))
 
 
