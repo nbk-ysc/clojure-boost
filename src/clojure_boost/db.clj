@@ -51,9 +51,8 @@
   (d/delete-database db-uri)
   )
 
-(def db (d/db conn))
-
 (def conn (d/connect db-uri))
+(def db (d/db conn))
 
 (defn cria-conexao! []
   "Retorna uma conexão com o datomic"
@@ -61,7 +60,7 @@
   (d/connect db-uri)
   )
 
-(defn insere-compra!K
+(defn insere-compra!
   "Insere uma compra no banco de dados"
   [connection compra]
   (d/transact connection compra)
@@ -95,10 +94,10 @@
         numero-cartao))
   )
 
-;(pprint (cria-conexao!))
+(pprint (cria-conexao!))
 (pprint (insere-compra! conn compra-schema))
 (pprint (insere-compra! conn compra))
-;(pprint (lista-compras! db))
+(pprint (lista-compras! db))
 (pprint (lista-compras-por-cartao! db 111122224444))
 
 
