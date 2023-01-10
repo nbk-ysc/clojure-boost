@@ -1,0 +1,1 @@
+(ns clojure-boost.model)
