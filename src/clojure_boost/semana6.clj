@@ -92,6 +92,14 @@ que lembrem o tipo de dado de entrada"
 
 (lista-compras! db)
 
+(defn lista-compras-por-cartao! [db numb]
+  (d/q '[:find (pull ?e [*])
+         :in $ ?numbcard
+         :where [?e :compra/cartao ?numbcard]]
+       db numb))
+
+(lista-compras-por-cartao! db 888888)
+
 (defn apaga-banco! []
   (d/delete-database db-uri))
 
