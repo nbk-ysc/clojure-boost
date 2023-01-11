@@ -72,11 +72,15 @@ que lembrem o tipo de dado de entrada"
    :compra/estabelecimento (:estabelecimento compra)
    :compra/categoria       (:categoria compra)})
 
-(defn insere-compra! [conn compra]
-  (let  [compradb (compra->compra-datomic 19 compra)]
+(defn insere-compra! [conn id compra]
+  (let  [compradb (compra->compra-datomic id compra)]
     (d/transact conn [compradb])))
 
-(insere-compra! conn compra)
+(insere-compra! conn 19
+         (s5/nova-compra "2022-12-30" 999 "Mrk1" "Casa" 9999999))
+
+(insere-compra! conn 18
+         (s5/nova-compra "2023-01-10" 8888 "Mrk2" "Lazer" 888888))
 
 "Banco db apenas para leitura"
 (def db (d/db conn))
