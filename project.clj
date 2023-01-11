@@ -6,6 +6,7 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/data.csv "1.0.1"]
                  [clojure.java-time "1.1.0"]
-                 [prismatic/schema "1.4.1"]]
+                 [prismatic/schema "1.4.1"]
+                 [com.datomic/datomic-pro "1.0.6527"]]
   :repl-options {:init-ns clojure-boost.core}
   :profiles {:uberjar {:aot :all}})
