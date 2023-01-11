@@ -11,13 +11,10 @@
   (s/constrained Long (fn [x]
                           (and (> x 0) (< x 10000000000000000)))))
 
-(s/defschema ValorValid (s/pred (fn [x]
-                           (and (bigdec x) (pos? x)))))
-
 (s/defschema CompraSchema
   {
    (s/optional-key :id) (s/constrained Long pos-int?)
-   :valor  ValorValid   ;(s/constrained BigDecimal pos?)
+   :valor  (s/constrained BigDecimal pos?)
    :estabelecimento StrCount
    :categoria (s/enum "Alimentação", "Automóvel", "Casa", "Educação", "Lazer", "Saúde")
    :cartao CardValid
@@ -27,7 +24,7 @@
 (pprint/pprint (s/explain CompraSchema))
 
 (s/validate CompraSchema {:id 3
-                          :valor 999
+                          :valor 999M
                           :estabelecimento "teste"
                           :categoria "Casa"
                           :cartao 9999999
@@ -37,9 +34,12 @@
   [data valor estabelecimento
                    categoria cartao]
   {:data data
-   :valor valor
+   :valor (bigdec valor)
    :estabelecimento estabelecimento
    :categoria categoria
    :cartao cartao}
   )
+
+(pprint/pprint
+  (nova-compra "2022-12-30" 999 "teste" "Casa" 9999999))
 
